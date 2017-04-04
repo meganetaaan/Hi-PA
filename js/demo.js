@@ -20,7 +20,7 @@
   });
   doubleTracker.track();
   doubleTracker.trackClass('doubletrack', true);
-  
+
   var langs = [
    ['English',         ['en-AU', 'Australia'],
                        ['en-CA', 'Canada'],
@@ -54,7 +54,9 @@
   var recognizing = false;
   var ignore_onend;
   var start_timestamp;
-  var start_button = document.getElementById('#start_button');
+  var start_button = document.getElementById('start_button');
+  console.log(start_button);
+  start_button.onclick = startButton;
 
   start_button.style.display = 'inline-block';
   var recognition = new webkitSpeechRecognition();
@@ -184,7 +186,7 @@
     showInfo('');
   }
 
-  function startButton(event) {
+  function startButton() {
     console.log('startButton');
     if (recognizing) {
       recognition.stop();
@@ -199,7 +201,7 @@
     start_img.src = '/intl/en/chrome/assets/common/images/content/mic-slash.gif';
     showInfo('info_allow');
     showButtons('none');
-    start_timestamp = event.timeStamp;
+    start_timestamp = 0; //event.timeStamp;
   }
 
   function showInfo(s) {
@@ -221,10 +223,10 @@
       return;
     }
     current_style = style;
-    copy_button.style.display = style;
-    email_button.style.display = style;
-    copy_info.style.display = 'none';
-    email_info.style.display = 'none';
+    //copy_button.style.display = style;
+    //email_button.style.display = style;
+    //copy_info.style.display = 'none';
+    //email_info.style.display = 'none';
   }
 
 
