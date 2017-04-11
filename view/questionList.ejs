@@ -1,0 +1,11 @@
+<script type="text/ejs" id="questionList">
+<div>
+  [% for (var i = 0, len = questionList.length; i < len; i++) { 
+    var question = questionList[i]; %]
+  <div>
+    [%= question.get('question') %]
+    <input type="button" value="X" class="question_delete_btn" question_id="[%= question.get('id')%]"/>
+  </div>
+  [% } %]
+</div>
+</script>
