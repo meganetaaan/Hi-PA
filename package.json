@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/shmsw25/Hi-PA#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
