@@ -17,7 +17,6 @@ var questionSchema = new Schema({
 // hash password when save
 questionSchema.pre('save', function (next) {
     var question = this;
-    assert((typeof this.password) !== 'undefined');
     // generate hash
     bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
         if (err)

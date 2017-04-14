@@ -1,17 +1,22 @@
 var header = require('./testHeader');
 var expect = header.expect;
 var Question = require('../model/Question');
-
 var db = require('../db');
+var mongoose = db.mongoose;
+var url = db.test;
 
 describe('db model test', () => {
     describe('#Question', () => {
+        before((done) => {
+            db.connect('test');
+            Question.remove({}, done);
+        });
         beforeEach((done) => {
             Question.remove({}, done);
         });
         after((done) => {
             Question.remove({});
-            db.disconnect(done);
+            mongoose.disconnect(done);
         });
         it('should be empty', (done) => {
             Question.find({}, (err, result) => {
