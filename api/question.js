@@ -4,8 +4,6 @@ var router = express.Router();
 
 function _getQuestion(req, res) {
     Question.find({}, function (err, results) {
-        if (err)
-            throw err;
         res.json(results);
     });
 }
@@ -13,16 +11,26 @@ function _getQuestion(req, res) {
 function _postQuestion(req, res) {
     var q = new Question(req.body);
     q.save((err, book) => {
-        if (err)
-            throw err;
-        res.sendStatus(200);
+        if (err) {
+            switch (err.name) {
+                case 'Validation Error':
+                    res.sendStatus(400);
+                    break;
+                default:
+                    res.sendStatus(400);
+                    break;
+            }
+        }
+        else {
+            res.sendStatus(200);
+        }
     });
 }
 
-function _deleteQuestion(req, res, next) {
+function _deleteQuestion(req, res) {
 }
 
-function _likeQuestion(req, res, next) {
+function _likeQuestion(req, res) {
 }
 
 router.get('/', _getQuestion);

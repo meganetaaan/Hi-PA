@@ -53,6 +53,21 @@ describe('middleware function test', () => {
                         });
                     });
             });
+            it('should fail if obj has no required paths', (done) => {
+                chai.request(app)
+                    .post('/')
+                    .send({question : 'Can I Go In?'})
+                    .end((err, res) => {
+                        expect(res.status).to.equal(400);
+                        Question.find({}, (error, results) => {
+                            expect(results.length).to.equal(2);
+                            done();
+                        });
+                    });
+            });
+            it('should add like if no error', (done) => {
+                done();
+            });
         });
     });
 });
