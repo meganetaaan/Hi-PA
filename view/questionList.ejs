@@ -1,11 +1,24 @@
 <script type="text/ejs" id="questionList">
-<div>
-  [% for (var i = 0, len = questionList.length; i < len; i++) { 
-    var question = questionList[i]; %]
-  <div>
-    [%= question.get('question') %]
-    <input type="button" value="X" class="question_delete_btn" question_id="[%= question.get('id')%]"/>
+<!--{h5view id="questionList"}
+<div id="question_list" data-h5-loop-context="questionList">
+  <div class="question_div" data-h5-bind="attr(question-id):id">
+    Question: <span data-h5-bind="question"></span> <br>
+    Slide Number : <span data-h5-bind="slideNumber"></span><br>
+    Nickname : <span data-h5-bind="nickname"></span><br>
+    Like : <span data-h5-bind="like"></span>
+    <input type="button" name="toggle_like" data-h5-bind="attr(value):likeBtnValue" /><br>
+    Time : <span data-h5-bind="timeString"></span><br>
+    <input type="button" name="show_delete" value="show delete"/>
+    <div class="question_delete_div" data-h5-bind="style(display):deleteDivDisplay">
+      <form>
+        Password: <input type="password" name="password" />
+        <input type="button" name="delete_question" value="delete"/>
+      </form>
+    </div>
   </div>
-  [% } %]
 </div>
+-->
+
+
+
 </script>

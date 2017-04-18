@@ -5,9 +5,38 @@ var questionDataModel = manager.createModel({
     id : {
       id : true
     },
-    question : {
-      type: 'string'
+    question : { type: 'string' },
+    slideNumber: { type: 'number' },
+    nickname: { type: 'string' },
+    like: { type: 'integer', defaultValue: 0},
+    time: { type: 'integer' },
+    timeString : {
+      depend: {
+        on: 'time',
+        calc: function() {
+          const date = new Date(this.get('time'));
+          return date.toString();
+        }
+      }
     },
+    isLiked: { type: 'boolean', defaultValue: false },
+    likeBtnValue: {
+      depend: {
+        on: 'isLiked',
+        calc: function() {
+          return this.get('isLiked') ? 'unlike' : 'like';
+        }
+      }
+    },
+    isDeleteShown: {type: 'boolean', defaultValue: false },
+    deleteDivDisplay: {
+      depend: {
+        on: 'isDeleteShown',
+        calc: function() {
+          return this.get('isDeleteShown') ? '' : 'none';
+        }
+      }
+    }
   },
 });
 
