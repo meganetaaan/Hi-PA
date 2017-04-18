@@ -69,5 +69,23 @@ describe('middleware function test', () => {
                 done();
             });
         });
+        describe('#delete', () => {
+            it('should delete obj if password matches', (done) => {
+                var deleteQ = new Question({question : 'Am I Deleted?', password : 'password'});
+                deleteQ.save((err, result) => {
+                    expect(typeof result._id).to.not.equal('undefined');
+                    chai.request(app)
+                        .delete('/'+result._id)
+                        .send({password : 'password'})
+                        .end((err, response) => {
+                            expect(response.status).to.equal(200);
+                            Question.find({}, (error, questions) => {
+                                expect(questions.length).to.equal(2);
+                                done();
+                            });
+                        });
+                });
+            });
+        });
     });
 });

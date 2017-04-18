@@ -20,14 +20,35 @@ function _postQuestion(req, res) {
                     res.sendStatus(400);
                     break;
             }
-        }
-        else {
+        } else {
             res.sendStatus(200);
         }
     });
 }
 
 function _deleteQuestion(req, res) {
+    Question.findById(req.params.id, (err, result) => {
+        if (err) {
+            switch(err.name) {
+            }
+            res.sendStatus(500);
+        } else {
+            if (result === null) {
+                res.sendStatus(404);
+            } else {
+                result.comparePassword(req.body.password, (err, isRight) => {
+                    if (err) {
+                    } else if (isRight) {
+                        Question.remove(result, (err, r) => {
+                            res.sendStatus(200);
+                        });
+                    } else {
+                        res.sendStatus(401);
+                    }
+                });
+            }
+        }
+    });
 }
 
 function _likeQuestion(req, res) {
@@ -35,7 +56,7 @@ function _likeQuestion(req, res) {
 
 router.get('/', _getQuestion);
 router.post('/', _postQuestion);
-router.delete('/', _deleteQuestion);
+router.delete('/:id', _deleteQuestion);
 router.post('/like', _likeQuestion);
 
 module.exports = router;
