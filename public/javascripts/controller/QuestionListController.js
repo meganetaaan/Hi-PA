@@ -1,7 +1,7 @@
 var controller = {
     __name: 'hipa.controller.QuestionListController',
 
-    __templates: ['view/questionList.ejs', 'view/questionForm.ejs'],
+    __templates: ['public/views/questionList.ejs', 'public/views/questionForm.ejs'],
 
     questionListLogic: hipa.logic.QuestionListLogic,
     questionDataModel: hipa.data.QuestionDataModel,

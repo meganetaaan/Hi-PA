@@ -1,4 +1,4 @@
-<!doctype html>  
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -7,17 +7,17 @@
     <link type="text/css" rel="stylesheet" href="lib/h5/h5.css">
 
     <!-- Import a dependent file -->
-    <script src="lib/jquery-3.2.0.min.js"></script>
+    <script src="public/javascripts/lib/jquery-3.2.0.min.js"></script>
 
     <!-- Import a hifive framework -->
-    <script src="lib/h5/ejs-h5mod.js"></script>
-    <script src="lib/h5/h5.dev.js"></script>
-    
-    <script src="config.js"></script>
+    <script src="public/javascripts/lib/h5/ejs-h5mod.js"></script>
+    <script src="public/javascripts/lib/h5/h5.dev.js"></script>
 
-    <script src="model/QuestionDataModel.js"></script>
-    <script src="logic/QuestionListFakeLogic.js"></script>
-    <script src="controller/QuestionListController.js"></script>
+    <script src="public/javascripts/config.js"></script>
+
+    <script src="public/javascripts/model/QuestionDataModel.js"></script>
+    <script src="public/javascripts/logic/QuestionListFakeLogic.js"></script>
+    <script src="public/javascripts/controller/QuestionListController.js"></script>
     <script>
       $(function() {
         h5.core.controller('#container', hipa.controller.QuestionListController);
