@@ -1,10 +1,3 @@
-(function (){
-  $(initialize);
-
-  function initialize(){
-    console.log('initialize_speechRecognition_logic');
-    h5.core.controller('#container', speechRecognitionController);
-  }
 
   var speechRecognitionController = {
     __name: 'SpeechRecognitionController',
@@ -96,4 +89,3 @@
     // finish speechRecognizionController
   }
 
-})();
