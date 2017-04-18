@@ -1,8 +1,8 @@
 var express = require('express');
 var db = require('./db');
+db.connect('test');
 var mongoose = db.mongoose
 var url = db.test;
-mongoose.connect(url);
 var app = express();
 var bodyParser = require('body-parser');
 var question = require('./api/question');
