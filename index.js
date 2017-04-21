@@ -10,5 +10,7 @@ var question = require('./api/question');
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use('/api/question', question);
+app.use('/public', express.static('public'));
+app.use('/', express.static('view'));
 
 var server = app.listen(8000, function (){});

@@ -7,7 +7,7 @@ var questionListLogic = {
     return h5.ajax({
       type: 'GET',
       dataType: 'JSON',
-      url: config.url + '/questions',
+      url: config.url + '/question',
     }).then((json) => {
       const modelList = this.model.create(json);
       this.questionList.splice(0,this.questionList.length);
@@ -19,8 +19,8 @@ var questionListLogic = {
     return h5.ajax({
       type: 'POST',
       dataType: 'JSON',
-      url: config.url + '/questions',
-      data: {question, nickname, slideNumber, password},
+      url: config.url + '/question',
+      data: { question, nickname, slideNumber, password },
     }).then((json) => {
       const questionModelItem = this.model.create(json);
       this.questionList.push(questionModelItem);
@@ -31,7 +31,7 @@ var questionListLogic = {
     return h5.ajax({
       type: 'DELETE',
       dataType: 'JSON',
-      url: config.url + '/questions',
+      url: config.url + '/question',
       data: {question_id},
     }).then(() => {
       for (let i = 0, len = this.questionList.length; i < len; i++) {
@@ -53,7 +53,7 @@ var questionListLogic = {
     return h5.ajax({
       type: 'POST',
       dataType: 'JSON',
-      url: config.url + '/questions/like',
+      url: config.url + '/question/like',
       data: {question_id},
     }).then((json) => {
 
