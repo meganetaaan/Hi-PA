@@ -38,6 +38,13 @@ questionSchema.methods.comparePassword = function (inputPassword, callback) {
         callback(null, match);
     });
 }
+
+
+// change _id to id
+questionSchema.virtual('id').get(() => {
+    return this._id;
+});
+questionSchema.set('toJSON', {virtuals : true});
 var Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;
