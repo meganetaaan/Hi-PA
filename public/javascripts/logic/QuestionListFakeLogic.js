@@ -12,7 +12,7 @@ var questionListLogic = {
         return this._createFakeQuestion();
       });
       const modelList = this.model.create(tmpList);
-      this.questionList.splice(0,this.questionList.length)
+      this.questionList.splice(0,this.questionList.length);
       this.questionList.copyFrom(modelList);
       dfd.resolve(this.questionList);
     }, this.duration);
