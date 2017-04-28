@@ -96,6 +96,10 @@ h2 {
 	display : none;
 }
 
+#gum, #nogum {
+  font-weight: bold;
+}
+
 .btn {
 	font-family: 'Lato';
 	font-size: 16px;

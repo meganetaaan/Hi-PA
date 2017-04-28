@@ -199,7 +199,6 @@ var speechRecognitionController = {
       for (var p = 44; p < 62; p++) {
         positionString += "featurepoint "+ p + " :";
         positionString += "[" + positions[p][0].toFixed(1) + "," + positions[p][1].toFixed(1) + "] ";
-        console.log(positionString);
       }
       var gap = positions[57][1]-positions[60][1];
       var speakInfoString = (gap>4)? "Mouth Open" : "Mouth Close";
