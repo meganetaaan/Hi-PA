@@ -29,6 +29,7 @@ var questionListLogic = {
         slideNumber,
         time: Date.now(),
       }
+      // FIXME: consider the case where question being created twice.
       const questionModelItem = this.model.create(tmpQuestion);
       this.questionList.push(questionModelItem);
       dfd.resolve(questionModelItem);
@@ -67,6 +68,26 @@ var questionListLogic = {
       dfd.resolve();
     }, this.duration);
     return dfd.promise();
+  },
+
+  addToLocal: function(json) {
+    // FIXME: consider the case where question being created twice.
+    const questionModelItem = this.model.create(json);
+    this.questionList.push(questionModelItem);
+  },
+
+  deleteFromLocal: function(question_id) {
+    for (let i = 0, len = this.questionList.length; i < len; i++) {
+      if (this.questionList.get(i).get('id') === question_id) {
+        this.model.remove(question_id);
+        this.questionList.splice(i, 1);
+        break;
+      }
+    }
+  },
+
+  updateLikesFromLocal: function(question_id, like_cnt) {
+    this.model.get(question_id).set('like', like_cnt);
   },
 
   _createFakeQuestion: function() {
