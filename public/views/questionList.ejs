@@ -8,7 +8,7 @@
     Like : <span data-h5-bind="like"></span>
     <input type="button" name="toggle_like" data-h5-bind="attr(value):likeBtnValue" /><br>
     Time : <span data-h5-bind="timeString"></span><br>
-    <input type="button" name="show_delete" value="show delete"/>
+    <input type="button" name="show_delete" data-h5-bind="attr(value):deleteButtonText"/>
     <div class="question_delete_div" data-h5-bind="style(display):deleteDivDisplay">
       <form>
         Password: <input type="password" name="password" />

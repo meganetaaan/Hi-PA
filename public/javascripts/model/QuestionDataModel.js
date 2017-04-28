@@ -36,7 +36,15 @@ var questionDataModel = manager.createModel({
           return this.get('isDeleteShown') ? '' : 'none';
         }
       }
-    }
+    },
+    deleteButtonText : {
+      depend: {
+        on: 'isDeleteShown',
+        calc: function() {
+          return this.get('isDeleteShown') ? 'Hide delete' : 'Show delete';
+        },
+      },
+    },
   },
 });
 
