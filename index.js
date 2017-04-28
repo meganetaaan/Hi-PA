@@ -9,6 +9,7 @@ var question = require('./api/question');
 
 app.use(bodyParser.json());
 app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({extended:true});
 app.use('/api/question', question);
 
 var server = app.listen(8000, function (){});

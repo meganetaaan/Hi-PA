@@ -52,11 +52,51 @@ function _deleteQuestion(req, res) {
 }
 
 function _likeQuestion(req, res) {
+    Question.findById(req.params.id, (err, result) => {
+        if (err) {
+            res.sendStatus(500);
+        } else {
+            if (result === null) {
+                res.sendStatus(404);
+            } else {
+                result.like += 1;
+                result.save((err, result)=>{
+                    if (err) {
+                        res.sendStatus(500);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        }
+    });
+}
+
+function _dislikeQuestion(req, res) {
+    Question.findById(req.params.id, (err, result) => {
+        if (err) {
+            res.sendStatus(500);
+        } else {
+            if (result === null) {
+                res.sendStatus(404);
+            } else {
+                result.like -= 1;
+                result.save((err, result) => {
+                    if (err) {
+                        res.sendStatus(500);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        }
+    });
 }
 
 router.get('/', _getQuestion);
 router.post('/', _postQuestion);
 router.delete('/:id', _deleteQuestion);
-router.post('/like', _likeQuestion);
+router.put('/like/:id', _likeQuestion);
+router.put('/dislike/:id', _dislikeQuestion);
 
 module.exports = router;

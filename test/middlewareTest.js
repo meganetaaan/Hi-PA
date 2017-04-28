@@ -73,9 +73,9 @@ describe('middleware function test', () => {
             it('should delete obj if password matches', (done) => {
                 var deleteQ = new Question({question : 'Am I Deleted?', password : 'password'});
                 deleteQ.save((err, result) => {
-                    expect(typeof result._id).to.not.equal('undefined');
+                    expect(typeof result.id).to.not.equal('undefined');
                     chai.request(app)
-                        .delete('/'+result._id)
+                        .delete('/'+result.id)
                         .send({password : 'password'})
                         .end((err, response) => {
                             expect(response.status).to.equal(200);
