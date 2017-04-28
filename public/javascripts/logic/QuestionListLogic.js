@@ -12,6 +12,7 @@ var questionListLogic = {
       const modelList = this.model.create(json);
       this.questionList.splice(0,this.questionList.length);
       this.questionList.copyFrom(modelList);
+      return this.questionList;
     });
   },
 
@@ -31,9 +32,8 @@ var questionListLogic = {
   delete: function(question_id, password) {
     return h5.ajax({
       type: 'DELETE',
-      dataType: 'JSON',
-      url: config.url + '/question',
-      data: {question_id},
+      url: config.url + '/question/' + question_id,
+      data: { password },
     }).then(() => {
       for (let i = 0, len = this.questionList.length; i < len; i++) {
         if (this.questionList.get(i).get('id') === question_id) {
@@ -52,13 +52,11 @@ var questionListLogic = {
     questionModel.set('isLiked', !isLiked);
     questionModel.set('like', origLike + (isLiked ? -1 : +1));
     return h5.ajax({
-      type: 'POST',
-      dataType: 'JSON',
-      url: config.url + '/question/like',
-      data: {question_id},
-    }).then((json) => {
+      type: 'PUT',
+      url: config.url + '/question/' + (isLiked ? 'dislike/' : 'like/') + question_id,
+    }).then((msg) => {
 
-    }, () => { // If failed
+    }).fail( () => { // If failed
       questionModel.set('isLiked', isLiked);
       questionModel.set('like', origLike);
     });
@@ -90,8 +88,13 @@ var questionListLogic = {
       }
     }
   },
+
   updateLikesFromLocal: function(question_id, like_cnt) {
     this.model.get(question_id).set('like', like_cnt);
+  },
+
+  _getQuestion: function(question_id) {
+    return this.model.get(question_id);
   },
 }
 
