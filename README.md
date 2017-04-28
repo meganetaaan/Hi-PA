@@ -5,6 +5,8 @@ A Responsive, Multi-sensor, Smart, Web-App, Which Connects Audience &amp; Presen
 
 You need mongodb installed in your server. And before running this program, mongodb needs to be running.
 
+Node version : 6.10.2
+
 ```
 npm install
 node index.js
