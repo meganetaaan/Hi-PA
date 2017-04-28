@@ -48,7 +48,7 @@ function _transformer (doc, ret, options) {
     delete ret.password;
     delete ret.__v;
 }
-questionSchema.set('toJSON', {virtuals : true, trasnform : _transformer});
+questionSchema.set('toJSON', {virtuals : true, transform : _transformer});
 var Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;
