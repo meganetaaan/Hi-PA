@@ -41,10 +41,14 @@ questionSchema.methods.comparePassword = function (inputPassword, callback) {
 
 
 // change _id to id
-questionSchema.virtual('id').get(() => {
-    return this._id;
-});
-questionSchema.set('toJSON', {virtuals : true});
+function _transformer (doc, ret, options) {
+    ret.id = ret._id;
+    ret.time = ret.time.getTime();
+    delete ret._id;
+    delete ret.password;
+    delete ret.__v;
+}
+questionSchema.set('toJSON', {virtuals : true, transform : _transformer});
 var Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;

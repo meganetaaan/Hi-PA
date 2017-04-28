@@ -34,8 +34,11 @@ describe('middleware function test', () => {
                         expect(res.status).to.equal(200);
                         expect(res.body).to.be.a('array');
                         expect(res.body.length).to.equal(1);
-                        expect(typeof res.body[0]._id).to.not.equal('undefined');
+                        expect(typeof res.body[0].id).to.not.equal('undefined');
+                        expect(typeof res.body[0]._id).to.equal('undefined');
                         expect(typeof res.body[0].nickname).to.equal('undefined');
+                        expect(typeof res.body[0].time).to.equal('number');
+                        expect(typeof res.body[0].__v).to.equal('undefined');
                         done();
                     });
             });
@@ -51,6 +54,7 @@ describe('middleware function test', () => {
                             expect(results.length).to.equal(2);
                             done();
                         });
+                        expect(res.body.nickname).to.equal('qq');
                     });
             });
             it('should fail if obj has no required paths', (done) => {
