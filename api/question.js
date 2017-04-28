@@ -13,15 +13,15 @@ function _postQuestion(req, res) {
     q.save((err, book) => {
         if (err) {
             switch (err.name) {
-                case 'Validation Error':
+                case 'ValidationError':
                     res.sendStatus(400);
                     break;
                 default:
-                    res.sendStatus(400);
+                    res.sendStatus(500);
                     break;
             }
         } else {
-            res.sendStatus(200);
+            res.status(200).json(q);
         }
     });
 }

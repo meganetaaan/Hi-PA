@@ -54,6 +54,7 @@ describe('middleware function test', () => {
                             expect(results.length).to.equal(2);
                             done();
                         });
+                        expect(res.body.nickname).to.equal('qq');
                     });
             });
             it('should fail if obj has no required paths', (done) => {
