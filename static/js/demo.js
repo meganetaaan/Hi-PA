@@ -8,7 +8,7 @@ ctrack.init(pModel);
 stats = new Stats();
 stats.domElement.style.position = 'absolute';
 stats.domElement.style.top = '0px';
-document.getElementById('container').appendChild( stats.domElement );
+document.getElementById('container-face').appendChild( stats.domElement );
 
 function enablestart() {
 	var startbutton = document.getElementById('startbutton');
@@ -101,14 +101,16 @@ function positionLoop() {
     return;
   requestAnimationFrame(positionLoop);
   var positions = ctrack.getCurrentPosition();
-  var positionString = "";
+  var positionString;
   if (positions) {
-    console.log("length of positions: ", positions.length);
-    for (var p = 0; p < 20; p++) {
+    for (var p = 44; p < 62; p++) {
       positionString += "featurepoint "+ p + " :";
-      positionString += "[" + positions[p][0].toFixed(2) + "," + positions[p][1].toFixed(2) + "]<br/>";
+      positionString += "[" + positions[p][0].toFixed(2) + "," + positions[p][1].toFixed(2) + "]";
+      console.log(positionString);
     }
-    document.getElementById("positions").innerHTML = positionString;
+    var gap = positions[57][1]-positions[60][1];
+    var speakInfoString = (gap>4)? "Mouth Open" : "Mouth Close";
+    document.getElementById("mouth-info").innerHTML = "Gap " + gap.toFixed(2) + ": " + speakInfoString;
   }
 
 }

@@ -12,6 +12,11 @@ body {
 #main{
   text-align: center;
 }
+#head{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
 #info {
   font-size: 20px;
 }
@@ -24,7 +29,7 @@ body {
   border: 1px solid #ddd;
   padding: 15px;
   text-align: left;
-  min-height: 150px;
+  min-height: 200px;
 }
 .interim {
   color: gray;
@@ -64,17 +69,15 @@ body {
 	filter : fliph; /*IE*/
 }
 
-#container-face {
+#content {
 	position : relative;
 	width : 370px;
-	/*margin : 0px auto;*/
 }
 
-#content {
-	margin-top : 70px;
-	margin-left : 100px;
-	margin-right : 100px;
-	max-width: 950px;
+#container-face, #content {
+	margin-left : auto;
+	margin-right : auto;
+  text-align: center;
 }
 
 #sketch {
