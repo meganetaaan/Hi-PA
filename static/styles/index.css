@@ -109,6 +109,7 @@ h2 {
 	display : block;
 }
 
-#footer img{
+#footer img {
   height: 100px;
+  margin: 10px;
 }

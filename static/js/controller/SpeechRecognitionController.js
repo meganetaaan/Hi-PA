@@ -67,7 +67,7 @@ var speechRecognitionController = {
       };
 
       navigator.getUserMedia(videoSelector, function( stream ) {
-        if (this.__vid.mozCaptureStream) {
+        if (vid.mozCaptureStream) {
           vid.mozSrcObject = stream;
         } else {
           vid.src = (window.URL && window.URL.createObjectURL(stream)) || stream;

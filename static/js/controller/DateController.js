@@ -9,7 +9,6 @@ var dateController = {
     this._update();
   },
   _update: function(){
-    console.log('update date');
     var current = this.date.getCurrent(new Date());
     this.$find('#current_date').html(current);
   }
