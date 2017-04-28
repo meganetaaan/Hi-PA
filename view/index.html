@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <!-- Import a hifive stylesheet -->
+    <link type="text/css" rel="stylesheet" href="public/stylesheets/h5.css">
+
+    <!-- Import a dependent file -->
+    <script src="public/javascripts/lib/jquery-3.2.0.min.js"></script>
+    <script src="public/javascripts/lib/socket.io/socket.io.js"></script>
+
+    <!-- Import a hifive framework -->
+    <script src="public/javascripts/lib/h5/ejs-h5mod.js"></script>
+    <script src="public/javascripts/lib/h5/h5.dev.js"></script>
+
+    <script src="public/javascripts/config.js"></script>
+
+    <script src="public/javascripts/model/QuestionDataModel.js"></script>
+    <script src="public/javascripts/logic/QuestionListLogic.js"></script>
+    <script src="public/javascripts/logic/SocketLogic.js"></script>
+    <script src="public/javascripts/controller/QuestionListController.js"></script>
+    <script>
+      $(function() {
+        h5.core.controller('#container', hipa.controller.QuestionListController);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="question_list_container">
+        <div id="question_list">
+        </div>
+        <div id="question_form_container">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
