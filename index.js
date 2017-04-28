@@ -9,9 +9,11 @@ var question = require('./api/question');
 
 app.use(bodyParser.json());
 app.use(bodyParser.text());
-app.use(bodyParser.urlencoded({extended:true});
+app.use(bodyParser.urlencoded({extended:true}));
 app.use('/api/question', question);
 app.use('/public', express.static('public'));
 app.use('/', express.static('view'));
 
-var server = app.listen(8000, function (){});
+var server = app.listen(8000, function (){
+    console.log("open at port 8000");
+});
