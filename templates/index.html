@@ -71,21 +71,16 @@
             <span class="final" id="final_span"></span> <span class="interim" id="interim_span"></span>
           </div>
           <div id="buttons">
-            <button id="start_button"><p>START</p></button>
-            <button id="end_button"><p>END</p></button>
-            <button id="debug_button"><p>DEBUG</p></button>
+            <button id="start_button" disabled="true">wait, loading video</button>
+            <button id="stop_button" disabled="true">wait, loading video</button>
           </div>
         </div>
-
         <!-- start face recog section -->
         <div id="container-face" class="col-md-6">
 		  	  <div id="content">
 				    <video id="videoel" width="400" height="300" preload="auto" loop></video>
 				    <canvas id="overlay" width="400" height="300"></canvas>
 			    </div>
-   			  <br/>
-	  		  <input class="btn" type="button" value="wait, loading video" disabled="true" id="startbutton"></input>
-          <input class="btn" type="button" value="wait, loading video" disabled="ture" id="stopbutton"></input>
           <h3 id="mouth-info"></h3>
         </div>
       </div>
@@ -93,31 +88,25 @@
 
       <div id="footer">
         <div id="text">
-		  	  <p>This is an example of face tracking using the javascript library <a href="https://github.com/auduno/clmtrackr"><em>clmtrackr</em></a>. The fitting method is generally called "Non-rigid/deformable face tracking/alignment using constrained local models".</p>
+          <p>This is a script writer using speech recognition api <em>Google Cloud Speech API</em> and face tracking library <em>clmtrackr</em>.
 			    <p>Note that this example works best in Google Chrome, with a computer that supports WebGL and floating point textures. It should however work in any modern browser.</p>
-				   <div id="gum" class="gum">
-				    <p>To try it out:
-					    <ol>
-						    <li>allow the page to use your webcamera</li>
-						    <li>make sure that your face is clearly visible in the video, and click start</li>
-						    <li>see the model fitted to your face</li>
-  					  <ol>
-	  			  </p>
+				    <div id="gum" class="gum">
+				      <p>To try it out: (1) allow the page to use your webcamera (2) make sure that your face is clearly visible in the video, and click start (3) see the model fitted to your face</p>
 		  	  </div>
 			    <div id="nogum" class="nogum">
-				 	  <p>
-				  	  There was some problem trying to capture your webcamera, please check that your browser supports WebRTC. Using a fallback video instead. To try it out:
-					    <ol>
-						    <li>click start</li>
-						    <li>see the model fitted to the face</li>
-  					  </ol>
+				 	  <p>There was some problem trying to capture your webcamera, please check that your browser supports WebRTC. Using a fallback video instead.
 	  			  </p>
 		  	  </div>
+          <div>
+            <img src="assets/nssol.gif" alt="NSSOL" />
+            <img src="assets/hifive.png" alt="HIFIVE" />
+            <img src="assets/snu.png" alt="SNU" />
+          </div>
 			  </div>
 
         <div id="date">
           <p>hello! current time is <span id="current_date"></span>. Wanna update?</p>
-          <button id="date_button"><p>Wanna update!</p></button>
+          <button id="date_button"><p>Yes!</p></button>
         </div>
 
       </div>
@@ -142,7 +131,7 @@
     <script src="../static/js/clmtrackr/svmfilter_fft.js"></script>
     <script src="../static/js/clmtrackr/mossefilter.js"></script>
     <script src="../static/js/clmtrackr/Stats.js"></script>
-    
+
     <script src="../static/js/logic/DateLogic.js"></script>
     <script src="../static/js/controller/DateController.js"></script>
     <script src="../static/js/logic/SpeechRecognitionLogic.js"></script>

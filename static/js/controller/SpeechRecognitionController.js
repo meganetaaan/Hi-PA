@@ -18,7 +18,7 @@ var speechRecognitionController = {
     this.recognition.setOnError((event)=>{this._recognition_error(event);});
     this.recognition.setOnResult((event)=>{this._recognition_result(event);});
     this.recognition.setOnEnd(()=>{this._recognition_stop();});
-    
+
     // face recognition api
     this.__vid = document.getElementById('videoel');
     this.__overlay = document.getElementById('overlay');
@@ -31,15 +31,16 @@ var speechRecognitionController = {
     this.__stats.domElement.style.position = 'absolute';
     this.__stats.domElement.style.top = '0px';
     document.getElementById('container-face').appendChild( this.__stats.domElement );
-    
-    __vid.addEventListener('canplay', _enablestart, false);
-   
+
+    this.__vid.addEventListener('canplay', this._enablestart, false);
+
     var insertAltVideo = function(video) {
+      path_to_media = "../static/js/clmtrackr/media/"; //"../clmtrackr/media/";
       if (supports_video()) {
         if (supports_ogg_theora_video()) {
-          video.src = "../static/media/cap12_edit.ogv";
+          video.src = path_to_media + "cap12_edit.ogv";
         } else if (supports_h264_baseline_video()) {
-          video.src = "../static/media/cap12_edit.mp4";
+          video.src = path_to_media + "cap12_edit.mp4";
         } else {
           return false;
         }
@@ -51,6 +52,7 @@ var speechRecognitionController = {
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
+    var vid = this.__vid;
 
     // check for camerasupport
     if (navigator.getUserMedia) {
@@ -66,13 +68,13 @@ var speechRecognitionController = {
 
       navigator.getUserMedia(videoSelector, function( stream ) {
         if (this.__vid.mozCaptureStream) {
-          this.__vid.mozSrcObject = stream;
+          vid.mozSrcObject = stream;
         } else {
-          this.__vid.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
+          vid.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
         }
-        this.__vid.play();
+        vid.play();
       }, function() {
-        insertAltVideo(this.__vid);
+        insertAltVideo(vid);
         document.getElementById('gum').className = "hide";
         document.getElementById('nogum').className = "nohide";
         alert("There was some problem trying to fetch video from your webcam, using a fallback video instead.");
@@ -84,18 +86,12 @@ var speechRecognitionController = {
       document.getElementById('nogum').className = "nohide";
       alert("Your browser does not seem to support getUserMedia, using a fallback video instead.");
     }
-    document.addEventListener('clmtrackrIteration', function(event) {
-      __stats.update();
-    }, false);
-    
+    document.addEventListener('clmtrackrIteration', this.__stats.update, false);
   },
 
   //_recognition event handlers
   _recognition_start: function() {
-    console.log('onstart function');
     this.showInfo('info_speak_now');
-    $('#start_button').hide();
-    $('#end_button').show();
   },
   _recognition_error: function(event) {
     if(event.error == 'no-speech'){
@@ -110,7 +106,6 @@ var speechRecognitionController = {
     }
   },
   _recognition_stop: function(){
-    console.log('_recognition_stop called');
     this.recognition.setRecognizing(false);
     if(this.recognition.getIgnoreOnend()){
       return;
@@ -119,8 +114,6 @@ var speechRecognitionController = {
       return;
     }else{
       this.showInfo('');
-      $('#end_button').hide();
-      $('#start_button').show();
     }
   },
   _recognition_result: function(event){
@@ -141,16 +134,13 @@ var speechRecognitionController = {
     $('#interim_span').html('');
     this.showInfo('info_allow');
   },
-  '#end_button click': function(){
+  '#stop_button click': function(){
     if (!this.recognition.getRecognizing()){
       console.log("You are not recording. Something is wrong!");
       return;
     }
     this._stopVideo();
     this.recognition.stop();
-  },
-  '#debug_button click': function(){
-    console.log(this.recognition.getRecognizing());
   },
 
   // helper
@@ -165,76 +155,73 @@ var speechRecognitionController = {
     } else {
       info.style.visibility = 'hidden';
     }
-  }
-  
-  
-  _enablestart(): function(s) {
-    var startbutton = document.getElementById('startbutton');
-    startbutton.value = "start";
+  },
+
+  _enablestart: function(s) {
+    var startbutton = document.getElementById('start_button');
+    startbutton.innerHTML = "START";
     startbutton.disabled = false;
     startbutton.onclick = this._startVideo;
-    var stopbutton = document.getElementById('stopbutton');
-    stopbutton.value = "stop";
+    var stopbutton = document.getElementById('stop_button');
+    stopbutton.innerHTML = "STOP";
     stopbutton.onclick = this._stopVideo;
-  }
-  
+  },
 
-  function _startVideo() {
-    document.getElementById('startbutton').disabled = true;
-    document.getElementById('stopbutton').disabled = false;
+  _startVideo: function(s) {
+    $('#start_button').prop('disabled', true);
+    $('#stop_button').prop('disabled', false);
     // start video
     this.__vid.play();
     // start tracking
-    this.__ctrack.start(vid);
+    this.__ctrack.start(this.__vid);
     this.__pause = false;
     // start loop to write positions
-    this.__positionLoop();
+    this._positionLoop();
     // start loop to draw face
-    this.__drawLoop();
-  }
+    this._drawLoop();
+  },
 
-  function _stopVideo(){
-    document.getElementById('startbutton').disabled = false;
-    document.getElementById('stopbutton').disabled = true;
+  _stopVideo: function(){
+    $('#start_button').prop('disabled', false);
+    $('#stop_button').prop('disabled', true);
     this.__vid.pause();
     this.__ctrack.stop();
     this.__pause = true;
-  }
+  },
 
-  function _positionLoop() {
+  _positionLoop: function() {
     if (this.__pause)
       return;
-    requestAnimationFrame(this._positionLoop);
+    requestAnimationFrame(this._positionLoop.bind(this));
     var positions = this.__ctrack.getCurrentPosition();
     var positionString;
     if (positions) {
       for (var p = 44; p < 62; p++) {
         positionString += "featurepoint "+ p + " :";
-        positionString += "[" + positions[p][0].toFixed(2) + "," + positions[p][1].toFixed(2) + "]";
+        positionString += "[" + positions[p][0].toFixed(1) + "," + positions[p][1].toFixed(1) + "] ";
         console.log(positionString);
       }
       var gap = positions[57][1]-positions[60][1];
       var speakInfoString = (gap>4)? "Mouth Open" : "Mouth Close";
       document.getElementById("mouth-info").innerHTML = "Gap " + gap.toFixed(2) + ": " + speakInfoString;
     }
-   }
+  },
 
-  function _drawLoop() {
-    if (pause)
+  _drawLoop: function() {
+    if (this.__pause)
       return;
-    requestAnimFrame(drawLoop);
-    overlayCC.clearRect(0, 0, 400, 300);
+    requestAnimationFrame(this._drawLoop.bind(this));
+    this.__overlayCC.clearRect(0, 0, 400, 300);
     //psrElement.innerHTML = "score :" + ctrack.getScore().toFixed(4);
-    if (ctrack.getCurrentPosition()) {
-      ctrack.draw(overlay);
+    if (this.__ctrack.getCurrentPosition()) {
+      this.__ctrack.draw(this.__overlay);
     }
   }
-  
+
   // finish speechRecognizionController
 }
 
 
-//////////////////////////////////////////////////////
 
 
 
