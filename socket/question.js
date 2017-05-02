@@ -16,7 +16,7 @@ function _broadcastDelete(req, res, next) {
 
 function _broadcastUpdate(req, res, next) {
     let q = res.locals.q;
-    req.io.sockets.emit('UPDATE_QUESTION', {id:q.id, like_cnt:q.like});
+    req.io.emit('UPDATE_QUESTION', {id:q.id, like_cnt:q.like});
     next();
 }
 

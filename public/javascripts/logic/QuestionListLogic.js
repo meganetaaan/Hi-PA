@@ -24,8 +24,8 @@ var questionListLogic = {
       data: { question, nickname, slideNumber, password },
     }).then((json) => {
       // FIXME: consider the case where question being created twice.
-      const questionModelItem = this.model.create(json);
-      this.questionList.push(questionModelItem);
+      // const questionModelItem = this.model.create(json);
+      // this.questionList.push(questionModelItem);
     });
   },
 
@@ -35,13 +35,13 @@ var questionListLogic = {
       url: config.url + '/question/' + question_id,
       data: { password },
     }).then(() => {
-      for (let i = 0, len = this.questionList.length; i < len; i++) {
-        if (this.questionList.get(i).get('id') === question_id) {
-          this.model.remove(question_id);
-          this.questionList.splice(i, 1);
-          break;
-        }
-      }
+      // for (let i = 0, len = this.questionList.length; i < len; i++) {
+      //   if (this.questionList.get(i).get('id') === question_id) {
+      //     this.model.remove(question_id);
+      //     this.questionList.splice(i, 1);
+      //     break;
+      //   }
+      // }
     });
   },
 
@@ -49,16 +49,16 @@ var questionListLogic = {
     const questionModel = this.model.get(question_id);
     const isLiked = questionModel.get('isLiked');
     const origLike = questionModel.get('like');
-    questionModel.set('isLiked', !isLiked);
-    questionModel.set('like', origLike + (isLiked ? -1 : +1));
+    // questionModel.set('isLiked', !isLiked);
+    // questionModel.set('like', origLike + (isLiked ? -1 : +1));
     return h5.ajax({
       type: 'PUT',
       url: config.url + '/question/' + (isLiked ? 'dislike/' : 'like/') + question_id,
     }).then((msg) => {
 
     }).fail( () => { // If failed
-      questionModel.set('isLiked', isLiked);
-      questionModel.set('like', origLike);
+      // questionModel.set('isLiked', isLiked);
+      // questionModel.set('like', origLike);
     });
   },
 
@@ -74,7 +74,9 @@ var questionListLogic = {
   },
 
   addToLocal: function(json) {
-    // FIXME: consider the case where question being created twice.
+    if (this.model.get(json.id) === undefined) {
+      return;
+    }
     const questionModelItem = this.model.create(json);
     this.questionList.push(questionModelItem);
   },

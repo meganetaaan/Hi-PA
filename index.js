@@ -27,10 +27,10 @@ app.use('/api/question', socket.question);
 app.use('/public', express.static('public'));
 app.use('/', express.static('view'));
 
-//var db = require('./db');
-//db.connect('test');
+var db = require('./db');
+db.connect('test');
 var port = 8000;
 server.listen(port, () => {
-    console.log('listening on port {$port}');
+    console.log(`listening on port ${port}`);
 });
 module.exports = app;
