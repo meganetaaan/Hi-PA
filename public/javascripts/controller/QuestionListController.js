@@ -5,6 +5,24 @@ var controller = {
 
     questionListLogic: hipa.logic.QuestionListLogic,
     questionDataModel: hipa.data.QuestionDataModel,
+    socket: io('/socket/question'),
+
+    __construct: function() {
+      socket.on('ADD_QUESTION', (data) => {
+        this.questionListLogic.addToLocal(data);
+      });
+
+      socket.on('DELETE_QUESTION', (question_id) => {
+        this.questionListLogic.deleteFromLocal(question_id);
+      });
+
+      socket.on('UPDATE_QUESTION', (data) => {
+        const question_id = data.id;
+        const like_cnt = data.like_cnt;
+        this.questionListLogic.updateLikesFromLocal(question_id, like_cnt);
+      });
+    },
+
     __init: function(context) {
       //const indicator = this.triggerIndicator();
       //indicator.show();
