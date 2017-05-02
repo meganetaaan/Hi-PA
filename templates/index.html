@@ -68,11 +68,14 @@
           </div>
 
           <div id="results">
-            <span class="final" id="final_span"></span> <span class="interim" id="interim_span"></span>
+            <p class="final" id="final_span"></p> <p class="interim" id="interim_span"></p>
           </div>
           <div id="buttons">
             <button id="start_button" disabled="true">wait, loading video</button>
             <button id="stop_button" disabled="true">wait, loading video</button>
+          </div>
+          <div id="tooltip-results">
+
           </div>
         </div>
         <!-- start face recog section -->
@@ -134,8 +137,9 @@
 
     <script src="../static/js/logic/DateLogic.js"></script>
     <script src="../static/js/controller/DateController.js"></script>
-    <script src="../static/js/logic/SpeechRecognitionLogic.js"></script>
-    <script src="../static/js/controller/SpeechRecognitionController.js"></script>
+    <script src="../static/js/logic/ScriptLogic.js"></script>
+    <script src="../static/js/controller/ScriptController.js"></script>
+    <script src="../static/js/controller/TooltipController.js"></script>
 
     <script src="../static/js/controller/MainController.js"></script>
 

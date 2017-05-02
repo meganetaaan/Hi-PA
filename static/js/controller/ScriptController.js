@@ -1,6 +1,6 @@
 
-var speechRecognitionController = {
-  __name: 'SpeechRecognitionController',
+var scriptController = {
+  __name: 'scriptController',
   recognition: speechRecognition,
   // for mouth recognition
   __vid: null,
@@ -10,8 +10,19 @@ var speechRecognitionController = {
   __stats: null,
   __pause: true,
 
+  __stopwords: null,
+
   //initializer
   __ready: function(context){
+    var txtFile = "../static/js/stopWords.json";
+
+    jQuery.get(txtFile, undefined, (data)=>{
+      var stopwords = JSON.parse(data);
+      this.__stopwords = stopwords;
+    }, "html").done(function() {
+    }).fail(function(jqXHR, textStatus) {
+    }).always(function() {
+    });
     // speech recognition api
     this.recognition.initialize();
     this.recognition.setOnStart(()=>{this._recognition_start();});
@@ -118,7 +129,18 @@ var speechRecognitionController = {
   },
   _recognition_result: function(event){
     var result = this.recognition.getResult(event);
-    $('#final_span').html(result.final_span);
+    var final_span = result.final_span;
+    var spans = final_span.split(" ");
+    final_span = "";
+    for (var i=0; i<spans.length; i++){
+      var span = spans[i];
+      if (span in this.__stopwords) {
+        final_span += span + " ";
+      } else{
+        final_span += "<span>" + span + "</span> ";
+      }
+    }
+    $('#final_span').html(final_span);
     $('#interim_span').html(result.interim_span);
   },
 
