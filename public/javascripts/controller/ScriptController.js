@@ -2,6 +2,7 @@
 var scriptController = {
   __name: 'scriptController',
   recognition: speechRecognition,
+  socket: io('/socket/script'),
   // for mouth recognition
   __vid: null,
   __overlay: null,
@@ -9,13 +10,29 @@ var scriptController = {
   __ctrack: null,
   __stats: null,
   __pause: true,
-
+  __is_presenter: true,
+  __start_slide_num: [0,0,0],
+  __end_slide_num: [0,0,0],
   __stopwords: null,
 
   //initializer
+  __construct: function() {
+    if(!__is_presenter) {
+      this.socket.on('ADD_SCRIPT', (data) => {
+        this._handle_scripts(data);
+      });
+    }
+  },
   __ready: function(context){
-    var txtFile = "../static/js/stopWords.json";
+    if (__is_presenter) {
+      this.__ready_presenter();
+    } else {
+      this.__ready_audience();
+    }
+  },
 
+  __ready_audience: function(){
+    var txtFile = "../static/js/stopWords.json";
     jQuery.get(txtFile, undefined, (data)=>{
       var stopwords = JSON.parse(data);
       this.__stopwords = stopwords;
@@ -23,6 +40,11 @@ var scriptController = {
     }).fail(function(jqXHR, textStatus) {
     }).always(function() {
     });
+
+    this._get_past_script();
+  },
+
+  __ready_presenter: function(){
     // speech recognition api
     this.recognition.initialize();
     this.recognition.setOnStart(()=>{this._recognition_start();});
@@ -128,20 +150,67 @@ var scriptController = {
     }
   },
   _recognition_result: function(event){
-    var result = this.recognition.getResult(event);
-    var final_span = result.final_span;
-    var spans = final_span.split(" ");
-    final_span = "";
-    for (var i=0; i<spans.length; i++){
-      var span = spans[i];
-      if (span in this.__stopwords) {
-        final_span += span + " ";
-      } else{
-        final_span += "<span>" + span + "</span> ";
+    var script = this.recognition.getResult(event);
+    if (script.final_span === "" && script.interim_span !== "") {
+      this.__start_slide_num = this._get_current_slide_num();
+    } else if (script.final_span !== "") {
+      this.__end_slide_num = this._get_current_slide_num();
+    }
+    script = $.extend(script, {'start_slide':this.__start_slide, 'end_slide':this.__end_slide});
+    _display_script(script);
+    _broadcast_script(script);;
+  },
+
+  _get_past_script: function(){
+    return h5.ajax({
+      type: 'GET',
+      dataType: 'JSON',
+      url: config.url + '/script'
+    }).then(data) => {
+      this._handle_scripts(data);
+    });
+  },
+
+  _broadcast_script: function(script){
+    this.socket.broadcase.emit('ADD_SCRIPT', {
+      'startSlide': script.start_slide,
+      'endSlide': script.end_slide,
+      'text': script.final_span
+    });
+  },
+
+  _handle_script: function(scripts){
+    for (var i=0; i<scripts.length; i++) {
+      var script = scripts[i];
+      this._display_script(
+        'start_slide': script.startSlide,
+        'end_slide': script.endSlide,
+        'final_span': script.text,
+        'interim_span': ''
+      );
+    }
+  },
+
+  _display_script: function(script){
+    var final_span = script.final_span;
+    var slide = script.start_slide[0];
+    if (script.start_slide[0] !== script.end_slide[0]) {
+      slide += "~" + script.end_slide;
+    }
+    if (!this.__is_presenter) {
+      var spans = final_span.split(" ");
+      sinal_span = "";
+      for (var i=0; i<spans.length; i++) {
+        var span = spans[i];
+        if (span in this.__stopwords) {
+          final_span += span + " ";
+        } else {
+          final_span += "<span>" + span + "</span>";
+        }
       }
     }
-    $('#final_span').html(final_span);
-    $('#interim_span').html(result.interim_span);
+    document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + script.final_span;
+    document.getElementById('interim_span').innerHTML += "<br />" + script.interim_span;
   },
 
   // button click handler
@@ -163,6 +232,9 @@ var scriptController = {
     }
     this._stopVideo();
     this.recognition.stop();
+  },
+  _get_current_slide_num: function(){
+    return [0,0,0]
   },
 
   // helper
@@ -224,6 +296,7 @@ var scriptController = {
       }
       var gap = positions[57][1]-positions[60][1];
       var speakInfoString = (gap>4)? "Mouth Open" : "Mouth Close";
+      this.recognition.setMouthOpen(gap>4);
       document.getElementById("mouth-info").innerHTML = "Gap " + gap.toFixed(2) + ": " + speakInfoString;
     }
   },

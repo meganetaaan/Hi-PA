@@ -1,9 +1,9 @@
 var speechRecognition = {
     __name: 'SpeechRecognition',
-    __final_transcript: '',
     __recognizing: false,
     __ignore_onend: false,
     __recognition: new webkitSpeechRecognition(),
+    __mouth_open: false,
 
     // initializer
     initialize: function(){
@@ -46,39 +46,44 @@ var speechRecognition = {
     getIgnoreOnend: function(){
       return this.__ignore_onend;
     },
-    getFinalTranscript: function(){
-      return this.__final_transcript;
+    setMouthOpen: function(mouth_open){
+      this.__mouth_open = mouth_open;
     },
     // get transcript from event
     getResult: function(event){
-      var final_transcript = this.__final_transcript;
+      var final_transcript = '';
       var interim_transcript = '';
       var add_final = false;
+
       if (typeof(event.results) == 'undefined') {
         final_transcript += one_line;
-        return state;
-      }
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-        var result = event.results[i];
-        if (result.isFinal) {
-          if (add_final){
-            final_transcript += result[0].transcript;
-          }else{
-            add_final = true;
-            final_transcript += this._capitalize(result[0].transcript);
+      } else if (this.__mouth_open) {
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          var result = event.results[i];
+          if (result.isFinal) {
+            if (add_final){
+              final_transcript += result[0].transcript;
+            }else{
+              add_final = true;
+              final_transcript += this._capitalize(result[0].transcript);
+            }
+          } else {
+            interim_transcript += result[0].transcript;
           }
-        } else {
-          interim_transcript += result[0].transcript;
         }
+        if (add_final)
+          final_transcript = this._capitalize(final_transcript) + '.';
+
+        final_transcript = this._linebreak(final_transcript);
+        interim_transcript = this._linebreak(interim_transcript);
+
       }
-      if (add_final)
-        final_transcript = this._capitalize(final_transcript) + '.';
-      this.__final_transcript = final_transcript;
       return {
-        'final_span': this._linebreak(final_transcript),
-        'interim_span': this._linebreak(interim_transcript)
+        'final_span': final_transcript,
+        'interim_span': interim_transcript
       };
     },
+
     // helper functions
     _linebreak: function(s){
       var two_line = /\n\n/g;
