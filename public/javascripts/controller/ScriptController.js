@@ -172,7 +172,7 @@ var scriptController = {
   },
 
   _broadcast_script: function(script){
-    this.socket.broadcase.emit('ADD_SCRIPT', {
+    this.socket.emit('ADD_SCRIPT', {
       'startSlide': script.start_slide,
       'endSlide': script.end_slide,
       'text': script.final_span
