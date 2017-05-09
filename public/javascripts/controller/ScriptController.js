@@ -163,7 +163,7 @@ var scriptController = {
       dataType: 'JSON',
       url: config.url + '/script'
     }).then((data) => {
-      this._handle_scripts(data);
+      this._handle_script(data);
     });
   },
 
