@@ -13,6 +13,8 @@ var scriptController = {
   __stats: null,
   __pause: true,
   __is_presenter: true,
+  __pre_start_slide_num: [0,0,0],
+  __pre_end_slide_num: [0,0,0],
   __start_slide_num: [0,0,0],
   __end_slide_num: [0,0,0],
   __stopwords: null,
@@ -25,19 +27,17 @@ var scriptController = {
       });
     }
   },
-  __ready: function(context){
+  __init: function(context){
+    this.view.update('#script-subcontainer', 'script', null);
     if (this.__is_presenter) {
       this.__ready_presenter();
     } else {
       this.__ready_audience();
     }
   },
-  __init: function(context){
-    this.view.update('#script-container', 'script', null);
-  },
 
   __ready_audience: function(){
-    var txtFile = "../static/js/stopWords.json";
+    var txtFile = "public/javascripts/stopWords.json";
     jQuery.get(txtFile, undefined, (data)=>{
       var stopwords = JSON.parse(data);
       this.__stopwords = stopwords;
@@ -73,7 +73,7 @@ var scriptController = {
     this.__vid.addEventListener('canplay', this._enablestart, false);
 
     var insertAltVideo = function(video) {
-      path_to_media = "../static/js/clmtrackr/media/"; //"../clmtrackr/media/";
+      path_to_media = "public/lib/clmtrackr/media/";
       if (supports_video()) {
         if (supports_ogg_theora_video()) {
           video.src = path_to_media + "cap12_edit.ogv";
@@ -147,11 +147,8 @@ var scriptController = {
     this.recognition.setRecognizing(false);
     if(this.recognition.getIgnoreOnend()){
       return;
-    }else if(!this.recognition.getFinalTranscript()){
-      this.showInfo('info_start');
-      return;
     }else{
-      this.showInfo('');
+      this.showInfo('info_start');
     }
   },
   _recognition_result: function(event){
@@ -161,9 +158,9 @@ var scriptController = {
     } else if (script.final_span !== "") {
       this.__end_slide_num = this._get_current_slide_num();
     }
-    script = $.extend(script, {'start_slide':this.__start_slide, 'end_slide':this.__end_slide});
-    _display_script(script);
-    _broadcast_script(script);;
+    script = $.extend(script, {'start_slide':this.__start_slide_num, 'end_slide':this.__end_slide_num});
+    this._display_script(script);
+    this._broadcast_script(script);;
   },
 
   _get_past_script: function(){
@@ -197,6 +194,7 @@ var scriptController = {
   },
 
   _display_script: function(script){
+    console.log(script);
     var final_span = script.final_span;
     var slide = script.start_slide[0];
     if (script.start_slide[0] !== script.end_slide[0]) {
@@ -214,8 +212,16 @@ var scriptController = {
         }
       }
     }
-    document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + script.final_span;
-    document.getElementById('interim_span').innerHTML += "<br />" + script.interim_span;
+
+    if (this.__pre_start_slide_num===this.__start_slide_num && this.__pre_end_slide_num===this.__end_slide_num) {
+      document.getElementById('final_span').innerHTML += script.final_span;
+    } else {
+      console.log("slide num changes?");
+      document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + script.final_span;
+      this.__pre_start_slide_num = this.__start_slide_num;
+      this.__pre_end_slide_num = this.__end_slide_num;
+    }
+    document.getElementById('interim_span').innerHTML = "<em>" + script.interim_span + "</em>";
   },
 
   // button click handler
@@ -239,7 +245,7 @@ var scriptController = {
     this.recognition.stop();
   },
   _get_current_slide_num: function(){
-    return [0,0,0]
+    return [0,0,0];
   },
 
   // helper
