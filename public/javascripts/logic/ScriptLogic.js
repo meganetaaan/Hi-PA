@@ -9,28 +9,20 @@ var speechRecognition = {
     initialize: function(){
       this.__recognition.continuous = true;
       this.__recognition.interimResults = true;
+      this.__recognition.lang = 'en-US';
     },
     // init setting when restart recognizing
     start: function(){
-      this.__final_transcript = '';
-      this.__recognition.lang = 'en-US';
       this.__ignore_onend = false;
-      this.__recognizing = true;
       this.__recognition.start();
     },
     stop: function(){
       this.__recognition.stop();
     },
-    setOnStart: function(start_function){
-      this.__recognition.onstart = function(){start_function()};
-    },
-    setOnError: function(error_function){
+    setEventHandlers: function(error_function, result_function){
+      this.__recognition.onstart = function(){};
       this.__recognition.onerror = function(e){error_function(e)};
-    },
-    setOnEnd: function(end_function){
-      this.__recognition.onend = function(){end_function()};
-    },
-    setOnResult: function(result_function){
+      this.__recognition.onend = function(){this.start();};
       this.__recognition.onresult = function(e){result_function(e)};
     },
     // set&get methods
@@ -54,7 +46,6 @@ var speechRecognition = {
       var final_transcript = '';
       var interim_transcript = '';
       var add_final = false;
-
       if (typeof(event.results) == 'undefined') {
         final_transcript += one_line;
       } else if (this.__mouth_open) {

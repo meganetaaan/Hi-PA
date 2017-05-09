@@ -52,10 +52,10 @@ var scriptController = {
   __ready_presenter: function(){
     // speech recognition api
     this.recognition.initialize();
-    this.recognition.setOnStart(()=>{this._recognition_start();});
-    this.recognition.setOnError((event)=>{this._recognition_error(event);});
-    this.recognition.setOnResult((event)=>{this._recognition_result(event);});
-    this.recognition.setOnEnd(()=>{this._recognition_stop();});
+    this.recognition.setEventHandlers(
+        (event)=>{this._recognition_error(event);},
+        (event)=>{this._recognition_result(event);}
+        );
 
     // face recognition api
     this.__vid = document.getElementById('videoel');
@@ -128,9 +128,6 @@ var scriptController = {
   },
 
   //_recognition event handlers
-  _recognition_start: function() {
-    this.showInfo('info_speak_now');
-  },
   _recognition_error: function(event) {
     if(event.error == 'no-speech'){
       this.showInfo('info_no_speech');
@@ -141,14 +138,6 @@ var scriptController = {
     }else if(event.error == 'not-allowed'){
       this.showInfo('info_denied');
       this.recognition.setIgnoreOnend(true);
-    }
-  },
-  _recognition_stop: function(){
-    this.recognition.setRecognizing(false);
-    if(this.recognition.getIgnoreOnend()){
-      return;
-    }else{
-      this.showInfo('info_start');
     }
   },
   _recognition_result: function(event){
@@ -234,9 +223,10 @@ var scriptController = {
     }
     this._startVideo();
     this.recognition.start();
+    this.recognition.setRecognizing(true);
     $('#final_span').html('');
     $('#interim_span').html('');
-    this.showInfo('info_allow');
+    this.showInfo('info_speak_now');
   },
   '#stop_button click': function(){
     if (!this.recognition.getRecognizing()){
@@ -245,6 +235,8 @@ var scriptController = {
     }
     this._stopVideo();
     this.recognition.stop();
+    this.recognition.setRecognizing(false);
+    this.showInfo('info_start');
   },
   _get_current_slide_num: function(){
     return [0,0,0];
