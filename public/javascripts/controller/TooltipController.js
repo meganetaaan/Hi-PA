@@ -1,11 +1,11 @@
 
 var tooltipController = {
   __name: 'hipa.controller.TooltipController',
-
   __ready: function(context){
   },
 
   '#results span click': function(context, $button){
+    console.log($button.html());
     this._search($button.html());
   },
 

@@ -1,10 +1,11 @@
 
 var scriptController = {
   __name: 'hipa.controller.ScriptController',
-  __templates: ['public/views/script.ejs'],
+  __templates: ['public/views/script-control.ejs', 'public/views/script-result.ejs', 'public/views/script-face.ejs'],
 
   recognition: speechRecognition,
-  socket: io('/socket/presente'),
+  socket: null,
+
   // for mouth recognition
   __vid: null,
   __overlay: null,
@@ -21,32 +22,35 @@ var scriptController = {
 
   //initializer
   __construct: function() {
-    if(!this.__is_presenter) {
+    if(this.__is_presenter) {
+      this.socket = io('/socket/presenter');
+    } else {
+      this.socket = io('/socket/audience');
       this.socket.on('ADD_SCRIPT', (data) => {
-        this._handle_scripts(data);
+        console.log("inside socket.on")
+        this._handle_script(data);
       });
     }
   },
   __init: function(context){
-    this.view.update('#script-subcontainer', 'script', null);
-    if (this.__is_presenter) {
-      this.__ready_presenter();
-    } else {
-      this.__ready_audience();
-    }
-  },
+    this.view.update('#script-result', 'script-result', null);
 
-  __ready_audience: function(){
+    if (this.__is_presenter) {
+      this.view.update('#script-control', 'script-control', null);
+      this.view.update('#script-face', 'script-face', null);
+      this.__ready_presenter();
+    }
+
     var txtFile = "public/javascripts/stopWords.json";
     jQuery.get(txtFile, undefined, (data)=>{
       var stopwords = JSON.parse(data);
       this.__stopwords = stopwords;
+      if (!this.__is_presenter) this._get_past_script();
     }, "html").done(function() {
     }).fail(function(jqXHR, textStatus) {
     }).always(function() {
     });
 
-    this._get_past_script();
   },
 
   __ready_presenter: function(){
@@ -113,8 +117,8 @@ var scriptController = {
         vid.play();
       }, function() {
         insertAltVideo(vid);
-        document.getElementById('gum').className = "hide";
-        document.getElementById('nogum').className = "nohide";
+        //document.getElementById('gum').className = "hide";
+        //document.getElementById('nogum').className = "nohide";
         alert("There was some problem trying to fetch video from your webcam, using a fallback video instead.");
       });
 
@@ -174,6 +178,7 @@ var scriptController = {
   },
 
   _handle_script: function(scripts){
+    console.log('inside _handle_script');
     for (var i=0; i<scripts.length; i++) {
       var script = scripts[i];
       this._display_script({
@@ -191,16 +196,14 @@ var scriptController = {
     if (script.start_slide[0] !== script.end_slide[0]) {
       slide += "~" + script.end_slide;
     }
-    if (!this.__is_presenter) {
-      var spans = final_span.split(" ");
-      sinal_span = "";
-      for (var i=0; i<spans.length; i++) {
-        var span = spans[i];
-        if (span in this.__stopwords) {
-          final_span += span + " ";
-        } else {
-          final_span += "<span>" + span + "</span>";
-        }
+    var spans = final_span.split(" ");
+    sinal_span = "";
+    for (var i=0; i<spans.length; i++) {
+      var span = spans[i];
+      if (span in this.__stopwords) {
+        final_span += span + " ";
+      } else {
+        final_span += "<span>" + span + "</span>";
       }
     }
     if (final_span !== '') {
