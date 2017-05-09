@@ -10,6 +10,8 @@ var api = {}; api.question = require('./api/question');
 var socket = {}; socket.question = require('./socket/question');
 var script = require('./socket/script')(io);
 
+app.set('view engine', 'ejs');
+app.set('views', 'view');
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -31,7 +33,18 @@ app.use('/public/stylesheets',
     })
 );
 app.use('/public', express.static('public'));
-app.use('/', express.static('view'));
+
+app.get('/presenter', (req, res) => {
+    res.render('index', {
+        isPresenter: true,
+    });
+});
+
+app.get('/audience', (req, res) => {
+    res.render('index', {
+        isPresenter: false,
+    });
+});
 
 var db = require('./db');
 db.connect('test');

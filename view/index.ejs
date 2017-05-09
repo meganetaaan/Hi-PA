@@ -46,9 +46,11 @@
     <script src="public/lib/clmtrackr/mossefilter.js"></script>
     <script src="public/lib/clmtrackr/Stats.js"></script>
 
-
-    <script src="public/javascripts/config.js"></script>
-
+    <% if (isPresenter) { %>
+      <script src="public/javascripts/config-presenter.js"></script>
+    <% } else { %>
+      <script src="public/javascripts/config-audience.js"></script>
+    <% } %>
     <!-- hifive model -->
     <script src="public/javascripts/model/QuestionDataModel.js"></script>
     <!-- hifive logic -->

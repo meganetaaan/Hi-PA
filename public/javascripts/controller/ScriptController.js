@@ -12,7 +12,7 @@ var scriptController = {
   __ctrack: null,
   __stats: null,
   __pause: true,
-  __is_presenter: true,
+  __is_presenter: config.isPresenter,
   __pre_start_slide_num: [-1,0,0],
   __pre_end_slide_num: [-1,0,0],
   __start_slide_num: [-1,0,0],
