@@ -20,6 +20,13 @@
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="public/lib/reveal/lib/css/zenburn.css">
+    <!-- Import css framework -->
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="public/lib/reveal/lib/css/zenburn.css">
 
     <script src="public/javascripts/config.js"></script>
 
@@ -34,21 +41,25 @@
         h5.core.controller('body', hipa.controller.PageController);
       });
     </script>
+
+    <link type="text/css" rel="stylesheet" href="public/stylesheets/main.css">
   </head>
   <body>
-    <div id="container">
-      <div id="question_list_container">
-        <div id="question_list">
-        </div>
-        <div id="question_form_container">
-        </div>
+    <div id="question-container">
+      <div id="question-list-container">
+      </div>
+      <div id="question-form-container">
       </div>
     </div>
-    <div style="width:100%;height:90%">
+    <div id="slide-container">
         <div class="reveal">
             <div class="slides">
             </div>
         </div>
+    </div>
+    <div id="script-container">
+    </div>
+    <div id="feedback-container">
     </div>
   </body>
 </html>

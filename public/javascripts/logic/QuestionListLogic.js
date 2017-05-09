@@ -49,7 +49,7 @@ var questionListLogic = {
     const questionModel = this.model.get(question_id);
     const isLiked = questionModel.get('isLiked');
     const origLike = questionModel.get('like');
-    // questionModel.set('isLiked', !isLiked);
+    questionModel.set('isLiked', !isLiked);
     // questionModel.set('like', origLike + (isLiked ? -1 : +1));
     return h5.ajax({
       type: 'PUT',
@@ -57,7 +57,7 @@ var questionListLogic = {
     }).then((msg) => {
 
     }).fail( () => { // If failed
-      // questionModel.set('isLiked', isLiked);
+      questionModel.set('isLiked', isLiked);
       // questionModel.set('like', origLike);
     });
   },

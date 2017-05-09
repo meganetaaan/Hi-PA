@@ -1,14 +1,16 @@
 var controller = {
   __name: 'hipa.controller.PageController',
   questionListController: hipa.controller.QuestionListController,
-  presentationController: hipa.controller.PresentationController,
+  //presentationController: hipa.controller.PresentationController,
   __meta: {
       questionListController: {
-          rootElement: '#question_list_container',
+          rootElement: '#question-container',
       },
+      /*
       presentationController: {
           rootElement: '.reveal',
       },
+      */
   },
 };
 h5.core.expose(controller);

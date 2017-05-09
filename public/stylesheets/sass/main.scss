@@ -1,0 +1,178 @@
+/*
+ * Layout Css
+ */
+
+html {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+#question-container {
+  width: 30%;
+  height: 100%; //FIXME: height percentage
+  float: right;
+}
+
+#slide-container {
+  width: 70%;
+  height: 60%;
+  float: left;
+}
+
+#script-container {
+  width: 70%;
+  height: 40%;
+  float: left;
+}
+
+#feedback-container {
+  width: 30%;
+  height: 0%; //FIXME: height percentage
+  float: right;
+}
+
+/*
+ * Question Css
+ */
+
+#question-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#question-list-container {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  flex-grow: 1;
+  overflow: scroll;
+}
+
+#question-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.question-div {
+  width: 100%;
+  padding: 5px;
+  position: relative;
+  &:hover {
+    background: #eeeeee;
+  }
+  .question-content {
+    float: left;
+  }
+  &:not(:hover) button.delete {
+    background: none;
+  }
+  button.delete {
+    position:absolute;
+    top: 5px;
+    right: 5px;
+  }
+  a.like-button {
+    color: #00d1b2;
+    :hover {
+      color: #00d1b2;
+    }
+    i {
+      vertical-align: baseline;
+    }
+  }
+}
+
+#question-form-container {
+  width: 100%;
+}
+
+$submit-button-height: 70px;
+
+#question-form-subcontainer {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+
+  > * {
+    margin-right: 10px;
+  }
+
+  > *:last-child {
+    margin-right: 0px;
+  }
+}
+
+
+#question-form-left {
+  display: flex;
+  flex-direction: column;
+  flex: 7;
+  #question-form-left-up {
+    display: flex;
+    flex-direction: row;
+    input {
+      font-size: 14px;
+    }
+    > * {
+      flex: 1;
+      margin-right: 10px;
+    }
+    > *:last-child{
+      margin-right: 0px;
+    }
+  }
+
+  #question-form-textarea {
+    height: 70px;
+    textarea {
+      min-height: 0px;
+      height: 100%;
+      resize: none;
+      font-size: 14px;
+    }
+  }
+
+  > * {
+    margin-bottom: 10px;
+  }
+  > *:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+#question-form-down {
+  display: flex;
+  flex-direction: column;
+  #question-form-slidenumber-wrapper {
+    flex: 1;
+    text-align: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    #question-form-slidenumber {
+      display: inline-block;
+      input {
+        margin-right: 5px;
+      }
+    }
+  }
+  #question-form-submit {
+    flex: 0;
+    height: $submit-button-height;
+    a {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
