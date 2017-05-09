@@ -1,4 +1,4 @@
-<!doctype html>
+
 <html>
   <head>
     <meta charset="UTF-8">
@@ -20,35 +20,70 @@
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="public/lib/reveal/lib/css/zenburn.css">
+    <!-- Import css framework -->
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="public/lib/reveal/lib/css/zenburn.css">
+
+    <!-- clmtrckr -->
+    <script src="../static/js/clmtrackr/b4_demo.js"></script>
+    <script src="../static/js/clmtrackr/utils.js"></script>
+    <script src="../static/js/clmtrackr/numeric-1.2.6.min.js"></script>
+    <script src="../static/js/clmtrackr/mosse.js"></script>
+    <script src="../static/js/clmtrackr/jsfeat-min.js"></script>
+    <script src="../static/js/clmtrackr/frontalface.js"></script>
+    <script src="../static/js/clmtrackr/jsfeat_detect.js"></script>
+    <script src="../static/js/clmtrackr/left_eye_filter.js"></script>
+    <script src="../static/js/clmtrackr/right_eye_filter.js"></script>
+    <script src="../static/js/clmtrackr/nose_filter.js"></script>
+    <script src="../static/js/clmtrackr/models/model_pca_20_svm.js"></script>
+    <script src="../static/js/clmtrackr/clm.js"></script>
+    <script src="../static/js/clmtrackr/svmfilter_webgl.js"></script>
+    <script src="../static/js/clmtrackr/svmfilter_fft.js"></script>
+    <script src="../static/js/clmtrackr/mossefilter.js"></script>
+    <script src="../static/js/clmtrackr/Stats.js"></script>
+
 
     <script src="public/javascripts/config.js"></script>
 
+    <!-- hifive model -->
     <script src="public/javascripts/model/QuestionDataModel.js"></script>
+    <!-- hifive logic -->
     <script src="public/javascripts/logic/QuestionListLogic.js"></script>
-
+    <script src="public/javascripts/logic/ScriptLogic.js"></script>
+    <!-- hifive controller -->
     <script src="public/javascripts/controller/QuestionListController.js"></script>
     <script src="public/javascripts/controller/PresentationController.js"></script>
+    <script src="public/javascripts/controller/ScriptController.js"></script>
+    <script src="public/javascripts/controller/TooltipController.js"></script>
     <script src="public/javascripts/controller/PageController.js"></script>
     <script>
       $(function() {
         h5.core.controller('body', hipa.controller.PageController);
       });
     </script>
+
+    <link type="text/css" rel="stylesheet" href="public/stylesheets/main.css">
   </head>
   <body>
-    <div id="container">
-      <div id="question_list_container">
-        <div id="question_list">
-        </div>
-        <div id="question_form_container">
-        </div>
+    <div id="question-container">
+      <div id="question-list-container">
+      </div>
+      <div id="question-form-container">
       </div>
     </div>
-    <div style="width:100%;height:90%">
+    <div id="slide-container">
         <div class="reveal">
             <div class="slides">
             </div>
         </div>
+    </div>
+    <div id="script-container">
+    </div>
+    <div id="feedback-container">
     </div>
   </body>
 </html>

@@ -1,4 +1,5 @@
 var express = require('express');
+var sassMiddleware = require('node-sass-middleware')
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -22,6 +23,13 @@ app.use('/api/question', api.question);
 app.use('/api/question', socket.question);
 
 
+app.use('/public/stylesheets',
+    sassMiddleware({
+        src: __dirname + '/public/stylesheets/sass', //where the sass files are
+        dest: __dirname + '/public/stylesheets', //where css should go
+        debug: true // obvious
+    })
+);
 app.use('/public', express.static('public'));
 app.use('/', express.static('view'));
 
