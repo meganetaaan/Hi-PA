@@ -45,7 +45,7 @@ var scriptController = {
     jQuery.get(txtFile, undefined, (data)=>{
       var stopwords = JSON.parse(data);
       this.__stopwords = stopwords;
-      if (!this.__is_presenter) this._get_past_script();
+      this._get_past_script();
     }, "html").done(function() {
     }).fail(function(jqXHR, textStatus) {
     }).always(function() {
@@ -192,6 +192,7 @@ var scriptController = {
   },
 
   _display_script: function(script){
+    console.log(script);
     var final_span = script.final_span;
     var slide = script.start_slide[0];
     if (script.start_slide[0] !== script.end_slide[0]) {
@@ -204,7 +205,7 @@ var scriptController = {
       if (span in this.__stopwords) {
         final_span += span + " ";
       } else {
-        final_span += "<span>" + span + "</span>";
+        final_span += "<span>" + span + "</span> ";
       }
     }
     if (final_span !== '') {
