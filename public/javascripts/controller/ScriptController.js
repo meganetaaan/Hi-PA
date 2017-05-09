@@ -1,6 +1,8 @@
 
 var scriptController = {
-  __name: 'scriptController',
+  __name: 'hipa.controller.ScriptController',
+  __templates: ['public/views/script.ejs'],
+
   recognition: speechRecognition,
   socket: io('/socket/script'),
   // for mouth recognition
@@ -29,6 +31,9 @@ var scriptController = {
     } else {
       this.__ready_audience();
     }
+  },
+  __init: function(context){
+    this.view.update('#script-container', 'script', null);
   },
 
   __ready_audience: function(){

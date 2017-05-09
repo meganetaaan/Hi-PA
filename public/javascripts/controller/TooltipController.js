@@ -1,6 +1,6 @@
 
 var tooltipController = {
-  __name: 'TooltipController',
+  __name: 'hipa.controller.TooltipController',
 
   __ready: function(context){
   },
