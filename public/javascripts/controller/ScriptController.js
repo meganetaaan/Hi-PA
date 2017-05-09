@@ -19,14 +19,14 @@ var scriptController = {
 
   //initializer
   __construct: function() {
-    if(!__is_presenter) {
+    if(!this.__is_presenter) {
       this.socket.on('ADD_SCRIPT', (data) => {
         this._handle_scripts(data);
       });
     }
   },
   __ready: function(context){
-    if (__is_presenter) {
+    if (this.__is_presenter) {
       this.__ready_presenter();
     } else {
       this.__ready_audience();
@@ -171,7 +171,7 @@ var scriptController = {
       type: 'GET',
       dataType: 'JSON',
       url: config.url + '/script'
-    }).then(data) => {
+    }).then((data) => {
       this._handle_scripts(data);
     });
   },
@@ -187,12 +187,12 @@ var scriptController = {
   _handle_script: function(scripts){
     for (var i=0; i<scripts.length; i++) {
       var script = scripts[i];
-      this._display_script(
+      this._display_script({
         'start_slide': script.startSlide,
         'end_slide': script.endSlide,
         'final_span': script.text,
         'interim_span': ''
-      );
+      });
     }
   },
 
@@ -318,9 +318,8 @@ var scriptController = {
   }
 
   // finish speechRecognizionController
-}
-
-
+};
+h5.core.expose(scriptController);
 
 
 

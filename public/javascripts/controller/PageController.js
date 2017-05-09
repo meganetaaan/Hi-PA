@@ -9,10 +9,10 @@ var controller = {
           rootElement: '#question-container',
       },
       scriptController: {
-          rootElement: "#script-container',
+          rootElement: '#script-container',
       },
       tooltipController: {
-          rootElement: "#script-container',
+          rootElement: '#script-container',
       },
       /*
       presentationController: {
