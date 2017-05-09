@@ -1,12 +1,11 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
-var Schema = mongoose.Schema;
 
 // Schema
 var Schema = mongoose.Schema;
 var questionSchema = new Schema({
-    slideNumber : Number,
+    slideNumber : [Number],
     question : { type : String, required : true },
     nickname : String,
     password : { type : String, required : true },
