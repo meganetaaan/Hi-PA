@@ -4,7 +4,11 @@ module.exports = function (io) {
     var script = {};
     script.audience = io.of('/socket/audience');
     script.presenter = io.of('/socket/presenter');
-    script.presenter.on('ADD_SCRIPT', function f(data) {
+    script.presenter.on('connection', (socket) => {
+      console.log('connected');
+    });
+    script.presenter.on('ADD_SCRIPT', function f(socket, data) {
+        console.log(data);
         /*if (typeof f.cached == 'undefined') {
             f.cached = new Script(data);
         }

@@ -4,7 +4,7 @@ var scriptController = {
   __templates: ['public/views/script.ejs'],
 
   recognition: speechRecognition,
-  socket: io('/socket/script'),
+  socket: io('/socket/presente'),
   // for mouth recognition
   __vid: null,
   __overlay: null,
@@ -13,10 +13,10 @@ var scriptController = {
   __stats: null,
   __pause: true,
   __is_presenter: true,
-  __pre_start_slide_num: [0,0,0],
-  __pre_end_slide_num: [0,0,0],
-  __start_slide_num: [0,0,0],
-  __end_slide_num: [0,0,0],
+  __pre_start_slide_num: [-1,0,0],
+  __pre_end_slide_num: [-1,0,0],
+  __start_slide_num: [-1,0,0],
+  __end_slide_num: [-1,0,0],
   __stopwords: null,
 
   //initializer
@@ -160,7 +160,8 @@ var scriptController = {
     }
     script = $.extend(script, {'start_slide':this.__start_slide_num, 'end_slide':this.__end_slide_num});
     this._display_script(script);
-    this._broadcast_script(script);;
+    if (script.final_span !== "")
+      this._broadcast_script(script);;
   },
 
   _get_past_script: function(){
@@ -174,11 +175,13 @@ var scriptController = {
   },
 
   _broadcast_script: function(script){
-    this.socket.emit('ADD_SCRIPT', {
+    var data = {
       'startSlide': script.start_slide,
       'endSlide': script.end_slide,
       'text': script.final_span
-    });
+    };
+    console.log(data);
+    this.socket.emit('ADD_SCRIPT', data);
   },
 
   _handle_script: function(scripts){
@@ -194,7 +197,6 @@ var scriptController = {
   },
 
   _display_script: function(script){
-    console.log(script);
     var final_span = script.final_span;
     var slide = script.start_slide[0];
     if (script.start_slide[0] !== script.end_slide[0]) {
@@ -212,14 +214,14 @@ var scriptController = {
         }
       }
     }
-
-    if (this.__pre_start_slide_num===this.__start_slide_num && this.__pre_end_slide_num===this.__end_slide_num) {
-      document.getElementById('final_span').innerHTML += script.final_span;
-    } else {
-      console.log("slide num changes?");
-      document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + script.final_span;
-      this.__pre_start_slide_num = this.__start_slide_num;
-      this.__pre_end_slide_num = this.__end_slide_num;
+    if (final_span !== '') {
+      if (this.__pre_start_slide_num[0]===this.__start_slide_num[0] && this.__pre_end_slide_num[0]===this.__end_slide_num[0]) {
+        document.getElementById('final_span').innerHTML += script.final_span;
+      } else {
+        document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + script.final_span;
+        this.__pre_start_slide_num = this.__start_slide_num;
+        this.__pre_end_slide_num = this.__end_slide_num;
+      }
     }
     document.getElementById('interim_span').innerHTML = "<em>" + script.interim_span + "</em>";
   },
