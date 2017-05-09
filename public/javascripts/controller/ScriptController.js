@@ -179,6 +179,7 @@ var scriptController = {
 
   _handle_script: function(scripts){
     console.log('inside _handle_script');
+    console.log(scripts);
     for (var i=0; i<scripts.length; i++) {
       var script = scripts[i];
       this._display_script({
@@ -191,14 +192,13 @@ var scriptController = {
   },
 
   _display_script: function(script){
-    console.log(script);
     var final_span = script.final_span;
     var slide = script.start_slide[0];
     if (script.start_slide[0] !== script.end_slide[0]) {
       slide += "~" + script.end_slide;
     }
     var spans = final_span.split(" ");
-    sinal_span = "";
+    final_span = "";
     for (var i=0; i<spans.length; i++) {
       var span = spans[i];
       if (span in this.__stopwords) {
@@ -209,11 +209,11 @@ var scriptController = {
     }
     if (final_span !== '') {
       if (this.__pre_start_slide_num[0]===script.start_slide[0] && this.__pre_end_slide_num[0]===script.end_slide[0]) {
-        document.getElementById('final_span').innerHTML += script.final_span;
+        document.getElementById('final_span').innerHTML += final_span;
       } else {
-        document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + script.final_span;
-        this.__pre_start_slide_num = this.__start_slide_num;
-        this.__pre_end_slide_num = this.__end_slide_num;
+        document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + final_span;
+        this.__pre_start_slide_num = script.start_slide;
+        this.__pre_end_slide_num = script.end_slide;
       }
     }
     document.getElementById('interim_span').innerHTML = "<em>" + script.interim_span + "</em>";
