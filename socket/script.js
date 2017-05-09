@@ -19,7 +19,7 @@ module.exports = function (io) {
             else
                 script.audience.emit('ADD_SCRIPT', data);
         });
-    });
-
+      });
+    }
     return script;
 }
