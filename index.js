@@ -8,22 +8,20 @@ var io = require('socket.io')(server)
 
 var api = {}; api.question = require('./api/question');
 var socket = {}; socket.question = require('./socket/question');
+var script = require('./socket/script')(io);
 
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended:true}));
 
-/*io.on('connect', (socket) => {
-    console.log('socket connected');
-});*/
 var questionIO = io.of('/socket/question');
 app.use('/api/question', (req, res, next) => {
     req.io = questionIO;
     next();
 });
-//quiestionIO.on
 app.use('/api/question', api.question);
 app.use('/api/question', socket.question);
+
 
 app.use('/public/stylesheets',
     sassMiddleware({
