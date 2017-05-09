@@ -1,8 +1,6 @@
 # Hi-PA
 A Responsive, Multi-sensor, Smart, Web-App, Which Connects Audience &amp; Presenter
-<<<<<<< HEAD
 
-### Description
 The page use *Google Cloud Speech API* for speech recognition and *clmtrackr* for mouth tracking. We are going to write a script based on text converted from speech. We use mouth tracking to determine if the person is speaking or not. Method for this determination is flexable; currenly we just use gap between position of upper lip and lower lip.
 
 ### Note
@@ -10,8 +8,6 @@ You need speaker and webcam to use demo. If you do not have webcam, it automatic
 
 
 *This is a project in Creative-Integrated-Design course in Seoul National University, advised by NS Solution.*
-||||||| merged common ancestors
-=======
 
 # Install & Run
 
@@ -25,4 +21,3 @@ node index.js
 ```
 
 Default port is 8000. Go to localhost:8000 and it will show you the question page.
->>>>>>> e39ec9b1b5bba74d440715456f7605f464989f9d
