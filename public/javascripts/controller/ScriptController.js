@@ -191,6 +191,7 @@ var scriptController = {
   },
 
   _display_script: function(script){
+    console.log(script);
     var final_span = script.final_span;
     var slide = script.start_slide[0];
     if (script.start_slide[0] !== script.end_slide[0]) {
@@ -207,7 +208,7 @@ var scriptController = {
       }
     }
     if (final_span !== '') {
-      if (this.__pre_start_slide_num[0]===this.__start_slide_num[0] && this.__pre_end_slide_num[0]===this.__end_slide_num[0]) {
+      if (this.__pre_start_slide_num[0]===script.start_slide[0] && this.__pre_end_slide_num[0]===script.end_slide[0]) {
         document.getElementById('final_span').innerHTML += script.final_span;
       } else {
         document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + script.final_span;
