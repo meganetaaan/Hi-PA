@@ -4,7 +4,9 @@
   "description": "PresentationAssistant",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "http": "node index.js",
+    "https": "HTTPS=true node index.js"
   },
   "repository": {
     "type": "git",
