@@ -1,9 +1,27 @@
 <script type="text/ejs" id="questionForm">
-<form action="" id="question_form">
-    Question : <input type="text" name="question"></textarea>
-    SlideNumber : <input type="number" name="slide_number" />
-    Nickname : <input type="text" id="question_nickname_form" name="nickname"/><br>
-    Password : <input type="password" id="question_password_input" name="password"/><br>
-    <input type="submit" id="question_submit_btn" value="Submit"/>
+<div id="question-form" class="control">
+    <div id="question-form-subcontainer">
+        <div id="question-form-left">
+            <div id="question-form-left-up">
+                <input class="input" type="text" id="question_nickname_form" name="nickname" placeholder="Nickname"/>
+                <input class="input" type="password" id="question_password_input" name="password" placeholder="Password"/>
+            </div>
+            <div id="question-form-textarea">
+                <textarea class="textarea" name="question" placeholder="Insert Question Here"></textarea>
+            </div>
+        </div>
+        <div id="question-form-down">
+            <div id="question-form-slidenumber-wrapper">
+                <div id="question-form-slidenumber">
+                    <input class="checkbox" type="checkbox" name="current_slide">슬라이드 관련
+                </div>
+            </div>
+            <div id="question-form-submit">
+                <a class="button is-primary" id="question-submit-btn">
+                    Submit
+                </a>
+            </div>
+        </div>
+    </div>
 </form>
 </script>

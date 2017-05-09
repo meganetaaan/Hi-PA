@@ -8,7 +8,7 @@ function _getQuestion(req, res) {
     });
 }
 
-function _postQuestion(req, res) {
+function _postQuestion(req, res, next) {
     var q = new Question(req.body);
     q.save((err, book) => {
         if (err) {
@@ -22,11 +22,13 @@ function _postQuestion(req, res) {
             }
         } else {
             res.status(200).json(q);
+            res.locals.q = q;
+            next();
         }
     });
 }
 
-function _deleteQuestion(req, res) {
+function _deleteQuestion(req, res, next) {
     Question.findById(req.params.id, (err, result) => {
         if (err) {
             switch(err.name) {
@@ -41,6 +43,8 @@ function _deleteQuestion(req, res) {
                     } else if (isRight) {
                         Question.remove(result, (err, r) => {
                             res.sendStatus(200);
+                            res.locals.id = req.params.id;
+                            next();
                         });
                     } else {
                         res.sendStatus(401);
@@ -51,7 +55,7 @@ function _deleteQuestion(req, res) {
     });
 }
 
-function _likeQuestion(req, res) {
+function _likeQuestion(req, res, next) {
     Question.findById(req.params.id, (err, result) => {
         if (err) {
             res.sendStatus(500);
@@ -65,6 +69,8 @@ function _likeQuestion(req, res) {
                         res.sendStatus(500);
                     } else {
                         res.sendStatus(200);
+                        res.locals.q = result;
+                        next();
                     }
                 });
             }
@@ -72,7 +78,7 @@ function _likeQuestion(req, res) {
     });
 }
 
-function _dislikeQuestion(req, res) {
+function _dislikeQuestion(req, res, next) {
     Question.findById(req.params.id, (err, result) => {
         if (err) {
             res.sendStatus(500);
@@ -86,6 +92,8 @@ function _dislikeQuestion(req, res) {
                         res.sendStatus(500);
                     } else {
                         res.sendStatus(200);
+                        res.locals.q = result;
+                        next()
                     }
                 });
             }
