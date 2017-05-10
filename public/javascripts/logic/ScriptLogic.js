@@ -22,7 +22,7 @@ var speechRecognition = {
     setEventHandlers: function(error_function, result_function){
       this.__recognition.onstart = function(){};
       this.__recognition.onerror = function(e){error_function(e)};
-      this.__recognition.onend = function(){this.start();};
+      this.__recognition.onend = function(){if (this.__recognition) this.start();};
       this.__recognition.onresult = function(e){result_function(e)};
     },
     // set&get methods

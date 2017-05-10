@@ -2,6 +2,7 @@
 var tooltipController = {
   __name: 'hipa.controller.TooltipController',
   __ready: function(context){
+    console.log('tooltip ready');
   },
 
   '#results span click': function(context, $button){
@@ -41,6 +42,6 @@ var tooltipController = {
       document.getElementById("tooltip-results").innerHTML += " " + text + "<br />";
     }
   }
-}
+};
 
-
+h5.core.expose(tooltipController);

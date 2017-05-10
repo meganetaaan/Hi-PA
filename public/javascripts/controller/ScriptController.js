@@ -27,7 +27,6 @@ var scriptController = {
     } else {
       this.socket = io('/socket/audience');
       this.socket.on('ADD_SCRIPT', (data) => {
-        console.log("inside socket.on")
         this._handle_script(data);
       });
     }
@@ -72,10 +71,10 @@ var scriptController = {
     this.__stats = new Stats();
     this.__stats.domElement.style.position = 'absolute';
     this.__stats.domElement.style.top = '0px';
-    document.getElementById('container-face').appendChild( this.__stats.domElement );
+    document.getElementById('content').appendChild( this.__stats.domElement );
 
     this.__vid.addEventListener('canplay', this._enablestart, false);
-
+    this._enablestart(false);
     var insertAltVideo = function(video) {
       path_to_media = "public/lib/clmtrackr/media/";
       if (supports_video()) {
@@ -158,12 +157,14 @@ var scriptController = {
   },
 
   _get_past_script: function(){
+
     return h5.ajax({
       type: 'GET',
       dataType: 'JSON',
       url: config.url + '/script'
     }).then((data) => {
-      this._handle_script(data);
+      for (var i=0; i<data.length; i++)
+        this._handle_script(data[i]);
     });
   },
 
@@ -173,46 +174,46 @@ var scriptController = {
       'endSlide': script.end_slide,
       'text': script.final_span
     };
-    console.log(data);
     this.socket.emit('ADD_SCRIPT', data);
   },
 
-  _handle_script: function(scripts){
-    console.log('inside _handle_script');
-    console.log(scripts);
-    for (var i=0; i<scripts.length; i++) {
-      var script = scripts[i];
-      this._display_script({
+  _handle_script: function(script){
+    this._display_script({
         'start_slide': script.startSlide,
         'end_slide': script.endSlide,
         'final_span': script.text,
         'interim_span': ''
-      });
-    }
+    });
+    this.__start_slide_num = script.startSlide;
+    this.__end_slide_num = script.endSlide;
   },
 
   _display_script: function(script){
-    console.log(script);
     var final_span = script.final_span;
     var slide = script.start_slide[0];
     if (script.start_slide[0] !== script.end_slide[0]) {
-      slide += "~" + script.end_slide;
+      slide += "~" + script.end_slide[0];
     }
     var spans = final_span.split(" ");
     final_span = "";
     for (var i=0; i<spans.length; i++) {
       var span = spans[i];
-      if (span in this.__stopwords) {
+      word = span.replace(/\b[-.,()&$#!\[\]{}"']+\B|\B[-.,()&$#!\[\]{}"']+\b/g, "").toLowerCase();
+      if (this.__stopwords.indexOf(word)>-1 || !(/^[a-zA-Z()]+$/.test(word))) {
         final_span += span + " ";
       } else {
-        final_span += "<span>" + span + "</span> ";
+        final_span += "<span>" + word + "</span>" + span.substr(word.length, span.length) + " ";
       }
     }
     if (final_span !== '') {
       if (this.__pre_start_slide_num[0]===script.start_slide[0] && this.__pre_end_slide_num[0]===script.end_slide[0]) {
         document.getElementById('final_span').innerHTML += final_span;
       } else {
-        document.getElementById('final_span').innerHTML += "<br />" + "slide " + slide + ": " + final_span;
+        final_span = "slide " + slide + ": " + final_span;
+        if (!this.__pre_start_slide_num[0] == -1) {
+          final_span = "<br />" + final_span;
+        }
+        document.getElementById('final_span').innerHTML += final_span;
         this.__pre_start_slide_num = script.start_slide;
         this.__pre_end_slide_num = script.end_slide;
       }
@@ -226,10 +227,9 @@ var scriptController = {
       console.log('You are recording. Somethin is wrong!');
       return;
     }
+    this.recognition.setRecognizing(true);
     this._startVideo();
     this.recognition.start();
-    this.recognition.setRecognizing(true);
-    $('#final_span').html('');
     $('#interim_span').html('');
     this.showInfo('info_speak_now');
   },
@@ -238,9 +238,9 @@ var scriptController = {
       console.log("You are not recording. Something is wrong!");
       return;
     }
+    this.recognition.setRecognizing(false);
     this._stopVideo();
     this.recognition.stop();
-    this.recognition.setRecognizing(false);
     this.showInfo('info_start');
   },
   _get_current_slide_num: function(){
@@ -264,7 +264,7 @@ var scriptController = {
   _enablestart: function(s) {
     var startbutton = document.getElementById('start_button');
     startbutton.innerHTML = "START";
-    startbutton.disabled = false;
+    //startbutton.disabled = false;
     startbutton.onclick = this._startVideo;
     var stopbutton = document.getElementById('stop_button');
     stopbutton.innerHTML = "STOP";
