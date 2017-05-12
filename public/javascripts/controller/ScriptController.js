@@ -38,6 +38,8 @@ var scriptController = {
       this.view.update('#script-control', 'script-control', null);
       this.view.update('#script-face', 'script-face', null);
       this.__ready_presenter();
+    } else {
+      document.getElementById('script-result').style.width = '97%'
     }
 
     var txtFile = "public/javascripts/stopWords.json";
