@@ -18,15 +18,24 @@
   overflow: scroll;
   border: #00d1b2 solid;
   float: left;
-  width: 65%;
+  width: 70%;
   height: 80%;
 }
 #script-face {
   margin-right: 1%;
   float: right;
-  width: 32%;
+  width: 27%;
   text-align: center;
-
+}
+#script-face video, #script-face canvas {
+  width: 100%;
+}
+#script-face canvas {
+  position: relative;
+  transform: translateY(-100%);
+}
+#script-face #content div {
+  display: none;
 }
 #results span:hover{
   background-color: #eeeeee;
