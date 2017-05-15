@@ -14,17 +14,66 @@
  * limitations under the License.
  *
  * Codes from : https://github.com/hifive-labs/hifive-presenter
+ *
+ * This code is edited for the HiPA project.
  */
-var presentationController = {
-	__name: 'hipa.controller.PresentationController',
+var slideController = {
+	__name: 'hipa.controller.SlideController',
 
 	curReveal: null,
+	socket: io('/socket/presentation'),
+	_remoteSlideState: {indexh: 0, indexv: 0, paused: false, overview: false},
+	_isInSync: true,
 
+	__templates: ['public/views/slide.ejs'],
 	__construct: function(context) {
+		//FIXME: url for presenter and audience
+		if (config.isPresenter) {
+			this.socket = io('/socket/presentation');
+		} else {
+			this.socket = io('/socket/presentation');
+		}
+
+		this.socket.on('initdata', (data) => {
+			this.createSlidesByHTMLString(data.slideData.content);
+			this.setState(data.slideData.state);
+			this._remoteSlideState = data.slideData.state;
+			curSocketId = data.socketId;
+			revSocketId = null;
+		});
+
+		this.socket.on('syncdata', (data) => {
+			revSocketId = data.socketId;
+			this.createSlidesByHTMLString(data.slideData.content);
+			this.setState(data.slideData.state);
+			this._remoteSlideState = data.slideData.state;
+		});
+
+		this.socket.on('slidestatechanged', (data) => {
+			if (this._isInSync) {
+				revSocketId = data.socketId;
+				this.setState(data.slideData.state);
+			}
+			this._remoteSlideState = data.slideData.state;
+		});
+
+		this.socket.on('slidecontentchanged', (data) => {
+			var isSync = this._getIsSync();
+			if (isSync) {
+				revSocketId = data.socketId;
+				this.createSlidesByHTMLString(data.slideData.content);
+			}
+		});
+	},
+
+	__init: function(context) {
 		this.curReveal = Reveal;
-		//オプション
+		this.view.update('#slide-subcontainer', 'slide', config);
+		this._syncButtonRefresh();
+
 		var options = {
-			history: true,
+			history: false,
+			embedded: true,
 			dependencies: [{
 				src: 'public/lib/reveal/plugin/markdown/marked.js'
 			}, {
@@ -41,6 +90,54 @@ var presentationController = {
 			}]
 		};
 		this.initialize(options);
+
+		if (config.isPresenter) {
+			this.curReveal.addEventListener('slidechanged', () => {
+				this._postInfo();
+			});
+			/*
+			// thinking that these codes are not necessary
+			curReveal.addEventListener('fragmentshown', this._postInfo);
+			curReveal.addEventListener('fragmenthidden', this._postInfo);
+			curReveal.addEventListener('overviewhidden', this._postInfo);
+			curReveal.addEventListener('overviewshown', this._postInfo);
+			curReveal.addEventListener('paused', this._postInfo);
+			curReveal.addEventListener('resumed', this._postInfo);
+			*/
+		} else {
+			this.curReveal.addEventListener('slidechanged', () => {
+				this._desync();
+			});
+		}
+    },
+
+	//クライアントからサーバーにリクエストを送るメソッド
+	_postInfo: function() {
+		var messageData = {
+			slideData: {
+				state: this.getState()
+			}
+		};
+		this.socket.emit('slidestatechanged', messageData);
+	},
+
+	_desync: function() {
+		this._isInSync = false;
+		this._syncButtonRefresh();
+	},
+
+	_syncButtonRefresh: function() {
+		if (this._isInSync) {
+			this.$find('#sync-button').hide();
+		} else {
+			this.$find('#sync-button').show();
+		}
+	},
+
+	'#sync-button click' : function() {
+		this.setState(this._remoteSlideState);
+		this._isInSync = true;
+		this._syncButtonRefresh();
 	},
 
 	// =========================================================================
@@ -453,4 +550,4 @@ var presentationController = {
 		}
 	},
 }
-h5.core.expose(presentationController);
+h5.core.expose(slideController);

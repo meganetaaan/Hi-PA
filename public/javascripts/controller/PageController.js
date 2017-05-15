@@ -3,7 +3,7 @@ var controller = {
   questionListController: hipa.controller.QuestionListController,
   scriptController: hipa.controller.ScriptController,
   tooltipController: hipa.controller.TooptipController,
-  //presentationController: hipa.controller.PresentationController,
+  slideController: hipa.controller.SlideController,
   __meta: {
       questionListController: {
           rootElement: '#question-container',
@@ -14,11 +14,9 @@ var controller = {
       tooltipController: {
           rootElement: '#script-container',
       },
-      /*
-      presentationController: {
-          rootElement: '.reveal',
+      slideController: {
+          rootElement: '#slide-container',
       },
-      */
   },
 };
 h5.core.expose(controller);
