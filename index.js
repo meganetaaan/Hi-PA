@@ -43,6 +43,16 @@ app.use('/public/stylesheets',
         debug: true // obvious
     })
 );
+
+// for custom reveal js theme (bulma.scss)
+app.use('/public/lib/reveal/css/theme',
+    sassMiddleware({
+        src: __dirname + '/public/lib/reveal/css/theme/source',
+        dest: __dirname + '/public/lib/reveal/css/theme',
+        debug: true
+    })
+)
+
 app.use('/public', express.static('public'));
 
 app.get('/presenter', (req, res) => {
