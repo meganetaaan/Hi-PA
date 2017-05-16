@@ -26,40 +26,6 @@ var slideController = {
     _isInSync: true,
 
     __templates: ['public/views/slide.ejs'],
-    __construct: function(context) {
-        //FIXME: url for presenter and audience
-        if (config.isPresenter) {
-            this.socket = io('/socket/slide/presenter');
-        } else {
-            this.socket = io('/socket/slide/audience');
-        }
-
-        this.socket.on('initdata', (data) => {
-            this.createSlidesByHTMLString(data.slideData.content);
-            this.setState(data.slideData.state);
-            this._remoteSlideState = data.slideData.state;
-        });
-
-        this.socket.on('syncdata', (data) => {
-            this.createSlidesByHTMLString(data.slideData.content);
-            this.setState(data.slideData.state);
-            this._remoteSlideState = data.slideData.state;
-        });
-
-        this.socket.on('slidestatechanged', (data) => {
-            if (this._isInSync) {
-                this.setState(data.slideData.state);
-            }
-            this._remoteSlideState = data.slideData.state;
-        });
-
-        this.socket.on('slidecontentchanged', (data) => {
-            var isSync = this._getIsSync();
-            if (isSync) {
-                this.createSlidesByHTMLString(data.slideData.content);
-            }
-        });
-    },
 
     __init: function(context) {
         this.curReveal = Reveal;
@@ -84,26 +50,73 @@ var slideController = {
                 }
             }]
         };
+
         this.initialize(options);
+        this.curReveal.addEventListener( 'ready', () => {
+            this._setSocket();
+        });
 
         if (config.isPresenter) {
-            this.curReveal.addEventListener('slidechanged', () => {
+            const closure = () => {
                 this._postInfo();
-            });
+            };
+            this.curReveal.addEventListener('slidechanged', closure);
+            this.curReveal.addEventListener('fragmentshown', closure);
+            this.curReveal.addEventListener('fragmenthidden', closure);
+            this.curReveal.addEventListener('overviewhidden', closure);
+            this.curReveal.addEventListener('overviewshown', closure);
             /*
-            // thinking that these codes are not necessary
-            curReveal.addEventListener('fragmentshown', this._postInfo);
-            curReveal.addEventListener('fragmenthidden', this._postInfo);
-            curReveal.addEventListener('overviewhidden', this._postInfo);
-            curReveal.addEventListener('overviewshown', this._postInfo);
             curReveal.addEventListener('paused', this._postInfo);
             curReveal.addEventListener('resumed', this._postInfo);
             */
         } else {
-            this.curReveal.addEventListener('slidechanged', () => {
+            const closure = () => {
                 this._desync();
-            });
+            }
+            this.curReveal.addEventListener('slidechanged', closure);
+            this.curReveal.addEventListener('fragmentshown', closure);
+            this.curReveal.addEventListener('fragmenthidden', closure);
+            this.curReveal.addEventListener('overviewhidden', closure);
+            this.curReveal.addEventListener('overviewshown', closure);
         }
+    },
+
+    _setSocket: function() {
+        if (config.isPresenter) {
+            this.socket = io('/socket/slide/presenter');
+        } else {
+            this.socket = io('/socket/slide/audience');
+        }
+
+        this.socket.on('initdata', (data) => {
+            this.createSlidesByHTMLString(data.slideData.content);
+            this.setState(data.slideData.state);
+            if (!config.isPresenter) {
+                this._resync();
+            }
+            this._remoteSlideState = data.slideData.state;
+        });
+
+        this.socket.on('syncdata', (data) => {
+            this.createSlidesByHTMLString(data.slideData.content);
+            this.setState(data.slideData.state);
+            this._remoteSlideState = data.slideData.state;
+        });
+
+        this.socket.on('slidestatechanged', (data) => {
+            if (this._isInSync) {
+                this.setState(data.slideData.state);
+                this._resync();
+            }
+            this._remoteSlideState = data.slideData.state;
+        });
+
+        this.socket.on('slidecontentchanged', (data) => {
+            var isSync = this._getIsSync();
+            if (isSync) {
+                this.createSlidesByHTMLString(data.slideData.content);
+            }
+        });
     },
 
     //クライアントからサーバーにリクエストを送るメソッド
@@ -121,6 +134,11 @@ var slideController = {
         this._syncButtonRefresh();
     },
 
+    _resync: function() {
+        this._isInSync = true;
+        this._syncButtonRefresh();
+    },
+
     _syncButtonRefresh: function() {
         if (this._isInSync) {
             this.$find('#sync-button').hide();
@@ -131,8 +149,7 @@ var slideController = {
 
     '#sync-button click' : function() {
         this.setState(this._remoteSlideState);
-        this._isInSync = true;
-        this._syncButtonRefresh();
+        this._resync();
     },
 
     // =========================================================================
