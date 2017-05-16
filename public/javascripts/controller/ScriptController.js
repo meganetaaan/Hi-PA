@@ -23,9 +23,9 @@ var scriptController = {
   //initializer
   __construct: function() {
     if(this.__is_presenter) {
-      this.socket = io('/socket/presenter');
+      this.socket = io('/socket/script/presenter');
     } else {
-      this.socket = io('/socket/audience');
+      this.socket = io('/socket/script/audience');
       this.socket.on('ADD_SCRIPT', (data) => {
         this._handle_script(data);
       });

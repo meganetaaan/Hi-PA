@@ -1,9 +1,10 @@
 var Script = require('../model/Script');
 
 module.exports = function (io) {
+    Script.remove({}).exec();
     var script = {};
-    script.audience = io.of('/socket/audience');
-    script.presenter = io.of('/socket/presenter');
+    script.audience = io.of('/socket/script/audience');
+    script.presenter = io.of('/socket/script/presenter');
     script.presenter.on('connection', (socket) => {
         console.log('connected');
         socket.on('ADD_SCRIPT', function f(data) {
