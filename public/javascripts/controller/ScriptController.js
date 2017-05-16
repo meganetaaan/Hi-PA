@@ -38,6 +38,8 @@ var scriptController = {
       this.view.update('#script-control', 'script-control', null);
       this.view.update('#script-face', 'script-face', null);
       this.__ready_presenter();
+    } else {
+      document.getElementById('script-result').style.width = '97%'
     }
 
     var txtFile = "public/javascripts/stopWords.json";
@@ -71,6 +73,7 @@ var scriptController = {
     this.__stats = new Stats();
     this.__stats.domElement.style.position = 'absolute';
     this.__stats.domElement.style.top = '0px';
+    this.__stats.domElement.style.visible = 'none';
     document.getElementById('content').appendChild( this.__stats.domElement );
 
     this.__vid.addEventListener('canplay', this._enablestart, false);

@@ -1,0 +1,45 @@
+#script-container {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+#script-control, #script-result, #script-face {
+  margin-left: 1%;
+  margin-bottom: 1%;
+}
+#script-box {
+  margin: 0;
+}
+#script-control {
+  margin-top: 1%;
+  height: 10%;
+}
+#script-result {
+  overflow: scroll;
+  border: #00d1b2 solid;
+  float: left;
+  width: 70%;
+  height: 80%;
+}
+#script-face {
+  margin-right: 1%;
+  float: right;
+  width: 27%;
+  text-align: center;
+}
+#script-face video, #script-face canvas {
+  width: 100%;
+}
+#script-face canvas {
+  position: relative;
+  transform: translateY(-100%);
+}
+#script-face #content div {
+  display: none;
+}
+#results span:hover{
+  background-color: #eeeeee;
+}
+#tooltip-results a{
+  text-decoration: underline;
+}
