@@ -20,6 +20,7 @@ var io = require('socket.io')(server)
 var api = {}; api.question = require('./api/question'); api.script = require('./api/script');
 var socket = {}; socket.question = require('./socket/question');
 var script = require('./socket/script')(io);
+var slide = require('./socket/slide')(io);
 
 app.set('view engine', 'ejs');
 app.set('views', 'view');

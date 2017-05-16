@@ -1,7 +1,7 @@
 var slideCtrl = require('../slide.controller');
-modules.exports = function (io) {
+module.exports = function (io) {
     var slide = {};
-    slide.audience = io.of('/socket/script/audience');
+    slide.audience = io.of('/socket/slide/audience');
     slide.presenter = io.of('/socket/slide/presenter');
     slide.presenter.on('connection', function(socket) {
         console.log('presenter connected to slides');

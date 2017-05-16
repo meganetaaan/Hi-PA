@@ -21,7 +21,7 @@ var slideController = {
     __name: 'hipa.controller.SlideController',
 
     curReveal: null,
-    socket: io('/socket/presentation'),
+    socket: null,
     _remoteSlideState: {indexh: 0, indexv: 0, paused: false, overview: false},
     _isInSync: true,
 
@@ -38,12 +38,9 @@ var slideController = {
             this.createSlidesByHTMLString(data.slideData.content);
             this.setState(data.slideData.state);
             this._remoteSlideState = data.slideData.state;
-            curSocketId = data.socketId;
-            revSocketId = null;
         });
 
         this.socket.on('syncdata', (data) => {
-            revSocketId = data.socketId;
             this.createSlidesByHTMLString(data.slideData.content);
             this.setState(data.slideData.state);
             this._remoteSlideState = data.slideData.state;
@@ -51,7 +48,6 @@ var slideController = {
 
         this.socket.on('slidestatechanged', (data) => {
             if (this._isInSync) {
-                revSocketId = data.socketId;
                 this.setState(data.slideData.state);
             }
             this._remoteSlideState = data.slideData.state;
@@ -60,7 +56,6 @@ var slideController = {
         this.socket.on('slidecontentchanged', (data) => {
             var isSync = this._getIsSync();
             if (isSync) {
-                revSocketId = data.socketId;
                 this.createSlidesByHTMLString(data.slideData.content);
             }
         });
