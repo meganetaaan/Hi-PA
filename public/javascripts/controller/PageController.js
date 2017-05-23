@@ -2,7 +2,9 @@ var controller = {
   __name: 'hipa.controller.PageController',
   questionListController: hipa.controller.QuestionListController,
   scriptController: hipa.controller.ScriptController,
-  tooltipController: hipa.controller.TooptipController,
+  tooltipController: hipa.controller.TooltipController,
+  timeController: hipa.controller.TimeController,
+  alertController: hipa.controller.AlertController,
   //presentationController: hipa.controller.PresentationController,
   __meta: {
       questionListController: {
@@ -12,6 +14,12 @@ var controller = {
           rootElement: '#script-container',
       },
       tooltipController: {
+          rootElement: '#script-container',
+      },
+      timeController: {
+          rootElement: '#script-container',
+      },
+      alertController: {
           rootElement: '#script-container',
       },
       /*

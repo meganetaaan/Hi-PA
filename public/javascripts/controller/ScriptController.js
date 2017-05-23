@@ -22,6 +22,8 @@ var scriptController = {
 
   //initializer
   __construct: function() {
+
+
     if(this.__is_presenter) {
       this.socket = io('/socket/presenter');
     } else {
@@ -236,7 +238,15 @@ var scriptController = {
     $('#interim_span').html('');
     this.showInfo('info_speak_now');
   },
-  '#stop_button click': function(){
+  '#pause_button click': function(){
+    this._stop();
+  },
+  '#stop_button click': function() {
+    this._stop();
+    $('#final_span').empty();
+    $('#interim_span').empty();
+  },
+  _stop: function(){
     if (!this.recognition.getRecognizing()){
       console.log("You are not recording. Something is wrong!");
       return;
@@ -267,8 +277,12 @@ var scriptController = {
   _enablestart: function(s) {
     var startbutton = document.getElementById('start_button');
     startbutton.innerHTML = "START";
-    //startbutton.disabled = false;
     startbutton.onclick = this._startVideo;
+
+    var pausebutton = document.getElementById('pause_button');
+    pausebutton.innerHTML = "PAUSE";
+    pausebutton.onclick = this._stopVideo;
+
     var stopbutton = document.getElementById('stop_button');
     stopbutton.innerHTML = "STOP";
     stopbutton.onclick = this._stopVideo;
@@ -276,6 +290,7 @@ var scriptController = {
 
   _startVideo: function(s) {
     $('#start_button').prop('disabled', true);
+    $('#pause_button').prop('disabled', false);
     $('#stop_button').prop('disabled', false);
     // start video
     this.__vid.play();
@@ -290,6 +305,7 @@ var scriptController = {
 
   _stopVideo: function(){
     $('#start_button').prop('disabled', false);
+    $('#pause_button').prop('disabled', true);
     $('#stop_button').prop('disabled', true);
     this.__vid.pause();
     this.__ctrack.stop();
@@ -323,13 +339,34 @@ var scriptController = {
     if (this.__ctrack.getCurrentPosition()) {
       this.__ctrack.draw(this.__overlay);
     }
-  }
+  },
+  /*
+  '#results span click': function(context, $button) {
+    var resultbox = document.getElementById('tooltip-results');
+    resultbox.style.display = 'block';
+    resultbox.innerHTML = $button[0].innerHTML;
+    function f(){
+      console.log("YES!");
+    }
+    //resultbox.innerHTML += "<button onclick='f();'>close</button>"
 
+    var close = document.createElement('button');
+    close.id = 'tooltip-close';
+    close.appendChild(document.createTextNode('close'));
+    close.onclick = function() {
+        console.log('close');
+        $('#tooltip-results').html();
+        $('#tooltip-results').hide();
+        return true;
+    };
+    document.getElementById('tooltip-results').appendChild(close);
+    close.onclick = ()=>{f();};
+    console.log(document.getElementById('tooltip-results'));
+  }
+  */
   // finish speechRecognizionController
 };
 h5.core.expose(scriptController);
-
-
 
 
 
