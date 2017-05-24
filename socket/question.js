@@ -5,6 +5,7 @@ var router = express.Router();
 function _broadcastAdd(req, res, next) {
     let q = res.locals.q;
     req.io.emit('ADD_QUESTION', q);
+    console.log('added');
     next();
 }
 

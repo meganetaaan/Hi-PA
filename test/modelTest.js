@@ -2,13 +2,12 @@ var header = require('./testHeader');
 var expect = header.expect;
 var Question = require('../model/Question');
 var db = require('../db');
-var mongoose = db.mongoose;
 var url = db.test;
 
 describe('db model test', () => {
     describe('#Question', () => {
         before((done) => {
-            db.connect('test');
+            db.conn();
             Question.remove({}, done);
         });
         beforeEach((done) => {
@@ -16,7 +15,7 @@ describe('db model test', () => {
         });
         after((done) => {
             Question.remove({});
-            mongoose.disconnect(done);
+            db.disconnect(done);
         });
         it('should be empty', (done) => {
             Question.find({}, (err, result) => {
