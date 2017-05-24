@@ -7,10 +7,22 @@ var alertController = {
     socket.on('Alert', (data) => {this._handle_data(data);});
   },
 
+  // this function handles questions and tooltips
+  // not in socket.on yet
+  _handle_question_data: function(data) {
+    console.log(data);
+    var content;
+    if ('question' in data) {
+      content = "There is a question: " + data['question'];
+    } else if ('tooltip' in data) {
+      content = "Many audiences are curious about the meaning of "+data['tooltip'];
+    }
+    this._alert(content);
+  },
+
+
+  // this function handles realtimefeedback and time
   _handle_data: function(data) {
-    // realtimefeedback
-    // time
-    // timeAlert
     console.log(data);
     if (data['timeAlert']) {
       this._alert(this._get_alert_content('time', -data['time']));
@@ -21,9 +33,11 @@ var alertController = {
     }
 
   },
+
   _alert: function(content) {
     console.log(content);
   },
+
   _get_alert_content: function(type, value){
     if (type == "noquestion")
       return "There is no question. Everyone, you can ask more and more.";
