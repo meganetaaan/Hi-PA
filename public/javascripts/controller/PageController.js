@@ -4,6 +4,7 @@ var controller = {
   scriptController: hipa.controller.ScriptController,
   tooltipController: hipa.controller.TooptipController,
   slideController: hipa.controller.SlideController,
+  feedbackController: hipa.controller.FeedbackController,
   __meta: {
       questionListController: {
           rootElement: '#question-container',
@@ -17,6 +18,9 @@ var controller = {
       slideController: {
           rootElement: '#slide-container',
       },
+      feedbackController: {
+          rootElement: '#feedback-container'
+      }
   },
 };
 h5.core.expose(controller);
