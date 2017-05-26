@@ -7,9 +7,8 @@ var alertController = {
   },
 
 
-  // this function handles questions and tooltips
-  // not in socket.on yet
-  _handle_question_data: function(data) {
+  // this function handles question and tooltip
+  handle_question_data: function(data) {
     console.log(data);
     var content;
     if ('question' in data) {

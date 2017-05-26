@@ -1,12 +1,11 @@
 var timeController = {
-  __name: 'TimeController',
+  __name: 'hipa.controller.TimeController',
   socket: null,
   time: time,
   __construct: function(){
-    socket = io('/socket/time');
+    socket = io('/socket/time/presenter');
   },
   __ready: function(context){
-    console.log("TIMECONTROLLER");
     this._update();
   },
   '#date_button click': function(context, $button){
