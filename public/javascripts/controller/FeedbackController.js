@@ -3,10 +3,20 @@ var controller = {
 
     __templates: ['public/views/feedback.ejs'],
 
-    socket: io('/socket/feedback'),
+    socket: null,
 
     __init: function(context) {
       this.view.update('{rootElement}','feedback');
+      this._setSocket();
+    },
+
+    _setSocket: function() {
+      if (config.isPresenter) {
+        this.socket = io('/socket/feedback/presenter');
+        // TODO: Feedback ui for presenter
+      } else {
+        this.socket = io('/socket/feedback/audience');
+      }
     },
 
     _speedFeedback(sign) {
