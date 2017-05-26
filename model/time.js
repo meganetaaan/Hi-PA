@@ -5,7 +5,7 @@ var time = {
 }
 
 function getTime() {
-    return duration - passedTime;
+    return time.duration - time.passedTime;
 }
 
 function getAlert() {
@@ -22,3 +22,9 @@ function setTimeState(data) {
 function getTimeState() {
     return time;
 }
+time.getTime = getTime;
+time.getAlert = getAlert;
+time.setTimeState = setTimeState;
+time.getTimeState = getTimeState;
+
+module.exports = time;

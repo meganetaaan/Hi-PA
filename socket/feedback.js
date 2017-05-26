@@ -11,13 +11,14 @@ feedback.reset = () => {
     feedback.speed = {fast : 0, slow : 0};
     feedback.sound = {loud : 0, small : 0};
 }
+feedback.presenter = io.of('/socket/feedback/presenter');
 feedback.audience = io.of('/socket/feedback/audience');
 feedback.audience.on('connection', (socket) => {
     console.log('feedback audience connected');
     socket.on('disconnect', (socket) => {
         console.log('feedback audience disconnected');
     });
-    socket.on('SpeedFeedBack', (data) => {
+    socket.on('SpeedFeedback', (data) => {
         switch(data.sign) {
             case -1:
                 feedback.speed.slow++;
@@ -26,8 +27,9 @@ feedback.audience.on('connection', (socket) => {
                 feedback.speed.fast++;
                 break;
         }
+        feedback.presenter.emit('SpeedFeedback', feedback.speed);
     });
-    socket.on('VolumeFeedBack', (data) => {
+    socket.on('VolumeFeedback', (data) => {
         switch(data.sign) {
             case -1:
                 feedback.sound.small++;
@@ -35,12 +37,14 @@ feedback.audience.on('connection', (socket) => {
             case 1:
                 feedback.sound.loud++;
         }
+        feedback.presenter.emit('VolumeFeedback', feedback.sound);
     });
 });
 feedback.send = () => {
     var speed = 0;
     var volume = 0;
-    if (feedback.speed > feedback.threshold.speed * 1) {
+    // TODO : add logic!
+    if (1 > feedback.threshold.speed * 1) {
         speed = 1;
     } else {
         speed = -1;
