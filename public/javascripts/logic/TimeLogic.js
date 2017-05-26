@@ -1,5 +1,5 @@
-var date = {
-  __name: 'Date',
+var time = {
+  __name: 'Time',
   dateFormat: '{0}/{1}/{2} {3}:{4}:{5}',
   getCurrent: function(time){
     var year = time.getYear() + 1900;
@@ -9,8 +9,10 @@ var date = {
     var min = time.getMinutes();
     var sec = time.getSeconds();
     return this._format(year, month, date, hour, min, sec);
+
   },
   _format: function(year, month, date, hour, min, sec){
     return h5.u.str.format(this.dateFormat, year, month, date, hour, min, sec);
   }
+
 };
