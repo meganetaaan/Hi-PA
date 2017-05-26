@@ -193,25 +193,23 @@ var scriptController = {
   },
 
   _display_script: function(script){
-    //console.log(this.__pre_start_slide_num, this.__start_slide_num, script.start_slide);
-    //console.log(this.__pre_end_slide_num, this.__end_slide_num, script.end_slide);
     var final_span = script.final_span;
     var slide = script.start_slide;
     if (script.start_slide !== script.end_slide) {
       slide += "~" + script.end_slide;
     }
-    var spans = final_span.split(" ");
-    final_span = "";
-    for (var i=0; i<spans.length; i++) {
-      var span = spans[i];
-      word = span.replace(/\b[-.,()&$#!\[\]{}"']+\B|\B[-.,()&$#!\[\]{}"']+\b/g, "").toLowerCase();
-      if (this.__stopwords.indexOf(word)>-1 || !(/^[a-zA-Z()]+$/.test(word))) {
-        final_span += span + " ";
-      } else {
-        final_span += "<span>" + word + "</span>" + span.substr(word.length, span.length) + " ";
-      }
-    }
     if (final_span !== '') {
+      var spans = final_span.split(" ");
+      final_span = "";
+      for (var i=0; i<spans.length; i++) {
+        var span = spans[i];
+        word = span.replace(/\b[-.,()&$#!\[\]{}"']+\B|\B[-.,()&$#!\[\]{}"']+\b/g, "").toLowerCase();
+        if (this.__stopwords.indexOf(word)>-1 || !(/^[a-zA-Z()]+$/.test(word))) {
+          final_span += span + " ";
+        } else {
+          final_span += "<span>" + word + "</span>" + span.substr(word.length, span.length) + " ";
+        }
+      }
       if (this.__pre_start_slide_num===script.start_slide && this.__pre_end_slide_num===script.end_slide) {
         document.getElementById('final_span').innerHTML += final_span;
       } else {
@@ -258,9 +256,6 @@ var scriptController = {
     this._stopVideo();
     this.recognition.stop();
     this.showInfo('info_start');
-  },
-  _get_current_slide_num: function(){
-    return [0,0,0];
   },
 
   // helper
@@ -344,7 +339,7 @@ var scriptController = {
     }
   },
 
-  _get_current_slice_num: function() {
+  _get_current_slide_num: function() {
     return Reveal.getState().indexh;
   }
 
