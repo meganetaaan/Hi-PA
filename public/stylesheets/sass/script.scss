@@ -21,6 +21,12 @@
   width: 70%;
   height: 80%;
 }
+#tooltip-results {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
 #script-face {
   margin-right: 1%;
   float: right;
@@ -40,6 +46,17 @@
 #results span:hover{
   background-color: #eeeeee;
 }
-#tooltip-results a{
+#tooltip-results {
+  display: none;
+  z-index: 1000;
+  border: #00d1b2 solid;
+  background-color: #ffffff;
+  font-size: 10pt;
+  button {
+    float: right;
+    font-size: 8pt;
+  }
+}
+#tooltip-results a, #tooltip-close{
   text-decoration: underline;
 }

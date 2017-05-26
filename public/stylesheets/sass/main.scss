@@ -16,7 +16,7 @@ body {
 
 #question-container {
   width: 30%;
-  height: 100%; //FIXME: height percentage
+  height: 80%; //FIXME: height percentage
   float: right;
 }
 
@@ -34,7 +34,7 @@ body {
 
 #feedback-container {
   width: 30%;
-  height: 0%; //FIXME: height percentage
+  height: 20%; //FIXME: height percentage
   float: right;
 }
 
@@ -176,3 +176,5 @@ $submit-button-height: 70px;
     }
   }
 }
+
+@import 'feedback'

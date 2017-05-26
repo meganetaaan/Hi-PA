@@ -1,0 +1,28 @@
+.feedback-speed-container, .feedback-volume-container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    margin: 0px 10px;
+}
+
+#feedback-subcontainer {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.feedback-icon {
+    width: 50px;
+    height: 50px;
+    margin: 15px;
+}
+
+.feedback-btn-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-volume, .feedback-speed {
+    flex: 1;
+    margin: 5px;
+}
