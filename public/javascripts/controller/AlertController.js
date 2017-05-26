@@ -1,5 +1,6 @@
 var alertController = {
   __name: 'hipa.controller.AlertController',
+  questionDataModel: 'hipa.data.questionDataModel',
   socket: null,
   __construct: function(){
     socket = io('/socket/alert/presenter');
@@ -11,8 +12,11 @@ var alertController = {
   handle_question_data: function(data) {
     console.log(data);
     var content;
-    if ('question' in data) {
-      content = "There is a question: " + data['question'];
+    if ('questionID' in data) {
+      var qid = data['questionID'];
+      content = "There is a question!";
+      content += " id: " + qid;
+      content += " question: " + questionDataModel.get(qid);
     } else if ('tooltip' in data) {
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
     }
