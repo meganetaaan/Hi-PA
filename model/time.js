@@ -5,7 +5,7 @@ var time = {
 }
 
 function getTime() {
-    return duration - passedTime;
+    return time.duration - time.passedTime;
 }
 
 function getAlert() {
