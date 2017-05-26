@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 // Schema
 var Schema = mongoose.Schema;
 var scriptSchema = new Schema({
-    startSlide : { type : [Number], required : true },
-    endSlide : { type : [Number], required : true },
+    startSlide : { type : Number, required : true },
+    endSlide : { type : Number, required : true },
     text :{ type : String, required : true },
     time : { type : Date, default : Date.now }
 });
@@ -17,4 +17,7 @@ function _transformer (doc, ret, options) {
 }
 scriptSchema.set('toJSON', { virtuals : true, transform : _transformer});
 var Script = mongoose.model('Script', scriptSchema);
+Script.reset = () => {
+    Script.remove({}).exec();
+}
 module.exports = Script;
