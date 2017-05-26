@@ -12,12 +12,12 @@ var alertController = {
   handle_question_data: function(data) {
     console.log(data);
     var content;
-    if ('questionID' in data) {
+    if (data['questionID'] !== null) {
       var qid = data['questionID'];
       content = "There is a question!";
       content += " id: " + qid;
       content += " question: " + questionDataModel.get(qid);
-    } else if ('tooltip' in data) {
+    } else if (data['tooltip'] !== null) {
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
     }
     this._alert(content);
@@ -27,7 +27,7 @@ var alertController = {
   // this function handles realtimefeedback and time
   _handle_data: function(data) {
     console.log(data);
-    if (data['timeAlert']) {
+    if (data['timeAlert'] !== null) {
       this._alert(this._get_alert_content('time', -data['time']));
     }
     var rf = data['realtimefeedback'];
@@ -39,6 +39,8 @@ var alertController = {
 
   _alert: function(content) {
     console.log(content);
+    //var msg = new SpeechSynthesisUtterance(content);
+    //window.speechSynthesis.speak(msg);
   },
 
   _get_alert_content: function(type, value){
