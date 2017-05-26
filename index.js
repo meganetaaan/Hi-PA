@@ -17,7 +17,7 @@ else
     server = require('http').Server(app);
 var io = require('./socket/io').init(server)
 
-var api = {}; api.question = require('./api/question'); api.script = require('./api/script'); api.time = require('./api/time');
+var api = {}; api.question = require('./api/question'); api.script = require('./api/script'); api.time = require('./api/time'); api.alert = require('./api/alert');
 var socket = {}; socket.question = require('./socket/question');
 var script = require('./socket/script');
 var slide = require('./socket/slide');
@@ -38,6 +38,7 @@ app.use('/api/question', api.question);
 app.use('/api/question', socket.question);
 app.use('/api/script', api.script);
 app.use('/api/time', api.time);
+app.use('/api/alert', api.alert);
 
 app.use('/public/stylesheets',
     sassMiddleware({

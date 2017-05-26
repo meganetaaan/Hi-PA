@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var time = require('../model/time');
 
-function _getAlert(){
+function _getAlert(req, res, next){
+    res.json({questionID : null, tooltip: null});
 }
+
+router.get('/', _getAlert);
+module.exports = router;
