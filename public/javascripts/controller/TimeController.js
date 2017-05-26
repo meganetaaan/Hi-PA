@@ -1,12 +1,11 @@
 var timeController = {
-  __name: 'TimeController',
+  __name: 'hipa.controller.TimeController',
   socket: null,
   time: time,
   __construct: function(){
-    socket = io('/socket/time');
+    this.socket = io('/socket/time/presenter');
   },
   __ready: function(context){
-    console.log("TIMECONTROLLER");
     this._update();
   },
   '#date_button click': function(context, $button){
@@ -26,7 +25,7 @@ var timeController = {
     this._emit_state('END');
   },
   _emit_state: function(state) {
-    socket.emit('SetTimeState', {'state': state});
+    this.socket.emit('SetTimeState', {'state': state});
   }
   // get api/time/state??
 };

@@ -14,10 +14,10 @@ var scriptController = {
   __stats: null,
   __pause: true,
   __is_presenter: config.isPresenter,
-  __pre_start_slide_num: [-1,0,0],
-  __pre_end_slide_num: [-1,0,0],
-  __start_slide_num: [-1,0,0],
-  __end_slide_num: [-1,0,0],
+  __pre_start_slide_num: -1,
+  __pre_end_slide_num: -1,
+  __start_slide_num: -1,
+  __end_slide_num: -1,
   __stopwords: null,
 
   //initializer
@@ -162,7 +162,6 @@ var scriptController = {
   },
 
   _get_past_script: function(){
-
     return h5.ajax({
       type: 'GET',
       dataType: 'JSON',
@@ -195,27 +194,27 @@ var scriptController = {
 
   _display_script: function(script){
     var final_span = script.final_span;
-    var slide = script.start_slide[0];
-    if (script.start_slide[0] !== script.end_slide[0]) {
-      slide += "~" + script.end_slide[0];
-    }
-    var spans = final_span.split(" ");
-    final_span = "";
-    for (var i=0; i<spans.length; i++) {
-      var span = spans[i];
-      word = span.replace(/\b[-.,()&$#!\[\]{}"']+\B|\B[-.,()&$#!\[\]{}"']+\b/g, "").toLowerCase();
-      if (this.__stopwords.indexOf(word)>-1 || !(/^[a-zA-Z()]+$/.test(word))) {
-        final_span += span + " ";
-      } else {
-        final_span += "<span>" + word + "</span>" + span.substr(word.length, span.length) + " ";
-      }
+    var slide = script.start_slide;
+    if (script.start_slide !== script.end_slide) {
+      slide += "~" + script.end_slide;
     }
     if (final_span !== '') {
-      if (this.__pre_start_slide_num[0]===script.start_slide[0] && this.__pre_end_slide_num[0]===script.end_slide[0]) {
+      var spans = final_span.split(" ");
+      final_span = "";
+      for (var i=0; i<spans.length; i++) {
+        var span = spans[i];
+        word = span.replace(/\b[-.,()&$#!\[\]{}"']+\B|\B[-.,()&$#!\[\]{}"']+\b/g, "").toLowerCase();
+        if (this.__stopwords.indexOf(word)>-1 || !(/^[a-zA-Z()]+$/.test(word))) {
+          final_span += span + " ";
+        } else {
+          final_span += "<span>" + word + "</span>" + span.substr(word.length, span.length) + " ";
+        }
+      }
+      if (this.__pre_start_slide_num===script.start_slide && this.__pre_end_slide_num===script.end_slide) {
         document.getElementById('final_span').innerHTML += final_span;
       } else {
         final_span = "slide " + slide + ": " + final_span;
-        if (!this.__pre_start_slide_num[0] == -1) {
+        if (!this.__pre_start_slide_num == -1) {
           final_span = "<br />" + final_span;
         }
         document.getElementById('final_span').innerHTML += final_span;
@@ -232,6 +231,8 @@ var scriptController = {
       console.log('You are recording. Somethin is wrong!');
       return;
     }
+    this.__start_slide_num = this._get_current_slide_num();
+    this.__end_slide_num = this._get_current_slide_num();
     this.recognition.setRecognizing(true);
     this._startVideo();
     this.recognition.start();
@@ -255,9 +256,6 @@ var scriptController = {
     this._stopVideo();
     this.recognition.stop();
     this.showInfo('info_start');
-  },
-  _get_current_slide_num: function(){
-    return [0,0,0];
   },
 
   // helper
@@ -340,31 +338,11 @@ var scriptController = {
       this.__ctrack.draw(this.__overlay);
     }
   },
-  /*
-  '#results span click': function(context, $button) {
-    var resultbox = document.getElementById('tooltip-results');
-    resultbox.style.display = 'block';
-    resultbox.innerHTML = $button[0].innerHTML;
-    function f(){
-      console.log("YES!");
-    }
-    //resultbox.innerHTML += "<button onclick='f();'>close</button>"
 
-    var close = document.createElement('button');
-    close.id = 'tooltip-close';
-    close.appendChild(document.createTextNode('close'));
-    close.onclick = function() {
-        console.log('close');
-        $('#tooltip-results').html();
-        $('#tooltip-results').hide();
-        return true;
-    };
-    document.getElementById('tooltip-results').appendChild(close);
-    close.onclick = ()=>{f();};
-    console.log(document.getElementById('tooltip-results'));
+  _get_current_slide_num: function() {
+    return Reveal.getState().indexh;
   }
-  */
-  // finish speechRecognizionController
+
 };
 h5.core.expose(scriptController);
 

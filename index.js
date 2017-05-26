@@ -15,12 +15,14 @@ if (process.env.HTTPS == 'true') {
 }
 else
     server = require('http').Server(app);
-var io = require('socket.io')(server)
+var io = require('./socket/io').init(server)
 
-var api = {}; api.question = require('./api/question'); api.script = require('./api/script');
+var api = {}; api.question = require('./api/question'); api.script = require('./api/script'); api.time = require('./api/time'); api.alert = require('./api/alert');
 var socket = {}; socket.question = require('./socket/question');
-var script = require('./socket/script')(io);
-var slide = require('./socket/slide')(io);
+var script = require('./socket/script');
+var slide = require('./socket/slide');
+var feedback = require('./socket/feedback');
+var time = require('./socket/time');
 
 app.set('view engine', 'ejs');
 app.set('views', 'view');
@@ -36,6 +38,8 @@ app.use('/api/question', (req, res, next) => {
 app.use('/api/question', api.question);
 app.use('/api/question', socket.question);
 app.use('/api/script', api.script);
+app.use('/api/time', api.time);
+app.use('/api/alert', api.alert);
 
 app.use('/public/stylesheets',
     sassMiddleware({
@@ -70,7 +74,7 @@ app.get('/audience', (req, res) => {
 });
 
 var db = require('./db');
-db.connect('test');
+db.conn();
 var port = 8000;
 server.listen(port, () => {
     console.log(`listening on port ${port}`);

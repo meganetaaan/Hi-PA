@@ -59,35 +59,40 @@ var slideController = {
 
         if (config.isPresenter) {
             const closure = () => {
-                let nowState = this.getState();
-                if (nowState === this._currentState) {
+                if (this._equalState(this.getState(), this._currentState)) {
                     return;
                 }
                 if (this._isNetworking) {
                     this.setState(this._currentState);
                     return;
                 }
+                let nowState = this.getState();
+                this.setState(this._currentState);
                 this._isNetworking = true;
                 h5.ajax({
                     type: 'GET',
                     dataType: 'JSON',
                     url: config.url + '/alert',
                 }).then((json) => {
-                    this._isNetworking = false;
+                    console.log(json);
                     let questionID = json.questionID;
                     let tooltip = json.tooltip;
                     if (tooltip === null && questionID === null) {
                         this._postInfo(nowState);
                         this._currentState = nowState;
                         this.setState(nowState);
+                        this._isNetworking = false;
                         return;
+                    } else {
+                        this._isNetworking = false;
+                        //TODO: when there is questions
+                        hipa.controller.AlertController.handle_question_data(json);
                     }
-                    //TODO: when there is questions
                 }).fail(()=> {
-                    this._isNetworking = false;
                     this._postInfo(nowState);
                     this._currentState = nowState;
                     this.setState(nowState);
+                    this._isNetworking = false;
                 })
             };
             this.curReveal.addEventListener('slidechanged', closure);
@@ -109,6 +114,14 @@ var slideController = {
         }
     },
 
+    _equalState: function(state1, state2) {
+        return (state1.indexf === state2.indexf)
+            && (state1.indexh === state2.indexh)
+            && (state1.indexv === state2.indexv)
+            && (state1.overview === state2.overview)
+            && (state1.paused === state2.paused)
+    },
+
     _setSocket: function() {
         if (config.isPresenter) {
             this.socket = io('/socket/slide/presenter');
@@ -118,6 +131,7 @@ var slideController = {
 
         this.socket.on('initdata', (data) => {
             this.createSlidesByHTMLString(data.slideData.content);
+            this._currentState = data.slideData.state;
             this.setState(data.slideData.state);
             if (!config.isPresenter) {
                 this._resync();

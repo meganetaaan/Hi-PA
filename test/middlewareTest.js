@@ -13,7 +13,7 @@ var Question = require('../model/Question');
 
 describe('middleware function test', () => {
     before((done) => {
-        db.connect('test');
+        db.conn();
         Question.remove({}, (err) => {
             var q3 = new Question({question : 'Am I in?', password : '11'});
             q3.save(done);
@@ -22,7 +22,7 @@ describe('middleware function test', () => {
 
     after((done) => {
         Question.remove({});
-        mongoose.disconnect(done);
+        db.disconnect(done);
     });
 
     describe('#Question', () => {

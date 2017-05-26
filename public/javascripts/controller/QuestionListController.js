@@ -48,7 +48,7 @@ var controller = {
       const $question = this.$find('#question-form textarea[name=question]');
 
       const isSlideNumberIncluded = $isSlideNumberIncluded.prop('checked');
-      const slideNumberValue = 1; //FIME: get current Slide Position
+      const slideNumberValue = Reveal.getState().indexh;
       const slideNumber = isSlideNumberIncluded ? slideNumberValue : null;
 
       this.questionListLogic.add($question.val(), $nickname.val(), slideNumber, $password.val()).done(() => {

@@ -1,20 +1,23 @@
 var alertController = {
-  __name: 'AlertController',
+  __name: 'hipa.controller.AlertController',
+  questionDataModel: 'hipa.data.questionDataModel',
   socket: null,
   __construct: function(){
-    console.log('alertcontroller');
-    socket = io('/socket/alert');
+    socket = io('/socket/alert/presenter');
     socket.on('Alert', (data) => {this._handle_data(data);});
   },
 
-  // this function handles questions and tooltips
-  // not in socket.on yet
-  _handle_question_data: function(data) {
+
+  // this function handles question and tooltip
+  handle_question_data: function(data) {
     console.log(data);
     var content;
-    if ('question' in data) {
-      content = "There is a question: " + data['question'];
-    } else if ('tooltip' in data) {
+    if (data['questionID'] !== null) {
+      var qid = data['questionID'];
+      content = "There is a question!";
+      content += " id: " + qid;
+      content += " question: " + questionDataModel.get(qid);
+    } else if (data['tooltip'] !== null) {
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
     }
     this._alert(content);
@@ -24,7 +27,7 @@ var alertController = {
   // this function handles realtimefeedback and time
   _handle_data: function(data) {
     console.log(data);
-    if (data['timeAlert']) {
+    if (data['timeAlert'] !== null) {
       this._alert(this._get_alert_content('time', -data['time']));
     }
     var rf = data['realtimefeedback'];
@@ -36,6 +39,8 @@ var alertController = {
 
   _alert: function(content) {
     console.log(content);
+    //var msg = new SpeechSynthesisUtterance(content);
+    //window.speechSynthesis.speak(msg);
   },
 
   _get_alert_content: function(type, value){
