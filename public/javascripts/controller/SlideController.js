@@ -26,7 +26,8 @@ var slideController = {
     _isInSync: true,
 
     __templates: ['public/views/slide.ejs'],
-
+    _currentState : {indexh: 0, indexv: 0, paused: false, overview: false},
+    _isNetworking : false,
     __init: function(context) {
         this.curReveal = Reveal;
         this.view.update('#slide-subcontainer', 'slide', config);
@@ -58,13 +59,40 @@ var slideController = {
 
         if (config.isPresenter) {
             const closure = () => {
-                this._postInfo();
+                let nowState = this.getState();
+                if (nowState === this._currentState) {
+                    return;
+                }
+                if (this._isNetworking) {
+                    this.setState(this._currentState);
+                    return;
+                }
+                this._isNetworking = true;
+                h5.ajax({
+                    type: 'GET',
+                    dataType: 'JSON',
+                    url: config.url + '/alert',
+                }).then((json) => {
+                    this._isNetworking = false;
+                    let questionID = json.questionID;
+                    let tooltip = json.tooltip;
+                    if (tooltip === null && questionID === null) {
+                        this._postInfo(nowState);
+                        this._currentState = nowState;
+                        this.setState(nowState);
+                        return;
+                    }
+                    //TODO: when there is questions
+                }).fail(()=> {
+                    this._isNetworking = false;
+                    this._postInfo(nowState);
+                    this._currentState = nowState;
+                    this.setState(nowState);
+                })
             };
             this.curReveal.addEventListener('slidechanged', closure);
             this.curReveal.addEventListener('fragmentshown', closure);
             this.curReveal.addEventListener('fragmenthidden', closure);
-            this.curReveal.addEventListener('overviewhidden', closure);
-            this.curReveal.addEventListener('overviewshown', closure);
             /*
             curReveal.addEventListener('paused', this._postInfo);
             curReveal.addEventListener('resumed', this._postInfo);
@@ -120,10 +148,10 @@ var slideController = {
     },
 
     //クライアントからサーバーにリクエストを送るメソッド
-    _postInfo: function() {
+    _postInfo: function(state) {
         var messageData = {
             slideData: {
-                state: this.getState()
+                state: (state == null ? this.getState() : state)
             }
         };
         this.socket.emit('slidestatechanged', messageData);
