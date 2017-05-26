@@ -1,11 +1,11 @@
 var alertController = {
-  __name: 'AlertController',
+  __name: 'hipa.controller.AlertController',
   socket: null,
   __construct: function(){
-    console.log('alertcontroller');
-    socket = io('/socket/alert');
+    socket = io('/socket/alert/presenter');
     socket.on('Alert', (data) => {this._handle_data(data);});
   },
+
 
   // this function handles questions and tooltips
   // not in socket.on yet

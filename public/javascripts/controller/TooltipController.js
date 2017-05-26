@@ -6,7 +6,7 @@ var tooltipController = {
   socket: null,
 
   __construct: function() {
-    this.socket = io('/socket/tooltip');
+    this.socket = io('/socket/tooltip/audience');
   },
 
   '#results span click': function(context, $button){
