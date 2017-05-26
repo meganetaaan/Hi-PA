@@ -3,7 +3,7 @@ var Time = require('../model/time');
 
 var time = {};
 time.presenter = io.of('/socket/time/presenter');
-time.presenter.on('conncetion', (socket) => {
+time.presenter.on('connection', (socket) => {
     console.log('hagi shilta');
     socket.on('SetTimeState', function (data) {
         Time.setTimeState(data);

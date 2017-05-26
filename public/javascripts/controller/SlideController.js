@@ -86,7 +86,7 @@ var slideController = {
                     } else {
                         this._isNetworking = false;
                         //TODO: when there is questions
-                        // hipa.controller.AlertController.handle_question_data(json);
+                        hipa.controller.AlertController.handle_question_data(json);
                     }
                 }).fail(()=> {
                     this._postInfo(nowState);

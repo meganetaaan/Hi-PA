@@ -22,6 +22,7 @@ var socket = {}; socket.question = require('./socket/question');
 var script = require('./socket/script');
 var slide = require('./socket/slide');
 var feedback = require('./socket/feedback');
+var time = require('./socket/time');
 
 app.set('view engine', 'ejs');
 app.set('views', 'view');
