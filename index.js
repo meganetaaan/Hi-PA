@@ -20,6 +20,7 @@ var io = require('socket.io')(server)
 var api = {}; api.question = require('./api/question'); api.script = require('./api/script');
 var socket = {}; socket.question = require('./socket/question');
 var script = require('./socket/script')(io);
+var slide = require('./socket/slide')(io);
 
 app.set('view engine', 'ejs');
 app.set('views', 'view');
@@ -43,6 +44,16 @@ app.use('/public/stylesheets',
         debug: true // obvious
     })
 );
+
+// for custom reveal js theme (bulma.scss)
+app.use('/public/lib/reveal/css/theme',
+    sassMiddleware({
+        src: __dirname + '/public/lib/reveal/css/theme/source',
+        dest: __dirname + '/public/lib/reveal/css/theme',
+        debug: true
+    })
+)
+
 app.use('/public', express.static('public'));
 
 app.get('/presenter', (req, res) => {
