@@ -22,3 +22,9 @@ function setTimeState(data) {
 function getTimeState() {
     return time;
 }
+time.getTime = getTime;
+time.getAlert = getAlert;
+time.setTimeState = setTimeState;
+time.getTimeState = getTimeState;
+
+module.exports = time;
