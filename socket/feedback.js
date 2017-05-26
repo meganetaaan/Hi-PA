@@ -49,7 +49,7 @@ feedback.send = () => {
     } else {
         speed = -1;
     }
-    if (1 > feedback.threshold.volume * 1) {
+    if (1 > feedback.threshold.sound * 1) {
         volume = 1;
     } else {
         volume = -1;
