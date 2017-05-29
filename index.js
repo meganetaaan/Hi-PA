@@ -73,6 +73,10 @@ app.get('/audience', (req, res) => {
     });
 });
 
+app.get('/slideshow', (req, res) => {
+    res.render('slideshow');
+})
+
 var db = require('./db');
 db.conn();
 var port = 8000;

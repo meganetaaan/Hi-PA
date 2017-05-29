@@ -52,12 +52,23 @@ var slideController = {
             }]
         };
 
+        if (config.isSlideshow) {
+            console.log("SlideShow!");
+            options.controls = false;
+            options.keyboard = false;
+            options.overview = false;
+            options.embeded = false;
+            options.progress = false;
+        }
+
         this.initialize(options);
         this.curReveal.addEventListener( 'ready', () => {
             this._setSocket();
         });
 
-        if (config.isPresenter) {
+        if (config.isSlideshow) {
+            //No Event listener for Reveal.js
+        } else if (config.isPresenter) {
             const closure = () => {
                 if (this._equalState(this.getState(), this._currentState)) {
                     return;
@@ -123,7 +134,9 @@ var slideController = {
     },
 
     _setSocket: function() {
-        if (config.isPresenter) {
+        if (config.isSlideshow) {
+            this.socket = io('/socket/slide/audience');
+        } else if (config.isPresenter) {
             this.socket = io('/socket/slide/presenter');
         } else {
             this.socket = io('/socket/slide/audience');

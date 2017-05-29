@@ -32,22 +32,24 @@
 
     <script src="public/lib/tipped-4.6.0-light/js/tipped/tipped.js"></script>
     <!-- clmtrckr -->
-    <script src="public/lib/clmtrackr/b4_demo.js"></script>
-    <script src="public/lib/clmtrackr/utils.js"></script>
-    <script src="public/lib/clmtrackr/numeric-1.2.6.min.js"></script>
-    <script src="public/lib/clmtrackr/mosse.js"></script>
-    <script src="public/lib/clmtrackr/jsfeat-min.js"></script>
-    <script src="public/lib/clmtrackr/frontalface.js"></script>
-    <script src="public/lib/clmtrackr/jsfeat_detect.js"></script>
-    <script src="public/lib/clmtrackr/left_eye_filter.js"></script>
-    <script src="public/lib/clmtrackr/right_eye_filter.js"></script>
-    <script src="public/lib/clmtrackr/nose_filter.js"></script>
-    <script src="public/lib/clmtrackr/models/model_pca_20_svm.js"></script>
-    <script src="public/lib/clmtrackr/clm.js"></script>
-    <script src="public/lib/clmtrackr/svmfilter_webgl.js"></script>
-    <script src="public/lib/clmtrackr/svmfilter_fft.js"></script>
-    <script src="public/lib/clmtrackr/mossefilter.js"></script>
-    <script src="public/lib/clmtrackr/Stats.js"></script>
+    <% if (isPresenter) { %>
+      <script src="public/lib/clmtrackr/b4_demo.js"></script>
+      <script src="public/lib/clmtrackr/utils.js"></script>
+      <script src="public/lib/clmtrackr/numeric-1.2.6.min.js"></script>
+      <script src="public/lib/clmtrackr/mosse.js"></script>
+      <script src="public/lib/clmtrackr/jsfeat-min.js"></script>
+      <script src="public/lib/clmtrackr/frontalface.js"></script>
+      <script src="public/lib/clmtrackr/jsfeat_detect.js"></script>
+      <script src="public/lib/clmtrackr/left_eye_filter.js"></script>
+      <script src="public/lib/clmtrackr/right_eye_filter.js"></script>
+      <script src="public/lib/clmtrackr/nose_filter.js"></script>
+      <script src="public/lib/clmtrackr/models/model_pca_20_svm.js"></script>
+      <script src="public/lib/clmtrackr/clm.js"></script>
+      <script src="public/lib/clmtrackr/svmfilter_webgl.js"></script>
+      <script src="public/lib/clmtrackr/svmfilter_fft.js"></script>
+      <script src="public/lib/clmtrackr/mossefilter.js"></script>
+      <script src="public/lib/clmtrackr/Stats.js"></script>
+    <% } %>
 
     <% if (isPresenter) { %>
       <script src="public/javascripts/config-presenter.js"></script>
@@ -76,8 +78,6 @@
     </script>
 
     <link type="text/css" rel="stylesheet" href="public/stylesheets/main.css">
-    <link type="text/css" rel="stylesheet" href="public/stylesheets/slide.css">
-    <link type="text/css" rel="stylesheet" href="public/stylesheets/script.css">
   </head>
   <body>
     <div id="question-container">
