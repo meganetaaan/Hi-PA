@@ -29,17 +29,17 @@ function getQuestionAlert(callback){
     var slideNo = slide.state.indexh;
     Question.find({slideNumber:slideNo}, function(er, res){
         var questionFactor = res.reduce(function (prevVal, elem){return prevVal + elem}, 0);
-        var slideLeftTime = time.getTime() - time.slideTime * slideNo;
-        if (questionFactor >= getClientNo()/3 && slideLeftTime >= 60) {
+        var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
+        if (questionFactor >= getClientNo()/3) {
             res.sort();
             var i = 0;
             while (alert.doneQuestionIDs.includes(list[i]._id)) {
                 i++;
             }
             alert.doneQuestionIDs.push(list[i]._id);
-            callback(list[i]._id);
+            callback(list[i]._id, slideLeftTime);
         } else {
-            callback(null);
+            callback(null, slideLeftTime);
         }
     });
 }
@@ -48,7 +48,7 @@ function getTooltipAlert(){
     var urgents = Object.keys(tooltip.term).filter(function (el, i, a) {
         return tooltip.term[el] >= 0.2 * getClientNo() && !alert.doneTerms.includes(el);
     });
-    alert.doneTerms.concat(urgents);
+    alert.doneTerms = alert.doneTerms.concat(urgents);
     return urgents.length > 0 ? urgents : null;
 }
 

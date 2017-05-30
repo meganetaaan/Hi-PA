@@ -25,7 +25,7 @@ function setTimeState(data) {
         case 'END':
             time.et.reset();
             break;
-        case 'PAUSE':
+        case 'PAUSED':
             time.et.pause();
             break;
     }
