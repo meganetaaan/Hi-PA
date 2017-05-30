@@ -6,5 +6,5 @@ function _getTimeState(req, res, next) {
     res.json(time.getTimeState());
     next();
 }
-router.get('/state');
+router.get('/state', _getTimeState);
 module.exports = router;

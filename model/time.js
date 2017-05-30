@@ -34,7 +34,10 @@ function setTimeState(data) {
 }
 
 function getTimeState() {
-    time.passedTime = getTime();
+    if (time.state !== 'END')
+        time.passedTime = getTime();
+    else
+        time.passedTime = 0;
     return time;
 }
 time.getTime = getTime;
