@@ -41,7 +41,7 @@ slide.presenter.on('connection', function(socket) {
             alertsock.presenter.emit('Alert', {
                 realtimefeedback : feedback.send(),
                 duration : slides.duration,
-                passedTime : time.getTime();
+                passedTime : time.getTime(),
                 timeAlert : alert.getTimeAlert()
             });
         }
