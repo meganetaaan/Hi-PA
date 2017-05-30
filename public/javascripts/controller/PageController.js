@@ -4,7 +4,6 @@ var controller = {
   scriptController: hipa.controller.ScriptController,
   tooltipController: hipa.controller.TooltipController,
   timeController: hipa.controller.TimeController,
-  alertController: hipa.controller.AlertController,
   slideController: hipa.controller.SlideController,
   feedbackController: hipa.controller.FeedbackController,
   __meta: {
@@ -18,9 +17,6 @@ var controller = {
           rootElement: '#script-container',
       },
       timeController: {
-          rootElement: '#script-container',
-      },
-      alertController: {
           rootElement: '#script-container',
       },
       slideController: {

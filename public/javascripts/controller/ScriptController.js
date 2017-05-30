@@ -7,6 +7,7 @@ var scriptController = {
   socket: null,
 
   // for mouth recognition
+  __mouth_threshold: 0,
   __vid: null,
   __overlay: null,
   __overlayCC: null,
@@ -324,8 +325,8 @@ var scriptController = {
         positionString += "[" + positions[p][0].toFixed(1) + "," + positions[p][1].toFixed(1) + "] ";
       }
       var gap = positions[57][1]-positions[60][1];
-      var speakInfoString = (gap>4)? "Mouth Open" : "Mouth Close";
-      this.recognition.setMouthOpen(gap>4);
+      var speakInfoString = (gap>this.__mouth_threshold)? "Mouth Open" : "Mouth Close";
+      this.recognition.setMouthOpen(gap>this.__mouth_threshold);
       document.getElementById("mouth-info").innerHTML = "Gap " + gap.toFixed(2) + ": " + speakInfoString;
     }
   },
