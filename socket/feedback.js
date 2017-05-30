@@ -4,8 +4,8 @@ var feedback = {};
 feedback.speed = {fast : 0, slow : 0};
 feedback.sound = {loud : 0, small : 0};
 feedback.threshold = {
-    speed : 0.1,
-    sound : 0.1
+    speed : 0.2,
+    sound : 0.2
 }
 feedback.reset = () => {
     feedback.speed = {fast : 0, slow : 0};
@@ -41,17 +41,17 @@ feedback.audience.on('connection', (socket) => {
     });
 });
 feedback.send = () => {
+    var clientNo = io.engine.clientsCount;
     var speed = 0;
     var volume = 0;
-    // TODO : add logic!
-    if (1 > feedback.threshold.speed * 1) {
+    if (feedback.speed.fast > feedback.threshold.speed * clientNo) {
         speed = 1;
-    } else {
+    } else if (feedback.speed.slow > feedback.threshold.speed* clientNo) {
         speed = -1;
     }
-    if (1 > feedback.threshold.sound * 1) {
+    if (feedback.sound.loud > feedback.threshold.sound * clientNo) {
         volume = 1;
-    } else {
+    } else if (feedback.sound.small > feedback.threshold.sound * clientNo) {
         volume = -1;
     }
     return {speed : speed, volume : volume};
