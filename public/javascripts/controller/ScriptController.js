@@ -214,7 +214,7 @@ var scriptController = {
         document.getElementById('final_span').innerHTML += final_span;
       } else {
         final_span = "slide " + slide + ": " + final_span;
-        if (!this.__pre_start_slide_num == -1) {
+        if (this.__pre_start_slide_num !== -1) {
           final_span = "<br />" + final_span;
         }
         document.getElementById('final_span').innerHTML += final_span;
@@ -252,6 +252,8 @@ var scriptController = {
       console.log("You are not recording. Something is wrong!");
       return;
     }
+    this.__pre_start_slide_num = -1;
+    this.__pre_end_slide_num = -1;
     this.recognition.setRecognizing(false);
     this._stopVideo();
     this.recognition.stop();
