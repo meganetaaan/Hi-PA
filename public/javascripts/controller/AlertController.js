@@ -32,7 +32,7 @@ var alertController = {
     }
     var rf = data['realtimefeedback'];
     for (key in rf) {
-      this._alert(this._get_alert_content(key, rf[key]));
+      if (rf[key]!==0) this._alert(this._get_alert_content(key, rf[key]));
     }
 
   },

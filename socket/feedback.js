@@ -42,6 +42,7 @@ feedback.audience.on('connection', (socket) => {
 });
 feedback.send = () => {
     var clientNo = io.engine.clientsCount;
+    console.log(clientNo);
     var speed = 0;
     var volume = 0;
     if (feedback.speed.fast > feedback.threshold.speed * clientNo) {
@@ -54,6 +55,7 @@ feedback.send = () => {
     } else if (feedback.sound.small > feedback.threshold.sound * clientNo) {
         volume = -1;
     }
+    console.log(speed, volume);
     return {speed : speed, volume : volume};
 }
 module.exports = feedback;
