@@ -44,6 +44,7 @@ var alertController = {
     console.log(content);
     var msg = new SpeechSynthesisUtterance(content);
     window.speechSynthesis.speak(msg);
+    console.log('end');
   },
 
   _get_alert_content: function(type, value){
