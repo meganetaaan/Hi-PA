@@ -49,7 +49,7 @@ var alertController = {
     if (type == "question")
       return "Since we are out of time, let's go to the next slide.";
     if (type == 'time')
-      return "You have " + value + " minute remaining."
+      return "You have " + Math.floor(value) + " minute remaining."
     var state;
     if (type == 'volume') {
       if(value == 1) state = 'loud';
