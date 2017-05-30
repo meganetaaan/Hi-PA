@@ -1,29 +1,42 @@
+var slide = require('./slide').getSlide('slide_01');
+var timer = require('elapsed-time');
+var timescale = require('timescale');
+
 var time = {
     state : 'END',
-    duration : 0,
+    duration : slide.duration,
     passedTime : 0,
+    slideTime : slide.duration / slide.slideNo,
+    et : timer.new()
 }
 
 function getTime() {
-    return time.duration - time.passedTime;
-}
-
-function getAlert() {
-    return true;
+    return timescale(time.et.getRawValue(),'ns','s');
 }
 
 function setTimeState(data) {
-    time.state = data.state;
-    if (data.duration !== null) {
-        time.duration = data.duration;
+    switch(data.state) {
+        case 'STARTED':
+            if (time.state === 'END')
+                time.et.start();
+            else
+                time.et.resume();
+            break;
+        case 'END':
+            time.et.reset();
+            break;
+        case 'PAUSE':
+            time.et.pause();
+            break;
     }
+    time.state = data.state;
 }
 
 function getTimeState() {
+    time.passedTime = getTime();
     return time;
 }
 time.getTime = getTime;
-time.getAlert = getAlert;
 time.setTimeState = setTimeState;
 time.getTimeState = getTimeState;
 

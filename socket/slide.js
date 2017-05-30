@@ -2,7 +2,8 @@ var slideCtrl = require('../model/slide');
 var io = require('./io').io();
 var time = require('../model/time');
 var feedback = require('./feedback');
-var alert = require('./alert');
+var alert = require('../model/alert');
+var alertsock = require('./alert');
 var slide = {};
 
 slide.audience = io.of('/socket/slide/audience');
@@ -35,10 +36,10 @@ slide.presenter.on('connection', function(socket) {
     socket.on('slidestatechanged', function(data) {
         slideCtrl.updateState('slide_01', data.slideData.state);
         slide.audience.emit('slidestatechanged', data);
-        alert.presenter.emit('Alert', {
+        alertsock.presenter.emit('Alert', {
             realtimefeedback : feedback.send(),
             time : time.getTime(),
-            timeAlert : time.getAlert()
+            timeAlert : alert.getTimeAlert()
         });
     });
 
