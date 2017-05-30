@@ -25,15 +25,19 @@ function setTimeState(data) {
         case 'END':
             time.et.reset();
             break;
-        case 'PAUSE':
-            time.et.pause();
+        case 'PAUSED':
+            if (time.state === 'STARTED')
+                time.et.pause();
             break;
     }
     time.state = data.state;
 }
 
 function getTimeState() {
-    time.passedTime = getTime();
+    if (time.state !== 'END')
+        time.passedTime = getTime();
+    else
+        time.passedTime = 0;
     return time;
 }
 time.getTime = getTime;

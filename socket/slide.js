@@ -36,11 +36,15 @@ slide.presenter.on('connection', function(socket) {
     socket.on('slidestatechanged', function(data) {
         slideCtrl.updateState('slide_01', data.slideData.state);
         slide.audience.emit('slidestatechanged', data);
-        alertsock.presenter.emit('Alert', {
-            realtimefeedback : feedback.send(),
-            time : time.getTime(),
-            timeAlert : alert.getTimeAlert()
-        });
+        console.log(time.state);
+        if (time.state === 'STARTED') {
+            alertsock.presenter.emit('Alert', {
+                realtimefeedback : feedback.send(),
+                duration : slides.duration,
+                passedTime : time.getTime(),
+                timeAlert : alert.getTimeAlert()
+            });
+        }
     });
 
     socket.on('slidecontentchanged', function(data) {
