@@ -14,6 +14,6 @@ time.presenter.on('connection', (socket) => {
     });
     socket.on('disconnect', function(socket) {
         Time.setTimeState({state:'PAUSED'});
-    }
+    });
 });
 module.exports = time;

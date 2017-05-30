@@ -26,7 +26,8 @@ function setTimeState(data) {
             time.et.reset();
             break;
         case 'PAUSED':
-            time.et.pause();
+            if (time.state === 'STARTED')
+                time.et.pause();
             break;
     }
     time.state = data.state;
