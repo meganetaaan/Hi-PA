@@ -70,6 +70,11 @@ var slideController = {
             //No Event listener for Reveal.js
         } else if (config.isPresenter) {
             const closure = () => {
+                if (hipa.controller.TimeController.get_status() !== 'STARTED') {
+                    this._currentState = this.getState();
+                    this._postInfo(this._currentState);
+                    return;
+                }
                 if (this._equalState(this.getState(), this._currentState)) {
                     return;
                 }
