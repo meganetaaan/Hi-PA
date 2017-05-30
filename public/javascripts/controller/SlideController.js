@@ -53,7 +53,6 @@ var slideController = {
         };
 
         if (config.isSlideshow) {
-            console.log("SlideShow!");
             options.controls = false;
             options.keyboard = false;
             options.overview = false;
@@ -85,18 +84,21 @@ var slideController = {
                     dataType: 'JSON',
                     url: config.url + '/alert',
                 }).then((json) => {
-                    console.log(json);
                     let questionID = json.questionID;
                     let tooltip = json.tooltip;
+                    let remainingTime = json.remainingTime;
                     if (tooltip === null && questionID === null) {
                         this._postInfo(nowState);
                         this._currentState = nowState;
                         this.setState(nowState);
                         this._isNetworking = false;
                         return;
+                    } else if (remainingTime <= 60) {
+                        this.setState(nowState);
+                        this._isNetworking = false;
+                        hipa.controller.AlertController.handle_question_data(json);
                     } else {
                         this._isNetworking = false;
-                        //TODO: when there is questions
                         hipa.controller.AlertController.handle_question_data(json);
                     }
                 }).fail(()=> {

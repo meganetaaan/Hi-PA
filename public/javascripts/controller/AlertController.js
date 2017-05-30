@@ -39,8 +39,19 @@ var alertController = {
 
   _alert: function(content) {
     console.log(content);
+    this._append_html(content);
     //var msg = new SpeechSynthesisUtterance(content);
     //window.speechSynthesis.speak(msg);
+  },
+
+  _append_html: function(content) {
+    let talkingBalloonDiv = '<div class="talk-bubble" style="display:none;"><div class="talktext"><p>' + content + '</p></div></div>'
+    let $tmp = $(talkingBalloonDiv).appendTo('#talkingballoon-container');
+    $tmp.show(1000);
+    setTimeout(function() {
+      $tmp.hide(1000);
+    }, 5000);
+
   },
 
   _get_alert_content: function(type, value){
