@@ -10,7 +10,6 @@ var alertController = {
 
   // this function handles question and tooltip
   handle_question_data: function(data) {
-    console.log(data);
     var content;
     if (data['questionID'] !== null) {
       var qid = data['questionID'];
@@ -26,7 +25,6 @@ var alertController = {
 
   // this function handles realtimefeedback and time
   _handle_data: function(data) {
-    console.log(data);
     if (data['timeAlert'] !== null) {
       this._alert(this._get_alert_content('time', -data['time']));
     }
@@ -34,7 +32,6 @@ var alertController = {
     for (key in rf) {
       if (rf[key]!==0) this._alert(this._get_alert_content(key, rf[key]));
     }
-
   },
 
   _alert: function(content) {

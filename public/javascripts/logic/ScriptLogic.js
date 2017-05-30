@@ -49,8 +49,7 @@ var speechRecognition = {
       if (typeof(event.results) == 'undefined') {
         final_transcript += one_line;
       }
-      else {
-      //else if (this.__mouth_open) {
+      else if (this.__mouth_open) {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           var result = event.results[i];
           if (result.isFinal) {
