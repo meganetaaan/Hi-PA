@@ -6,7 +6,7 @@ var timeController = {
   _status: 'END',
   __construct: function(){
     this.time = hipa.logic.Time;
-    this.socket = io(config.url + '/time');
+    this.socket = io('/socket/time/presenter');
   },
   __ready: function(context){
     return h5.ajax({
