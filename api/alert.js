@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var alert = require('../model/alert');
+var alertsocket = require('../socket/alert');
 
 function _getAlert(req, res, next){
     var senddata;
@@ -13,6 +14,7 @@ function _getAlert(req, res, next){
             senddata = {questionID : null, tooltip : alert.getTooltipAlert(), leftTime}
             res.json(senddata);
         }
+        alertsocket.presenter.emit('UrgentAlert', senddata);
         console.log(senddata);
     });
     //next();
