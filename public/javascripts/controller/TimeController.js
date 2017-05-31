@@ -3,12 +3,14 @@ var timeController = {
   socket: null,
   time: hipa.logic.Time,
   _count_time: null,
-  _status: 'END',
+  _status: null,
   __construct: function(){
+    this._status = 'END';
     this.time = hipa.logic.Time;
     this.socket = io('/socket/time/presenter');
   },
   __ready: function(context){
+    this._status = 'END';
     return h5.ajax({
       type: 'GET',
       dataType: 'JSON',
@@ -18,6 +20,9 @@ var timeController = {
     }).fail((error) => {
       console.log(error);
     });
+  },
+  __init: function(){
+    this._status = 'END';
   },
   '#start_button click': function() {
     this._emit_state('STARTED');
@@ -37,6 +42,7 @@ var timeController = {
   },
   _emit_state: function(state) {
     this._status = state;
+    console.log(this._status);
     this.socket.emit('SetTimeState', {'state': state});
   },
   get_status: function(){
