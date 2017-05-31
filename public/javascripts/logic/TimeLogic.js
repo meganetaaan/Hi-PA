@@ -1,6 +1,6 @@
 var time = {
-  __name: 'Time',
-  _duration: [0,0,0],
+  __name: 'hipa.logic.Time',
+  _duration1: [0,0,0],
   _passedTime: [0,0,0],
   dateFormat: '{0}:{1}:{2} / {3}:{4}:{5}',
   getCurrent: function(time){
@@ -13,23 +13,25 @@ var time = {
     return this._format(year, month, date, hour, min, sec);
   },
   init: function() {
-    this._passedTime = [0, 0, 0];
+    this._passedTime = [0,0,0];
   },
   set: function(duration, passedTime) {
-    this._duration = this._sec2time(duraction);
+    this._duration1 = this._sec2time(duration);
     this._passedTime = this._sec2time(passedTime);
+    console.log(this, this._duration1);
   },
   update: function() {
+    console.log(this, this._duration1);
     this._passedTime[2] = this._passedTime[2] + 1;
-    if (this._passedTime[2] == 60) {
+    if (this._passedTime[2] === 60) {
       this._passedTime[2] = 0;
       this._passedTime[1] = this._passedTime[1] + 1;
-      if (this._passedTime[0] == 60) {
+      if (this._passedTime[0] === 60) {
         this._passedTime[1] = 0;
         this._passedTime[0] = this._passedTime[0] + 1;
       }
     }
-    return this._format(this._duration, this._passedTime);
+    return this._format(this._duration1, this._passedTime);
   },
   _format: function(t1, t2){
     return h5.u.str.format(this.dateFormat, t1[0], t1[1], t1[2], t2[0], t2[1], t2[2]);
@@ -42,3 +44,5 @@ var time = {
   }
 
 };
+
+h5.core.expose(time);

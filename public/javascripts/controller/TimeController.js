@@ -1,14 +1,14 @@
 var timeController = {
   __name: 'hipa.controller.TimeController',
   socket: null,
-  time: time,
+  time: hipa.logic.Time,
   _count_time: null,
   _status: 'END',
   __construct: function(){
+    this.time = hipa.logic.Time;
     this.socket = io(config.url + '/time');
   },
   __ready: function(context){
-    console.log(config.url);
     return h5.ajax({
       type: 'GET',
       dataType: 'JSON',
