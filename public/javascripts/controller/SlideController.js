@@ -69,7 +69,7 @@ var slideController = {
             //No Event listener for Reveal.js
         } else if (config.isPresenter) {
             const closure = () => {
-                if (hipa.controller.TimeController.get_status() !== 'STARTED') {
+                if (parentController.timeController.get_status() !== 'STARTED') {
                     this._currentState = this.getState();
                     this._postInfo(this._currentState);
                     return;
@@ -97,15 +97,15 @@ var slideController = {
                         this._currentState = nowState;
                         this.setState(nowState);
                         this._isNetworking = false;
-                        hipa.controller.AlertController.handle_question_data(json);
+                        parentController.alertController.handle_question_data(json);
                         return;
                     } else if (remainingTime <= 60) {
                         this.setState(nowState);
                         this._isNetworking = false;
-                        hipa.controller.AlertController.handle_question_data(json);
+                        parentController.alertController.handle_question_data(json);
                     } else {
                         this._isNetworking = false;
-                        hipa.controller.AlertController.handle_question_data(json);
+                        parentController.alertController.handle_question_data(json);
                     }
                 }).fail(()=> {
                     this._postInfo(nowState);
