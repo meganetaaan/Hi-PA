@@ -97,15 +97,12 @@ var slideController = {
                         this._currentState = nowState;
                         this.setState(nowState);
                         this._isNetworking = false;
-                        parentController.alertController.handle_question_data(json);
                         return;
                     } else if (remainingTime <= 60) {
                         this.setState(nowState);
                         this._isNetworking = false;
-                        parentController.alertController.handle_question_data(json);
                     } else {
                         this._isNetworking = false;
-                        parentController.alertController.handle_question_data(json);
                     }
                 }).fail(()=> {
                     this._postInfo(nowState);
