@@ -32,6 +32,7 @@ var timeController = {
   },
   '#stop_button click': function() {
     this._emit_state('END');
+    clearInterval(this._count_time);
     this.time.init();
   },
   _emit_state: function(state) {
