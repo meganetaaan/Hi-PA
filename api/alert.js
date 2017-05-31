@@ -15,7 +15,7 @@ function _getAlert(req, res, next){
         }
         console.log(senddata);
     });
-    next();
+    //next();
 }
 
 router.get('/', _getAlert);
