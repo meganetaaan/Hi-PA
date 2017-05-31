@@ -21,7 +21,6 @@ var time = {
     console.log(this, this._duration1);
   },
   update: function() {
-    console.log(this, this._duration1);
     this._passedTime[2] = this._passedTime[2] + 1;
     if (this._passedTime[2] === 60) {
       this._passedTime[2] = 0;

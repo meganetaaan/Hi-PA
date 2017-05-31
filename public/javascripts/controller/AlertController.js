@@ -31,7 +31,8 @@ var alertController = {
 
   // this function handles realtimefeedback and time
   _handle_data: function(data) {
-    if (data['timeAlert'] !== null) {
+    console.log(data);
+    if (data['timeAlert']) {
       this._alert(this._get_alert_content('time', -data['time']));
     }
     var rf = data['realtimefeedback'];
@@ -85,7 +86,7 @@ var alertController = {
 
   _get_alert_content: function(type, value){
     if (type === 'time')
-      return "You have " + Math.floor(value) + " minute remaining."
+      return "Lack of time! You have " + Math.floor(value) + " seconds remaining."
     var state;
     if (type === 'volume') {
       if(value === 1) state = 'loud';
