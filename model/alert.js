@@ -16,8 +16,9 @@ function getClientNo() {
 }
 
 function getTimeAlert() {
-    var timeFactor = (slide.slideNo - slide.state.indexh)*(time.duration - time.getTime()) / slide.slideNo / time.duration;
-    if (timeFactor >= 1.4 && rawtime.time() - lastTimeAlert >= 20) {
+    var slideNo = slide.state.indexh;
+    var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
+    if (slideLeftTime <= 0 && rawtime.time() - alert.lastTimeAlert >= 20) {
         lastTimeAlert = rawtime.time();
         return true;
     } else {
@@ -30,11 +31,11 @@ function getQuestionAlert(callback){
     Question.find({slideNumber:slideNo}, function(er, res){
         var questionFactor = res.reduce(function (prevVal, elem){return prevVal + elem}, 0);
         var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
-        if (questionFactor >= getClientNo()/3) {
+        if (questionFactor >= getClientNo()/10000000000) {
             res.sort();
-            var i = 0;
-            while (alert.doneQuestionIDs.includes(list[i]._id)) {
-                i++;
+            var i = res.length - 1;
+            while (alert.doneQuestionIDs.includes(list[i]._id) && i >= 0) {
+                i--;
             }
             alert.doneQuestionIDs.push(list[i]._id);
             callback(list[i]._id, slideLeftTime);
@@ -46,10 +47,24 @@ function getQuestionAlert(callback){
 
 function getTooltipAlert(){
     var urgents = Object.keys(tooltip.term).filter(function (el, i, a) {
-        return tooltip.term[el] >= 0.2 * getClientNo() && !alert.doneTerms.includes(el);
+        return tooltip.term[el] >= 0.0 * getClientNo() && !alert.doneTerms.includes(el);
     });
-    alert.doneTerms = alert.doneTerms.concat(urgents);
-    return urgents.length > 0 ? urgents : null;
+    if (urgents.length > 0) {
+        urgents.sort(function (a, b) {
+            if (tooltip.term[a] > tooltip.term[b]) {
+                return 1;
+            } else if (tooltip.term[a] < tooltip.term[b]) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        var urgent = urgents.pop();
+        alert.doneTerms.push(urgent);
+        return urgent;
+    } else {
+        return null;
+    }
 }
 
 module.exports = {

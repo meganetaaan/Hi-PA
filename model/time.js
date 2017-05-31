@@ -15,25 +15,36 @@ function getTime() {
 }
 
 function setTimeState(data) {
-    switch(data.state) {
+    switch(time.state) {
         case 'STARTED':
-            if (time.state === 'END')
-                time.et.start();
-            else
-                time.et.resume();
+            if (data.state === 'END') {
+                time.et.reset();
+                time.state = 'END';
+            } else if (data.state === 'PAUSED') {
+                time.et.pause();
+                time.state = 'PAUSED';
+            }
             break;
         case 'END':
-            time.et.reset();
+            if (data.state === 'STARTED') {
+                time.et.start();
+                time.state = 'STARTED';
+            }
             break;
         case 'PAUSED':
-            if (time.state === 'STARTED')
-                time.et.pause();
+            if (data.state === 'STARTED') {
+                time.et.resume();
+                time.state = 'STARTED';
+            } else if (data.state === 'END') {
+                time.et.reset();
+                time.state = 'END';
+            }
             break;
     }
-    time.state = data.state;
 }
 
 function getTimeState() {
+    console.log(time.state);
     if (time.state !== 'END')
         time.passedTime = getTime();
     else

@@ -49,5 +49,8 @@ function _transformer (doc, ret, options) {
 }
 questionSchema.set('toJSON', {virtuals : true, transform : _transformer});
 var Question = mongoose.model('Question', questionSchema);
+Question.reset = function () {
+    Question.remove({}).exec();
+}
 
 module.exports = Question;

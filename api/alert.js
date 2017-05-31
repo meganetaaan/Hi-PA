@@ -3,13 +3,19 @@ var router = express.Router();
 var alert = require('../model/alert');
 
 function _getAlert(req, res, next){
+    var senddata;
+    console.log('alert called');
     alert.getQuestionAlert(function (result, leftTime) {
         if (result !== null) {
-            res.json({questionID : result, tooltip : null, leftTime });
+            senddata = {questionID : result, tooltip : null, leftTime };
+            res.json(senddata);
         } else {
-            res.json({questionID : null, tooltip : alert.getTooltipAlert(), leftTime});
+            senddata = {questionID : null, tooltip : alert.getTooltipAlert(), leftTime}
+            res.json(senddata);
         }
+        console.log(senddata);
     });
+    next();
 }
 
 router.get('/', _getAlert);
