@@ -97,6 +97,7 @@ var slideController = {
                         this._currentState = nowState;
                         this.setState(nowState);
                         this._isNetworking = false;
+                        hipa.controller.AlertController.handle_question_data(json);
                         return;
                     } else if (remainingTime <= 60) {
                         this.setState(nowState);
