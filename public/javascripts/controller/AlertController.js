@@ -6,11 +6,12 @@ var alertController = {
   __construct: function(){
     socket = io('/socket/alert/presenter');
     socket.on('Alert', (data) => {this._handle_data(data);});
+    socket.on('UrgentAlert', (data) => {this._handle_question_data(data);});
   },
 
 
   // this function handles question and tooltip
-  handle_question_data: function(data) {
+  _handle_question_data: function(data) {
     var content;
     if (data['remainingTime'] < 60) {
       content = "Since we are out of time, let's go to the next slide";
