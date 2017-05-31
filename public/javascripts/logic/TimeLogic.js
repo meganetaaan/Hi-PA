@@ -33,7 +33,11 @@ var time = {
     return this._format(this._duration1, this._passedTime);
   },
   _format: function(t1, t2){
-    return h5.u.str.format(this.dateFormat, t1[0], t1[1], t1[2], t2[0], t2[1], t2[2]);
+    return h5.u.str.format(this.dateFormat, this._format_string(t1[0]), this._format_string(t1[1]), this._format_string(t1[2]), this._format_string(t2[0]), this._format_string(t2[1]), this._format_string(t2[2]));
+  },
+  _format_string: function (s) {
+    var str = s.toString();
+    return (str.length==1)? '0' + str: str;
   },
   _sec2time: function(tot) {
     var hr = Math.floor(tot/3600);
