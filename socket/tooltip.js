@@ -4,7 +4,6 @@ var tooltip = {term:{}};
 tooltip.audience = io.of('/socket/tooltip/audience');
 tooltip.audience.on('connect', function (socket) {
     socket.on('Searched', function (data) {
-        console.log(tooltip.term);
         if (typeof tooltip.term[data.term] === 'undefined') {
             tooltip.term[data.term] = 0;
         }
