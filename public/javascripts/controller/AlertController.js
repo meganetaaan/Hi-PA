@@ -40,12 +40,37 @@ var alertController = {
     }
   },
 
+  _queue: [],
+  _isAlerting: false,
+  _alertMsg : null,
+
   _alert: function(content) {
     console.log(content);
+    this._queue.push(content);
+    if (!this._isAlerting) {
+      this._alertQueuePop();
+    }
+  },
+
+  _alertQueuePop: function() {
+    this._isAlerting = true;
+    let content = this._queue.shift();
+    if (content === null) {
+      return;
+    }
     this._append_html(content);
     var msg = new SpeechSynthesisUtterance(content);
+    // This is for browser GC bug.
+    // link : https://stackoverflow.com/a/35935851
+    this._alertMsg = msg;
     window.speechSynthesis.speak(msg);
-    console.log('end');
+    msg.onend = (event) => {
+      if (this._queue.length !== 0) {
+        this._alertQueuePop();
+      } else {
+        this._isAlerting = false;
+      }
+    }
   },
 
   _append_html: function(content) {
