@@ -5,7 +5,6 @@ var alertsocket = require('../socket/alert');
 
 function _getAlert(req, res, next){
     var senddata;
-    console.log('alert called');
     alert.getQuestionAlert(function (result, leftTime) {
         if (result !== null) {
             senddata = {questionID : result, tooltip : null, leftTime };
