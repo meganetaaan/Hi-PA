@@ -7,10 +7,10 @@ function _getAlert(req, res, next){
     var senddata;
     alert.getQuestionAlert(function (result, leftTime) {
         if (result !== null) {
-            senddata = {questionID : result, tooltip : null, leftTime };
+            senddata = {questionID : result._id, tooltip : null, leftTime, question : result};
             res.json(senddata);
         } else {
-            senddata = {questionID : null, tooltip : alert.getTooltipAlert(), leftTime}
+            senddata = {questionID : null, tooltip : alert.getTooltipAlert(), leftTime, question : null}
             res.json(senddata);
         }
         alertsocket.presenter.emit('UrgentAlert', senddata);

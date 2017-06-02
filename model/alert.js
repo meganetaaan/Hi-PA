@@ -45,7 +45,7 @@ function getQuestionAlert(callback){
             }
             alert.doneQuestionIDs.push(''+res[i]._id);
             console.log(alert.doneQuestionIDs);
-            callback(res[i]._id, slideLeftTime);
+            callback(res[i], slideLeftTime);
         } else {
             callback(null, slideLeftTime);
         }
