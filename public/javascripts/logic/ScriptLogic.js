@@ -4,7 +4,7 @@ var speechRecognition = {
     __ignore_onend: false,
     __recognition: new webkitSpeechRecognition(),
     __mouth_open: false,
-
+    __restartTimer: null,
     // initializer
     initialize: function(){
       this.__recognition.continuous = true;
@@ -15,15 +15,54 @@ var speechRecognition = {
     start: function(){
       this.__ignore_onend = false;
       this.__recognition.start();
+      this.setRestartTimer();
     },
     stop: function(){
       this.__recognition.stop();
+      this.removeRestartTimer();
     },
+
+    restart: function() {
+      this.__recognition.stop();
+      this.setRestartTimer();
+    },
+
+    setRestartTimer: function() {
+      this.removeRestartTimer();
+      this.__restartTimer = setTimeout(()=>{
+        this.__restartTimer = null;
+        this.restart();
+      }, 2000);
+    },
+    removeRestartTimer: function() {
+      if (this.__restartTimer !== null) {
+        clearTimeout(this.__restartTimer);
+        this.__restartTimer = null;
+      }
+    },
+
     setEventHandlers: function(error_function, result_function){
-      this.__recognition.onstart = function(){};
-      this.__recognition.onerror = function(e){error_function(e)};
-      this.__recognition.onend = function(){if (this.__recognition) this.start();};
-      this.__recognition.onresult = function(e){result_function(e)};
+      this.__recognition.onstart = () => {
+        // console.log('start');
+      };
+      this.__recognition.onerror = (e) => {error_function(e)};
+      this.__recognition.onend = () => {
+        if (this.__recognizing) this.start();
+        // console.log('end')
+      };
+      this.__recognition.onresult = (e) => {
+        this.setRestartTimer();
+        result_function(e);
+      };
+      /*
+      this.__recognition.onaudiostart = () => {console.log('onaudiostart');};
+      this.__recognition.onaudioend = () => {console.log('onaudioend');};
+      this.__recognition.onsoundstart = () => {console.log('onsoundstart');};
+      this.__recognition.onsoundend = () => {console.log('onsoundend');};
+      this.__recognition.onnomatch = () => {console.log('onnomatch');};
+      this.__recognition.onspeechstart = () => {console.log('onspeechstart');};
+      this.__recognition.onspeechend = () => {console.log('onspeechend');};
+      */
     },
     // set&get methods
     setRecognizing: function(recognizing){
