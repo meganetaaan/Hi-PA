@@ -16,6 +16,12 @@ var questionListLogic = {
     });
   },
 
+  deleteAllInLocal: function() {
+    this.model.removeAll();
+    this.questionList.splice(0, this.questionList.length);
+    this.questionList.length = 0;
+  },
+
   add: function(question, nickname, slideNumber, password) {
     return h5.ajax({
       type: 'POST',

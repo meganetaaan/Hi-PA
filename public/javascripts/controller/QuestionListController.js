@@ -21,6 +21,10 @@ var controller = {
         const like_cnt = data.like_cnt;
         this.questionListLogic.updateLikesFromLocal(question_id, like_cnt);
       });
+
+      this.socket.on('DELETE_ALL', (data) => {
+        this.questionListLogic.deleteAllInLocal();
+      });
     },
 
     __init: function(context) {
