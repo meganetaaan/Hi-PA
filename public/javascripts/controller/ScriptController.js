@@ -32,6 +32,10 @@ var scriptController = {
       this.socket.on('ADD_SCRIPT', (data) => {
         this._handle_script(data);
       });
+      this.socket.on('DELETE_ALL', (data) => {
+        $('#final_span').empty();
+        $('#interim_span').empty();
+      });
     }
   },
   __init: function(context){
