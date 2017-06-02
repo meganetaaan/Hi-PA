@@ -1,6 +1,7 @@
 var io = require('./io').io();
 var Time = require('../model/time');
 var Script = require('../model/Script');
+var script = require('./script');
 var Question = require('../model/Question');
 var question = require('./question');
 
@@ -13,6 +14,7 @@ time.presenter.on('connection', (socket) => {
             Script.reset();
             Question.reset();
             question.io.emit('DELETE_ALL', {});
+            script.audience.emit('DELETE_ALL', {});
         }
         Time.setTimeState(data);
     });
