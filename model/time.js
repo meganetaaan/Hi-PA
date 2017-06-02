@@ -11,7 +11,7 @@ var time = {
 }
 
 function getTime() {
-    return timescale(time.et.getRawValue(),'ns','s');
+    return Math.floor(timescale(time.et.getRawValue(),'ns','s'));
 }
 
 function setTimeState(data) {
