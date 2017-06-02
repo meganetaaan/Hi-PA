@@ -65,6 +65,8 @@ var alertController = {
     // This is for browser GC bug.
     // link : https://stackoverflow.com/a/35935851
     this._alertMsg = msg;
+    msg.lang = 'en-US';
+    msg.rate = 1.3;
     window.speechSynthesis.speak(msg);
     msg.onend = (event) => {
       if (this._queue.length !== 0) {
