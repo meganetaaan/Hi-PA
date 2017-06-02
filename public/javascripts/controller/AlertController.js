@@ -29,8 +29,8 @@ var alertController = {
     }
     else if (data['questionID']) {
       var qid = data['questionID'];
-      content = "There is a question!";
-      content += " question: " + questionDataModel.get(qid).get('question');
+      content = "There is a question! ";
+      content += data.question.question;
     } else if (data['tooltip'] !== null) {
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
     } else if (this._check_time('question', data['leftTime'])) {
