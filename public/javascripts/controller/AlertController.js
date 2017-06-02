@@ -3,28 +3,41 @@ var alertController = {
   questionDataModel: 'hipa.data.questionDataModel',
   socket: null,
   alarm_queue: [],
+  alerttime: {
+    'question': -1,
+    'time': -1,
+    'volume': -1,
+    'speed': -1
+  },
   __construct: function(){
     socket = io('/socket/alert/presenter');
     socket.on('Alert', (data) => {this._handle_data(data);});
     socket.on('UrgentAlert', (data) => {this._handle_question_data(data);});
   },
 
+  _check_time: function(k, rt) {
+    var t = this.alerttime[k];
+    return (t == -1 || rt - t >= 30)
+  },
 
   // this function handles question and tooltip
   _handle_question_data: function(data) {
     var content;
-    if (data['remainingTime'] < 60) {
+    if (data['leftTime'] < 20 && this._check_time('time', data['leftTime'])) {
       content = "Since we are out of time, let's go to the next slide";
+      this.alerttime['time'] = data['leftTime'];
     }
     else if (data['questionID']) {
       var qid = data['questionID'];
       content = "There is a question!";
-      content += " id: " + qid;
-      content += " question: " + questionDataModel.get(qid);
+      content += " question: " + questionDataModel.get(qid).get('question');
     } else if (data['tooltip'] !== null) {
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
-    } else {
+    } else if (this._check_time('question', data['leftTime'])) {
       content = "There is no question. Everyone, you can ask more and more.";
+      this.alerttime['question'] = data['leftTime'];
+    } else {
+      return;
     }
     this._alert(content);
   },
@@ -38,8 +51,12 @@ var alertController = {
     }
     var rf = data['realtimefeedback'];
     for (key in rf) {
-      if (rf[key]!==0) this._alert(this._get_alert_content(key, rf[key]));
+      if (rf[key]!==0 && this._check_time(key, data['passedTime'])) {
+        this._alert(this._get_alert_content(key, rf[key]));
+        this.alerttime[key] = data['passedTime'];
+      }
     }
+    console.log(this.alerttime);
   },
 
   _queue: [],
@@ -65,6 +82,8 @@ var alertController = {
     // This is for browser GC bug.
     // link : https://stackoverflow.com/a/35935851
     this._alertMsg = msg;
+    msg.lang = 'en-US';
+    msg.rate = 1.3;
     window.speechSynthesis.speak(msg);
     msg.onend = (event) => {
       if (this._queue.length !== 0) {
@@ -89,7 +108,7 @@ var alertController = {
     if (type === 'time') {
       var content = "Lack of time!";
       if (value >= 0) content += " You have " + Math.floor(value) + " seconds remaining.";
-      else content += " You have " + Math.floor(value) + " seconds overtime.";
+      else content += " You have " + Math.floor(-value) + " seconds overtime.";
       return content;
     }
     var state;
