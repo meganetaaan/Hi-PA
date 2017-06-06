@@ -4,7 +4,7 @@ var controller = {
   slideController: hipa.controller.SlideController,
   __meta: {
       alertController: {
-          rootElement: '#script-container',
+          rootElement: '#alert-container',
       },
       slideController: {
           rootElement: '#slide-container',

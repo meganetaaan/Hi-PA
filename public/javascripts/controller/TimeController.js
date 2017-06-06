@@ -1,31 +1,52 @@
 var timeController = {
   __name: 'hipa.controller.TimeController',
   socket: null,
-  time: time,
+  time: hipa.logic.Time,
+  _count_time: null,
+  _status: null,
   __construct: function(){
+    this._status = 'END';
+    this.time = hipa.logic.Time;
     this.socket = io('/socket/time/presenter');
   },
   __ready: function(context){
-    this._update();
+    this._status = 'END';
+    return h5.ajax({
+      type: 'GET',
+      dataType: 'JSON',
+      url: config.url + '/time/state'
+    }).then((data) => {
+      this.time.set(data['duration'], data['passedTime']);
+    }).fail((error) => {
+      console.log(error);
+    });
   },
-  '#date_button click': function(context, $button){
-    this._update();
-  },
-  _update: function(){
-    var current = this.time.getCurrent(new Date());
-    console.log(current);
+  __init: function(){
+    this._status = 'END';
   },
   '#start_button click': function() {
     this._emit_state('STARTED');
+    this._count_time = setInterval(function(){
+      var time_info = this.time.update();
+      $('#time_info').html(time_info);
+    }, 1000);
   },
   '#pause_button click': function() {
     this._emit_state('PAUSED');
+    clearInterval(this._count_time);
   },
   '#stop_button click': function() {
     this._emit_state('END');
+    clearInterval(this._count_time);
+    this.time.init();
   },
   _emit_state: function(state) {
+    this._status = state;
+    console.log(this._status);
     this.socket.emit('SetTimeState', {'state': state});
+  },
+  get_status: function(){
+    return this._status;
   }
   // get api/time/state??
 };

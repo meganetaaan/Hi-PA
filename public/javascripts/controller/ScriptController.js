@@ -7,6 +7,7 @@ var scriptController = {
   socket: null,
 
   // for mouth recognition
+  __mouth_threshold: 0,
   __vid: null,
   __overlay: null,
   __overlayCC: null,
@@ -30,6 +31,10 @@ var scriptController = {
       this.socket = io('/socket/script/audience');
       this.socket.on('ADD_SCRIPT', (data) => {
         this._handle_script(data);
+      });
+      this.socket.on('DELETE_ALL', (data) => {
+        $('#final_span').empty();
+        $('#interim_span').empty();
       });
     }
   },
@@ -324,8 +329,8 @@ var scriptController = {
         positionString += "[" + positions[p][0].toFixed(1) + "," + positions[p][1].toFixed(1) + "] ";
       }
       var gap = positions[57][1]-positions[60][1];
-      var speakInfoString = (gap>4)? "Mouth Open" : "Mouth Close";
-      this.recognition.setMouthOpen(gap>4);
+      var speakInfoString = (gap>this.__mouth_threshold)? "Mouth Open" : "Mouth Close";
+      this.recognition.setMouthOpen(gap>this.__mouth_threshold);
       document.getElementById("mouth-info").innerHTML = "Gap " + gap.toFixed(2) + ": " + speakInfoString;
     }
   },

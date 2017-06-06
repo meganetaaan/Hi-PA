@@ -53,7 +53,6 @@ var slideController = {
         };
 
         if (config.isSlideshow) {
-            console.log("SlideShow!");
             options.controls = false;
             options.keyboard = false;
             options.overview = false;
@@ -70,6 +69,11 @@ var slideController = {
             //No Event listener for Reveal.js
         } else if (config.isPresenter) {
             const closure = () => {
+                if (parentController.timeController.get_status() !== 'STARTED') {
+                    this._currentState = this.getState();
+                    this._postInfo(this._currentState);
+                    return;
+                }
                 if (this._equalState(this.getState(), this._currentState)) {
                     return;
                 }
@@ -85,19 +89,20 @@ var slideController = {
                     dataType: 'JSON',
                     url: config.url + '/alert',
                 }).then((json) => {
-                    console.log(json);
                     let questionID = json.questionID;
                     let tooltip = json.tooltip;
+                    let leftTime = json.leftTime;
                     if (tooltip === null && questionID === null) {
                         this._postInfo(nowState);
                         this._currentState = nowState;
                         this.setState(nowState);
                         this._isNetworking = false;
                         return;
+                    } else if (leftTime <= 20) {
+                        this.setState(nowState);
+                        this._isNetworking = false;
                     } else {
                         this._isNetworking = false;
-                        //TODO: when there is questions
-                        hipa.controller.AlertController.handle_question_data(json);
                     }
                 }).fail(()=> {
                     this._postInfo(nowState);

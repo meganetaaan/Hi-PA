@@ -10,15 +10,21 @@ var alert = {};
 alert.doneQuestionIDs = [];
 alert.doneTerms = [];
 alert.lastTimeAlert = 0;
+alert.threshold = {
+    question : 1,
+    tooltip : 0,
+    time : 60
+}
 
 function getClientNo() {
     return io.engine.clientsCount;
 }
 
 function getTimeAlert() {
-    var timeFactor = (slide.slideNo - slide.state.indexh)*(time.duration - time.getTime()) / slide.slideNo / time.duration;
-    if (timeFactor >= 1.4 && rawtime.time() - lastTimeAlert >= 20) {
-        lastTimeAlert = rawtime.time();
+    var slideNo = slide.state.indexh;
+    var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
+    if (slideLeftTime <= 0 && rawtime.time() - alert.lastTimeAlert >= alert.threshold.time) {
+        alert.lastTimeAlert = rawtime.time();
         return true;
     } else {
         return false;
@@ -28,28 +34,44 @@ function getTimeAlert() {
 function getQuestionAlert(callback){
     var slideNo = slide.state.indexh;
     Question.find({slideNumber:slideNo}, function(er, res){
-        var questionFactor = res.reduce(function (prevVal, elem){return prevVal + elem}, 0);
-        var slideLeftTime = time.getTime() - time.slideTime * slideNo;
-        if (questionFactor >= getClientNo()/3 && slideLeftTime >= 60) {
+        var questionFactor = res.filter(function (el, i, a){return !alert.doneQuestionIDs.includes(''+el._id);}).reduce(function (prevVal, elem){return prevVal + elem.like}, 0);
+        console.log(questionFactor);
+        var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
+        if (questionFactor >= alert.threshold.question) {//getClientNo()/3) {
             res.sort();
-            var i = 0;
-            while (alert.doneQuestionIDs.includes(list[i]._id)) {
-                i++;
+            var i = res.length - 1;
+            while (i >= 0 && alert.doneQuestionIDs.includes(''+res[i]._id)) {
+                i--;
             }
-            alert.doneQuestionIDs.push(list[i]._id);
-            callback(list[i]._id);
+            alert.doneQuestionIDs.push(''+res[i]._id);
+            console.log(alert.doneQuestionIDs);
+            callback(res[i], slideLeftTime);
         } else {
-            callback(null);
+            callback(null, slideLeftTime);
         }
     });
 }
 
 function getTooltipAlert(){
     var urgents = Object.keys(tooltip.term).filter(function (el, i, a) {
-        return tooltip.term[el] >= 0.2 * getClientNo() && !alert.doneTerms.includes(el);
+        return tooltip.term[el] >= alert.threshold.tooltip * getClientNo() && !alert.doneTerms.includes(el);
     });
-    alert.doneTerms.concat(urgents);
-    return urgents.length > 0 ? urgents : null;
+    if (urgents.length > 0) {
+        urgents.sort(function (a, b) {
+            if (tooltip.term[a] > tooltip.term[b]) {
+                return 1;
+            } else if (tooltip.term[a] < tooltip.term[b]) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        var urgent = urgents.pop();
+        alert.doneTerms.push(urgent);
+        return urgent;
+    } else {
+        return null;
+    }
 }
 
 module.exports = {

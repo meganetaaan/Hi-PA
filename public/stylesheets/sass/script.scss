@@ -13,6 +13,10 @@
 #script-control {
   margin-top: 1%;
   height: 10%;
+  button, #time_info {
+    float: left;
+    margin-right: 5px;
+  }
 }
 #script-result {
   overflow: scroll;

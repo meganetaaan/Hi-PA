@@ -29,12 +29,6 @@ app.set('views', 'view');
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended:true}));
-
-var questionIO = io.of('/socket/question');
-app.use('/api/question', (req, res, next) => {
-    req.io = questionIO;
-    next();
-});
 app.use('/api/question', api.question);
 app.use('/api/question', socket.question);
 app.use('/api/script', api.script);

@@ -54,6 +54,7 @@ feedback.send = () => {
     } else if (feedback.sound.small > feedback.threshold.sound * clientNo) {
         volume = -1;
     }
+    feedback.reset();
     return {speed : speed, volume : volume};
 }
 module.exports = feedback;

@@ -39,11 +39,12 @@
 
     <!-- hifive controller -->
     <script src="public/javascripts/controller/SlideController.js"></script>
-    <!--<script src="public/javascripts/controller/AlertController.js"></script>-->
+    <script src="public/javascripts/controller/AlertController.js"></script>
     <script src="public/javascripts/controller/SlideshowController.js"></script>
     <script>
+      var parentController = null;
       $(function() {
-        h5.core.controller('body', hipa.controller.SlideshowController);
+        parentController = h5.core.controller('body', hipa.controller.SlideshowController);
       });
     </script>
 
@@ -52,6 +53,10 @@
   <body>
     <div id="slide-container">
       <div id="slide-subcontainer">
+      </div>
+    </div>
+    <div id="alert-container">
+      <div id="talkingballoon-container">
       </div>
     </div>
   </body>
