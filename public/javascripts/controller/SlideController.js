@@ -34,6 +34,8 @@ var slideController = {
         this._syncButtonRefresh();
 
         var options = {
+            width: 960,
+            height: 700,
             history: false,
             embedded: true,
             dependencies: [{
