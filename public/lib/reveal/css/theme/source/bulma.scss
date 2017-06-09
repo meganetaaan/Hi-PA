@@ -39,6 +39,17 @@ section.has-dark-background {
 }
 
 
+.reveal {
+        .sl-block {
+            display: block;
+            position: absolute;
+            z-index: auto;
+        }
+        div {
+            font-size: 30px;
+        }
+    }
+
 // Theme template ------------------------------
 @import "../template/theme";
 // ---------------------------------------------
