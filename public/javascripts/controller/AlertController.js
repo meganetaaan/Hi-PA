@@ -125,3 +125,6 @@ var alertController = {
 };
 
 h5.core.expose(alertController);
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = alertController;
