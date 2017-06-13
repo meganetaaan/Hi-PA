@@ -23,9 +23,13 @@ var alertController = {
   // this function handles question and tooltip
   _handle_question_data: function(data) {
     var content;
-    if (data['leftTime'] < 20 && this._check_time('time', data['leftTime'])) {
-      content = "Since we are out of time, let's go to the next slide";
-      this.alerttime['time'] = data['leftTime'];
+    if (data['leftTime'] < 20) {
+      if (this._check_time('time', data['leftTime'])) {
+        content = "Since we are out of time, let's go to the next slide";
+        this.alerttime['time'] = data['leftTime'];
+      } else {
+        return;
+      }
     }
     else if (data['questionID']) {
       var qid = data['questionID'];
@@ -45,7 +49,6 @@ var alertController = {
 
   // this function handles realtimefeedback and time
   _handle_data: function(data) {
-    console.log(data);
     if (data['timeAlert']) {
       this._alert(this._get_alert_content('time', data['duration']-data['passedTime']));
     }
@@ -56,7 +59,6 @@ var alertController = {
         this.alerttime[key] = data['passedTime'];
       }
     }
-    console.log(this.alerttime);
   },
 
   _queue: [],
@@ -64,7 +66,6 @@ var alertController = {
   _alertMsg : null,
 
   _alert: function(content) {
-    console.log(content);
     this._queue.push(content);
     if (!this._isAlerting) {
       this._alertQueuePop();
