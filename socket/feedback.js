@@ -54,7 +54,13 @@ feedback.send = () => {
     } else if (feedback.sound.small > feedback.threshold.sound /* clientNo*/) {
         volume = -1;
     }
-    feedback.reset();
+    if (speed != 0) {
+        feedback.speed = {fast : 0, slow : 0};
+    }
+    if (volume != 0) {
+        feedback.sound = {loud : 0, small : 0};
+    }
+    console.log('sending');
     return {speed : speed, volume : volume};
 }
 module.exports = feedback;

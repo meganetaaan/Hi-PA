@@ -49,7 +49,6 @@ slide.presenter.on('connection', function(socket) {
             feedback.speed = {fast : 1001, slow : 0};
         }
         slide.audience.emit('slidestatechanged', data);
-        console.log(time.state);
         if (time.state === 'STARTED') {
             alertsock.presenter.emit('Alert', {
                 realtimefeedback : feedback.send(),

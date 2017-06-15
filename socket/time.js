@@ -20,7 +20,7 @@ time.presenter.on('connection', (socket) => {
             script.audience.emit('DELETE_ALL', {});
             tooltip.term = {};
             feedback.reset();
-            alert.reset();
+            alert.alert.reset();
         }
         Time.setTimeState(data);
     });
