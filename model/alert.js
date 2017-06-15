@@ -12,9 +12,10 @@ alert.doneTerms = [];
 alert.lastTimeAlert = 0;
 alert.threshold = {
     question : 1,
-    tooltip : 0,
+    tooltip :1,
     time : 60
 }
+alert.slide = slide;
 
 function getClientNo() {
     return io.engine.clientsCount;
@@ -75,6 +76,7 @@ function getTooltipAlert(){
 }
 
 module.exports = {
+    alert,
     getTimeAlert,
     getQuestionAlert,
     getTooltipAlert

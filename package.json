@@ -4,7 +4,7 @@
   "description": "PresentationAssistant",
   "main": "index.js",
   "scripts": {
-    "test": "TEST=true mocha",
+    "test": "TEST=true mocha server-test",
     "http": "node index.js",
     "https": "HTTPS=true node index.js"
   },
