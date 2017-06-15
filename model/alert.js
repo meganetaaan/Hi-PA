@@ -9,6 +9,10 @@ var rawtime = require('time');
 var alert = {};
 alert.doneQuestionIDs = [];
 alert.doneTerms = [];
+alert.reset = () => {
+    alert.doneQuestionsIDs = [];
+    alert.doneTerms = [];
+}
 alert.lastTimeAlert = 0;
 alert.threshold = {
     question : 100,

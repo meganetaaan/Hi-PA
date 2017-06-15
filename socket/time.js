@@ -6,6 +6,7 @@ var Question = require('../model/Question');
 var question = require('./question');
 var tooltip = require('./tooltip');
 var feedback = require('./feedback');
+var alert = require('../model/alert');
 
 var time = {};
 time.presenter = io.of('/socket/time/presenter');
@@ -19,10 +20,7 @@ time.presenter.on('connection', (socket) => {
             script.audience.emit('DELETE_ALL', {});
             tooltip.term = {};
             feedback.reset();
-            let permanentQuestion = new Question({slideNumber : 3, nickname : 'Sewon Min', password : 'trybruteforcing', question : 'What is Language Modeling', like : 100});
-            permanentQuestion.save((err, q) => {
-                question.io.emit('ADD_QUESTION', q);
-            });
+            alert.reset();
         }
         Time.setTimeState(data);
     });
