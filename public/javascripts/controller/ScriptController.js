@@ -7,7 +7,7 @@ var scriptController = {
   socket: null,
 
   // for mouth recognition
-  __mouth_threshold: 0,
+  __mouth_threshold: 3.5,
   __vid: null,
   __overlay: null,
   __overlayCC: null,
