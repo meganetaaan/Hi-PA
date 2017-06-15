@@ -35,6 +35,9 @@ slide.presenter.on('connection', function(socket) {
     // slideの操作
     socket.on('slidestatechanged', function(data) {
         slideCtrl.updateState('slide_01', data.slideData.state);
+        if (data.slideData.state.indexh === 1){
+            require('./tooltip').term['tooltip'] = 100;
+        }
         slide.audience.emit('slidestatechanged', data);
         console.log(time.state);
         if (time.state === 'STARTED') {

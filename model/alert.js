@@ -11,8 +11,8 @@ alert.doneQuestionIDs = [];
 alert.doneTerms = [];
 alert.lastTimeAlert = 0;
 alert.threshold = {
-    question : 1,
-    tooltip :1,
+    question : 100,
+    tooltip :100,
     time : 60
 }
 alert.slide = slide;
@@ -55,7 +55,7 @@ function getQuestionAlert(callback){
 
 function getTooltipAlert(){
     var urgents = Object.keys(tooltip.term).filter(function (el, i, a) {
-        return tooltip.term[el] >= alert.threshold.tooltip * getClientNo() && !alert.doneTerms.includes(el);
+        return tooltip.term[el] >= alert.threshold.tooltip /* getClientNo()*/ && !alert.doneTerms.includes(el);
     });
     if (urgents.length > 0) {
         urgents.sort(function (a, b) {

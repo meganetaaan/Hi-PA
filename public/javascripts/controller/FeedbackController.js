@@ -1,7 +1,7 @@
 var controller = {
     __name: 'hipa.controller.FeedbackController',
 
-    __templates: ['public/views/feedbackForm.ejs','public/views/feedbackShow.ejs'],
+    __templates: ['/public/views/feedbackForm.ejs','/public/views/feedbackShow.ejs'],
 
     socket: null,
     _data: {fast: 0, slow: 0, loud: 0, small: 0},

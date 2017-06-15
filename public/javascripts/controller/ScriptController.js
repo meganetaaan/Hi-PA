@@ -1,7 +1,7 @@
 
 var scriptController = {
   __name: 'hipa.controller.ScriptController',
-  __templates: ['public/views/script-control.ejs', 'public/views/script-result.ejs', 'public/views/script-face.ejs'],
+  __templates: ['/public/views/script-control.ejs', '/public/views/script-result.ejs', '/public/views/script-face.ejs'],
 
   recognition: speechRecognition,
   socket: null,
@@ -49,7 +49,7 @@ var scriptController = {
       document.getElementById('script-result').style.width = '97%'
     }
 
-    var txtFile = "public/javascripts/stopWords.json";
+    var txtFile = "/public/javascripts/stopWords.json";
     jQuery.get(txtFile, undefined, (data)=>{
       var stopwords = JSON.parse(data);
       this.__stopwords = stopwords;
