@@ -23,19 +23,24 @@ var alertController = {
   // this function handles question and tooltip
   _handle_question_data: function(data) {
     var content;
-    if (data['leftTime'] < 20) {
-      if (this._check_time('time')) {
-        content = "Since we are out of time, let's go to the next slide";
-        this.alerttime['time'] = Date.now();
-      } else {
+
+    function timeout(){
+      if (data['leftTime'] < 20) {
+        if (this._check_time('time')) {
+          content = "Since we are out of time, let's go to the next slide";
+          this._alert(content);
+          this.alerttime['time'] = Date.now();
+        }
         return;
       }
     }
-    else if (data['questionID']) {
+    if (data['questionID']) {
+      timeout();
       var qid = data['questionID'];
       content = "There is a question! ";
       content += data.question.question;
     } else if (data['tooltip'] !== null) {
+      timeout();
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
     } else if (this._check_time('question')) {
       content = "There is no question. Everyone, you can ask more and more.";
