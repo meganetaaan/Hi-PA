@@ -21,8 +21,10 @@ var fs = require('fs');
 	// Create Temp SLIDE
 	function getSlide(slideName) {
 		//Todo: Get Slide from database
-        slideData = require('../slides/' + slideName);
-		slideData.state = {indexh: 0, indexv: 0, paused: false, overview: false};
+        if (typeof(slideData) === 'undefined') {
+            slideData = require('../slides/' + slideName);
+	    	slideData.state = {indexh: 0, indexv: 0, paused: false, overview: false};
+        }
 		return slideData;
 	}
 	
