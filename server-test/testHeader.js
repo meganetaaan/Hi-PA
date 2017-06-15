@@ -6,7 +6,5 @@ chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 chai.should();
 
-var sinon = require('sinon');
-var jquery = require('jquery-deferred');
 
-module.exports = {expect : expect, chai : chai, sinon, jquery};
+module.exports = {expect : expect, chai : chai};

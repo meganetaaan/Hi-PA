@@ -8,8 +8,8 @@ var server;
 if (process.env.HTTPS == 'true') {
     var fs = require('fs');
     var options = {
-        key : fs.readFileSync('/etc/letsencrypt/live/hoonga.kr/privkey.pem'),
-        cert : fs.readFileSync('/etc/letsencrypt/live/hoonga.kr/cert.pem')
+        key : fs.readFileSync('/etc/letsencrypt/live/hoonga.kr/privkey.pem', {flag : 'r'}),
+        cert : fs.readFileSync('/etc/letsencrypt/live/hoonga.kr/cert.pem', {flag : 'r'})
     }
     server = require('https').Server(options, app);
 }

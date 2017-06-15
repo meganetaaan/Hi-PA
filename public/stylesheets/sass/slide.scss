@@ -1,6 +1,14 @@
 #slide-container {
     position: relative;
     .reveal {
+        .sl-block {
+            display: block;
+            position: absolute;
+            z-index: auto;
+        }
+        div {
+            font-size: 30px;
+        }
         .controls {
             position: absolute;
         }

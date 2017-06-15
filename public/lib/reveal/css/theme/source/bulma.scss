@@ -15,14 +15,13 @@
 
 
 // Include theme-specific fonts
-@import url(https://fonts.googleapis.com/css?family=News+Cycle:400,700);
-@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
-
+@import url(https://fonts.googleapis.com/css?family=Montserrat|Open+Sans);
 
 // Override theme settings (see ../template/settings.scss)
-$mainFont: 'Lato', sans-serif;
+
+$mainFont: 'Open Sans', sans-serif;
 $mainColor: #000;
-$headingFont: 'News Cycle', Impact, sans-serif;
+$headingFont: 'Montserrat', Helvetica, sans-serif;
 $headingColor: #000;
 $headingTextShadow: none;
 $headingTextTransform: none;
@@ -30,6 +29,8 @@ $backgroundColor: #fff;
 $linkColor: #00c4a7;
 $linkColorHover: lighten( $linkColor, 20% );
 $selectionBackgroundColor: rgba(0, 0, 0, 0.99);
+$heading1Size: 2.5em;
+$heading2Size: 1.9em;
 
 section.has-dark-background {
 	&, h1, h2, h3, h4, h5, h6 {
@@ -37,6 +38,17 @@ section.has-dark-background {
 	}
 }
 
+
+.reveal {
+        .sl-block {
+            display: block;
+            position: absolute;
+            z-index: auto;
+        }
+        div {
+            font-size: 30px;
+        }
+    }
 
 // Theme template ------------------------------
 @import "../template/theme";
