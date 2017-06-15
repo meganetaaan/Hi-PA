@@ -31,18 +31,19 @@ var alertController = {
           this._alert(content);
           this.alerttime['time'] = Date.now();
         }
-        return;
+        return true;
       }
+      return false;
     }
     if (data['questionID'] !== null) {
-      timeout();
+      if(timeout()) return;
       var qid = data['questionID'];
       content = "There is a question! ";
       content += data.question.question;
     } else if (data['tooltip'] !== null) {
-      timeout();
+      if(timeout()) return;
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
-    } else if (this._check_time('question')) {
+    } else if (data['noQuestion'] === true && this._check_time('question')) {
       content = "There is no question. Everyone, you can ask more and more.";
       this.alerttime['question'] = Date.now();
     } else {
