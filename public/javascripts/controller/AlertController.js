@@ -15,18 +15,18 @@ var alertController = {
     socket.on('UrgentAlert', (data) => {this._handle_question_data(data);});
   },
 
-  _check_time: function(k, rt) {
+  _check_time: function(k) {
     var t = this.alerttime[k];
-    return (t == -1 || rt - t >= 30)
+    return (t == -1 || Date.now() - t >= 30000)
   },
 
   // this function handles question and tooltip
   _handle_question_data: function(data) {
     var content;
     if (data['leftTime'] < 20) {
-      if (this._check_time('time', data['leftTime'])) {
+      if (this._check_time('time')) {
         content = "Since we are out of time, let's go to the next slide";
-        this.alerttime['time'] = data['leftTime'];
+        this.alerttime['time'] = Date.now();
       } else {
         return;
       }
@@ -37,9 +37,9 @@ var alertController = {
       content += data.question.question;
     } else if (data['tooltip'] !== null) {
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
-    } else if (this._check_time('question', data['leftTime'])) {
+    } else if (this._check_time('question')) {
       content = "There is no question. Everyone, you can ask more and more.";
-      this.alerttime['question'] = data['leftTime'];
+      this.alerttime['question'] = Date.now();
     } else {
       return;
     }
@@ -54,9 +54,9 @@ var alertController = {
     }
     var rf = data['realtimefeedback'];
     for (key in rf) {
-      if (rf[key]!==0 && this._check_time(key, data['passedTime'])) {
+      if (rf[key]!==0 && this._check_time(key)) {
         this._alert(this._get_alert_content(key, rf[key]));
-        this.alerttime[key] = data['passedTime'];
+        this.alerttime[key] = Date.now();
       }
     }
   },
