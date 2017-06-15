@@ -17,7 +17,7 @@ var alertController = {
 
   _check_time: function(k) {
     var t = this.alerttime[k];
-    return (t == -1 || Date.now() - t >= 30000)
+    return (t == -1 || Date.now() - t >= 120*1000)
   },
 
   // this function handles question and tooltip
