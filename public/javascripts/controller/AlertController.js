@@ -34,7 +34,7 @@ var alertController = {
         return;
       }
     }
-    if (data['questionID']) {
+    if (data['questionID'] !== null) {
       timeout();
       var qid = data['questionID'];
       content = "There is a question! ";
