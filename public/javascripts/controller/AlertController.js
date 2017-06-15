@@ -42,7 +42,7 @@ var alertController = {
     } else if (data['tooltip'] !== null) {
       timeout();
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
-    } else if (this._check_time('question')) {
+    } else if (data['noQuestion'] === true && this._check_time('question')) {
       content = "There is no question. Everyone, you can ask more and more.";
       this.alerttime['question'] = Date.now();
     } else {
