@@ -12,6 +12,7 @@ alert.doneTerms = [];
 alert.lastTimeAlert = 0;
 alert.threshold = {
     question : 100,
+    questionOnly : 100,
     tooltip :100,
     time : 60
 }
@@ -35,21 +36,36 @@ function getTimeAlert() {
 function getQuestionAlert(callback){
     var slideNo = slide.state.indexh;
     Question.find({slideNumber:slideNo}, function(er, res){
+        var result;
         var questionFactor = res.filter(function (el, i, a){return !alert.doneQuestionIDs.includes(''+el._id);}).reduce(function (prevVal, elem){return prevVal + elem.like}, 0);
         console.log(questionFactor);
         var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
         if (questionFactor >= alert.threshold.question) {//getClientNo()/3) {
-            res.sort();
-            var i = res.length - 1;
-            while (i >= 0 && alert.doneQuestionIDs.includes(''+res[i]._id)) {
-                i--;
+            res.sort(function (a, b) {return b-a;});
+            var i = 0;
+            for (; i < res.length; i++) {
+                if (res[i].like >= alert.threshold.questionOnly) {
+                    if (alert.doneQuestionIDs.includes(''+res[i]._id)) {
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
             }
-            alert.doneQuestionIDs.push(''+res[i]._id);
-            console.log(alert.doneQuestionIDs);
-            callback(res[i], slideLeftTime);
+            if (i == res.length) {
+                result = null;
+            } else {
+                alert.doneQuestionIDs.push(''+res[i]._id);
+                console.log(alert.doneQuestionIDs);
+                result = res[i];
+            }
         } else {
-            callback(null, slideLeftTime);
+            result = null;
         }
+        Question.count({}, (err, count) => {
+            let noQuestion = (count <= 0);
+            callback(result, slideLeftTime, noQuestion);
+        });
     });
 }
 
@@ -58,15 +74,7 @@ function getTooltipAlert(){
         return tooltip.term[el] >= alert.threshold.tooltip /* getClientNo()*/ && !alert.doneTerms.includes(el);
     });
     if (urgents.length > 0) {
-        urgents.sort(function (a, b) {
-            if (tooltip.term[a] > tooltip.term[b]) {
-                return 1;
-            } else if (tooltip.term[a] < tooltip.term[b]) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
+        urgents.sort(function (a, b) {return a-b;});
         var urgent = urgents.pop();
         alert.doneTerms.push(urgent);
         return urgent;
