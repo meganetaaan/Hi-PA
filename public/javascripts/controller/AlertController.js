@@ -110,11 +110,22 @@ var alertController = {
 
   },
 
+  _get_min_sec: function(sec) {
+    if (sec > 120) {
+      return Math.floor(sec / 60) + " minutes";
+    } else {
+      return Math.floor(sec) + " seconds";
+    }
+  },
+
   _get_alert_content: function(type, value){
     if (type === 'time') {
       var content = "Lack of time!";
-      if (value >= 0) content += " You have " + Math.floor(value) + " seconds remaining.";
-      else content += " You have " + Math.floor(-value) + " seconds overtime.";
+      if (value >= 0) {
+        content += " You have " + this._get_min_sec(value) + " remaining.";
+      } else {
+        content += " You have " + this._get_min_sec(-value) + " overtime.";
+      }
       return content;
     }
     var state;
