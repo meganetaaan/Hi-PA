@@ -17,15 +17,14 @@ var alertController = {
 
   _check_time: function(k) {
     var t = this.alerttime[k];
-    return (t == -1 || Date.now() - t >= 120*1000)
+    return (t == -1 || Date.now() - t >= config.alertTimeLimit);
   },
 
   // this function handles question and tooltip
   _handle_question_data: function(data) {
-    var content;
-    
+    var content; 
     var timeout = () => {
-      if (data['leftTime'] < 20) {
+      if (data['leftTime'] < config.questionTimeLimit) {
         if (this._check_time('time')) {
           content = "Since we are out of time, let's go to the next slide";
           this._alert(content);

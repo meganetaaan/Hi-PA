@@ -118,7 +118,7 @@ var slideController = {
                 this.setState(nowState);
                 this._isNetworking = false;
                 return;
-            } else if (leftTime <= 20) {
+            } else if (leftTime < config.questionTimeLimit) {
                 this._postInfo(nowState);
                 this._currentState = nowState;
                 this.setState(nowState);

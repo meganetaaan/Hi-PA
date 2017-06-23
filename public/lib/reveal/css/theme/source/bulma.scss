@@ -49,7 +49,11 @@ section.has-dark-background {
             font-size: 30px;
         }
     }
-
+#slide-container {
+    @import "../template/slide";
+}
 // Theme template ------------------------------
-@import "../template/theme";
+#slide-container #slide-subcontainer {
+    @import "../template/theme-color";
+}
 // ---------------------------------------------
