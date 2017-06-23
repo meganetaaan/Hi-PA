@@ -25,7 +25,7 @@ var slideController = {
     _remoteSlideState: {indexh: 0, indexv: 0, paused: false, overview: false},
     _isInSync: true,
 
-    __templates: ['public/views/slide.ejs'],
+    __templates: ['/public/views/slide.ejs'],
     _currentState : {indexh: 0, indexv: 0, paused: false, overview: false},
     _isNetworking : false,
     __init: function(context) {
@@ -39,14 +39,14 @@ var slideController = {
             history: false,
             embedded: true,
             dependencies: [{
-                src: 'public/lib/reveal/plugin/markdown/marked.js'
+                src: '/public/lib/reveal/plugin/markdown/marked.js'
             }, {
-                src: 'public/lib/reveal/plugin/markdown/markdown.js'
+                src: '/public/lib/reveal/plugin/markdown/markdown.js'
             }, {
-                src: 'public/lib/reveal/plugin/notes/notes.js',
+                src: '/public/lib/reveal/plugin/notes/notes.js',
                 async: true
             }, {
-                src: 'public/lib/reveal/plugin/highlight/highlight.js',
+                src: '/public/lib/reveal/plugin/highlight/highlight.js',
                 async: true,
                 callback: function() {
                     hljs.initHighlightingOnLoad();
@@ -119,6 +119,8 @@ var slideController = {
                 this._isNetworking = false;
                 return;
             } else if (leftTime <= 20) {
+                this._postInfo(nowState);
+                this._currentState = nowState;
                 this.setState(nowState);
                 this._isNetworking = false;
             } else {

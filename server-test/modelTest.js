@@ -128,6 +128,7 @@ describe('non db model test', () => {
             db.conn();
             time.setTimeState(startState);
             var q = new Question({question : 'hi', password : 'hi', like : 100, slideNumber:0});
+            var q1 = new Question({question : 'hi', password : 'hi', like : 0, slideNumber:0});
             q.save(done);
         });
         after((done) => {
@@ -136,21 +137,23 @@ describe('non db model test', () => {
             db.disconnect(done);
         });
         it('should alert question', (done) => {
-            alert.getQuestionAlert((question, leftTime) => {
+            alert.getQuestionAlert((question, leftTime, noQuestion) => {
+                expect(noQuestion).to.equal(false);
                 expect(question).to.not.equal(null);
                 done();
             });
         });
         it('should have done question', (done) => {
             alert.alert.doneQuestionIDs.length.should.equal(1);
-            alert.getQuestionAlert((question, leftTime) => {
+            alert.getQuestionAlert((question, leftTime, noQuestion) => {
+                expect(noQuestion).to.equal(false);
                 expect(question).to.equal(null);
                 done();
             });
         });
         it('should alert tooltip', () => {
-            tooltip.term['tooltip'] = 10;
-            alert.getTooltipAlert().should.not.equal(null);
+            tooltip.term['tooltip'] = 1000;
+            expect(alert.getTooltipAlert()).to.not.equal(null);
         });
         it('should have done tooltip', () => {
             expect(alert.alert.doneTerms.length).to.equal(1);

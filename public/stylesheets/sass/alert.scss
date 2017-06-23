@@ -29,6 +29,8 @@ $TalkingBalloonColor : lightgrey;
 
 .talktext p {
     /* remove webkit p margins */
+    font-size: 30px;
+    line-height: 160%;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
 }

@@ -26,8 +26,9 @@ var timeController = {
   },
   '#start_button click': function() {
     this._emit_state('STARTED');
-    this._count_time = setInterval(function(){
+    this._count_time = setInterval(()=>{
       var time_info = this.time.update();
+      this.socket.emit('tick',{time:this.time._passedTime});
       $('#time_info').html(time_info);
     }, 1000);
   },

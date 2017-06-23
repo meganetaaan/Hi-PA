@@ -5,12 +5,12 @@ var alertsocket = require('../socket/alert');
 
 function _getAlert(req, res, next){
     var senddata;
-    alert.getQuestionAlert(function (result, leftTime) {
+    alert.getQuestionAlert(function (result, leftTime, noQuestion) {
         if (result !== null) {
-            senddata = {questionID : result._id, tooltip : null, leftTime, question : result};
+            senddata = {questionID : result._id, tooltip : null, leftTime, question : result, noQuestion};
             res.json(senddata);
         } else {
-            senddata = {questionID : null, tooltip : alert.getTooltipAlert(), leftTime, question : null}
+            senddata = {questionID : null, tooltip : alert.getTooltipAlert(), leftTime, question : null, noQuestion}
             res.json(senddata);
         }
         alertsocket.presenter.emit('UrgentAlert', senddata);
