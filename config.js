@@ -1,8 +1,8 @@
 module.exports = {
-    question : 1,
-    questionOnly : 1,
-    tooltip : 1,
-    speed : 0,
-    sound : 0,
-    time : 400
+    question : 5,
+    questionOnly : 5,
+    tooltip : 3,
+    speed : 5,
+    sound : 5,
+    time : 240
 }
