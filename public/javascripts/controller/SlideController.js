@@ -100,7 +100,7 @@ var slideController = {
                         this.setState(nowState);
                         this._isNetworking = false;
                         return;
-                    } else if (leftTime <= 20) {
+                    } else if (leftTime < config.questionTimeLimit) {
                         this.setState(nowState);
                         this._isNetworking = false;
                     } else {

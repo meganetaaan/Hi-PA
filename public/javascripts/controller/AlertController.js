@@ -17,13 +17,13 @@ var alertController = {
 
   _check_time: function(k, rt) {
     var t = this.alerttime[k];
-    return (t == -1 || rt - t >= 30)
+    return (t == -1 || rt - t >= config.alertTimeLimit)
   },
 
   // this function handles question and tooltip
   _handle_question_data: function(data) {
     var content;
-    if (data['leftTime'] < 20 && this._check_time('time', data['leftTime'])) {
+    if (data['leftTime'] < config.questionTimeLimit && this._check_time('time', data['leftTime'])) {
       content = "Since we are out of time, let's go to the next slide";
       this.alerttime['time'] = data['leftTime'];
     }
