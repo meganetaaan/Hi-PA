@@ -2,11 +2,12 @@ var speechRecognition = {
     __name: 'SpeechRecognition',
     __recognizing: false,
     __ignore_onend: false,
-    __recognition: new webkitSpeechRecognition(),
+    __recognition: null,
     __mouth_open: false,
     __restartTimer: null,
     // initializer
     initialize: function(){
+      this.__recognition = new webkitSpeechRecognition();
       this.__recognition.continuous = true;
       this.__recognition.interimResults = true;
       this.__recognition.lang = 'en-US';
@@ -127,5 +128,5 @@ var speechRecognition = {
     }
 }
 
-
-
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = speechRecognition;

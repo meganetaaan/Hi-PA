@@ -1,7 +1,7 @@
 var controller = {
     __name: 'hipa.controller.FeedbackController',
 
-    __templates: ['public/views/feedbackForm.ejs','public/views/feedbackShow.ejs'],
+    __templates: ['/public/views/feedbackForm.ejs','/public/views/feedbackShow.ejs'],
 
     socket: null,
     _data: {fast: 0, slow: 0, loud: 0, small: 0},
@@ -18,31 +18,37 @@ var controller = {
     _setSocket: function() {
       if (config.isPresenter) {
         this.socket = io('/socket/feedback/presenter');
-        // TODO: Feedback ui for presenter
         this.socket.on('SpeedFeedback', (data) => {
-          console.log(data);
-          if (this._data.fast !== data.fast) {
-            this._refreshShow('#feedback-fast-num', data.fast);
-          }
-          if (this._data.slow !== data.slow) {
-            this._refreshShow('#feedback-slow-num', data.slow);
-          }
-          this._data.fast = data.fast;
-          this._data.slow = data.slow;
+          this._receivedSpeedFeedback(data);
         });
         this.socket.on('VolumeFeedback', (data) => {
-          if (this._data.loud !== data.loud) {
-            this._refreshShow('#feedback-loud-num', data.loud);
-          }
-          if (this._data.small !== data.small) {
-            this._refreshShow('#feedback-small-num', data.small);
-          }
-          this._data.loud = data.loud;
-          this._data.small = data.small;
+          this._receivedVolumeFeedback(data);
         });
       } else {
         this.socket = io('/socket/feedback/audience');
       }
+    },
+
+    _receivedVolumeFeedback(data) {
+      if (this._data.loud !== data.loud) {
+        this._refreshShow('#feedback-loud-num', data.loud);
+      }
+      if (this._data.small !== data.small) {
+        this._refreshShow('#feedback-small-num', data.small);
+      }
+      this._data.loud = data.loud;
+      this._data.small = data.small;
+    },
+
+    _receivedSpeedFeedback(data) {
+      if (this._data.fast !== data.fast) {
+        this._refreshShow('#feedback-fast-num', data.fast);
+      }
+      if (this._data.slow !== data.slow) {
+        this._refreshShow('#feedback-slow-num', data.slow);
+      }
+      this._data.fast = data.fast;
+      this._data.slow = data.slow;
     },
 
     _refreshShow(id, text) {
@@ -77,3 +83,6 @@ var controller = {
     }
   };
   h5.core.expose(controller);
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = controller;

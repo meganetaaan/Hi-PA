@@ -17,13 +17,13 @@
 var fs = require('fs');
 ;(function() {
 	'use strict'
-        var slideData = null;
+        var slideData;
 	// Create Temp SLIDE
 	function getSlide(slideName) {
 		//Todo: Get Slide from database
-        if (slideData == null) {
+        if (typeof(slideData) === 'undefined') {
             slideData = require('../slides/' + slideName);
-		    slideData.state = {indexh: 0, indexv: 0, paused: false, overview: false};
+	    	slideData.state = {indexh: 0, indexv: 0, paused: false, overview: false};
         }
 		return slideData;
 	}

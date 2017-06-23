@@ -54,11 +54,15 @@ app.use('/public/lib/reveal/css/theme',
 
 app.use('/public', express.static('public'));
 
-app.get('/presenter', (req, res) => {
+app.get('/presenter/:id', (req, res) => {
     console.log('presenter connected');
-    res.render('index', {
-        isPresenter: true,
-    });
+    if (req.params.id === /*'$up3r$3cr3tk3ythatwiIIb3g3n3rat3d'*/'aa') {
+        res.render('index', {
+            isPresenter: true,
+        });
+    } else {
+        res.status(401);
+    }
 });
 
 app.get('/audience', (req, res) => {

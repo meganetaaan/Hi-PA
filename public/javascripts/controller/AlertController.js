@@ -15,27 +15,36 @@ var alertController = {
     socket.on('UrgentAlert', (data) => {this._handle_question_data(data);});
   },
 
-  _check_time: function(k, rt) {
+  _check_time: function(k) {
     var t = this.alerttime[k];
-    return (t == -1 || rt - t >= config.alertTimeLimit)
+    return (t == -1 || Date.now() - t >= config.alertTimeLimit);
   },
 
   // this function handles question and tooltip
   _handle_question_data: function(data) {
-    var content;
-    if (data['leftTime'] < config.questionTimeLimit && this._check_time('time', data['leftTime'])) {
-      content = "Since we are out of time, let's go to the next slide";
-      this.alerttime['time'] = data['leftTime'];
+    var content; 
+    var timeout = () => {
+      if (data['leftTime'] < config.questionTimeLimit) {
+        if (this._check_time('time')) {
+          content = "Since we are out of time, let's go to the next slide";
+          this._alert(content);
+          this.alerttime['time'] = Date.now();
+        }
+        return true;
+      }
+      return false;
     }
-    else if (data['questionID']) {
+    if (data['questionID'] !== null) {
+      if(timeout()) return;
       var qid = data['questionID'];
       content = "There is a question! ";
       content += data.question.question;
     } else if (data['tooltip'] !== null) {
+      if(timeout()) return;
       content = "Many audiences are curious about the meaning of "+data['tooltip'];
-    } else if (this._check_time('question', data['leftTime'])) {
+    } else if (data['noQuestion'] === true && this._check_time('question')) {
       content = "There is no question. Everyone, you can ask more and more.";
-      this.alerttime['question'] = data['leftTime'];
+      this.alerttime['question'] = Date.now();
     } else {
       return;
     }
@@ -45,18 +54,16 @@ var alertController = {
 
   // this function handles realtimefeedback and time
   _handle_data: function(data) {
-    console.log(data);
     if (data['timeAlert']) {
       this._alert(this._get_alert_content('time', data['duration']-data['passedTime']));
     }
     var rf = data['realtimefeedback'];
     for (key in rf) {
-      if (rf[key]!==0 && this._check_time(key, data['passedTime'])) {
+      if (rf[key]!==0 && this._check_time(key)) {
         this._alert(this._get_alert_content(key, rf[key]));
-        this.alerttime[key] = data['passedTime'];
+        this.alerttime[key] = Date.now();
       }
     }
-    console.log(this.alerttime);
   },
 
   _queue: [],
@@ -64,7 +71,6 @@ var alertController = {
   _alertMsg : null,
 
   _alert: function(content) {
-    console.log(content);
     this._queue.push(content);
     if (!this._isAlerting) {
       this._alertQueuePop();
@@ -124,3 +130,6 @@ var alertController = {
 };
 
 h5.core.expose(alertController);
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = alertController;

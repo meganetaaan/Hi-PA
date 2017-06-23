@@ -5,72 +5,72 @@
     <title>HiPA - Presentation Assistant</title>
 
     <!-- Import a dependent file -->
-    <script src="public/lib/jquery/jquery-3.2.0.min.js"></script>
+    <script src="/public/lib/jquery/jquery-3.2.0.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
     <!-- Import a hifive framework -->
-    <link type="text/css" rel="stylesheet" href="public/lib/h5/h5.css">
-    <script src="public/lib/h5/ejs-h5mod.js"></script>
-    <script src="public/lib/h5/h5.dev.js"></script>
+    <link type="text/css" rel="stylesheet" href="/public/lib/h5/h5.css">
+    <script src="/public/lib/h5/ejs-h5mod.js"></script>
+    <script src="/public/lib/h5/h5.dev.js"></script>
 
     <!-- Import reveal.js fremework -->
-    <link rel="stylesheet" href="public/lib/reveal/css/reveal.css">
-    <link rel="stylesheet" href="public/lib/reveal/css/theme/bulma.css">
-    <script src="public/lib/reveal/lib/js/head.min.js"></script>
-    <script src="public/lib/reveal/js/reveal.js"></script>
+    <link rel="stylesheet" href="/public/lib/reveal/css/reveal.css">
+    <link rel="stylesheet" href="/public/lib/reveal/css/theme/bulma.css">
+    <script src="/public/lib/reveal/lib/js/head.min.js"></script>
+    <script src="/public/lib/reveal/js/reveal.js"></script>
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="public/lib/reveal/lib/css/zenburn.css">
+    <link rel="stylesheet" href="/public/lib/reveal/lib/css/zenburn.css">
     <!-- Import css framework -->
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="public/lib/tipped-4.6.0-light/css/tipped/tipped.css">
+    <link rel="stylesheet" href="/public/lib/tipped-4.6.0-light/css/tipped/tipped.css">
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="public/lib/reveal/lib/css/zenburn.css">
+    <link rel="stylesheet" href="/public/lib/reveal/lib/css/zenburn.css">
 
 
-    <script src="public/lib/tipped-4.6.0-light/js/tipped/tipped.js"></script>
+    <script src="/public/lib/tipped-4.6.0-light/js/tipped/tipped.js"></script>
     <!-- clmtrckr -->
     <% if (isPresenter) { %>
-      <script src="public/lib/clmtrackr/b4_demo.js"></script>
-      <script src="public/lib/clmtrackr/utils.js"></script>
-      <script src="public/lib/clmtrackr/numeric-1.2.6.min.js"></script>
-      <script src="public/lib/clmtrackr/mosse.js"></script>
-      <script src="public/lib/clmtrackr/jsfeat-min.js"></script>
-      <script src="public/lib/clmtrackr/frontalface.js"></script>
-      <script src="public/lib/clmtrackr/jsfeat_detect.js"></script>
-      <script src="public/lib/clmtrackr/left_eye_filter.js"></script>
-      <script src="public/lib/clmtrackr/right_eye_filter.js"></script>
-      <script src="public/lib/clmtrackr/nose_filter.js"></script>
-      <script src="public/lib/clmtrackr/models/model_pca_20_svm.js"></script>
-      <script src="public/lib/clmtrackr/clm.js"></script>
-      <script src="public/lib/clmtrackr/svmfilter_webgl.js"></script>
-      <script src="public/lib/clmtrackr/svmfilter_fft.js"></script>
-      <script src="public/lib/clmtrackr/mossefilter.js"></script>
-      <script src="public/lib/clmtrackr/Stats.js"></script>
+      <script src="/public/lib/clmtrackr/b4_demo.js"></script>
+      <script src="/public/lib/clmtrackr/utils.js"></script>
+      <script src="/public/lib/clmtrackr/numeric-1.2.6.min.js"></script>
+      <script src="/public/lib/clmtrackr/mosse.js"></script>
+      <script src="/public/lib/clmtrackr/jsfeat-min.js"></script>
+      <script src="/public/lib/clmtrackr/frontalface.js"></script>
+      <script src="/public/lib/clmtrackr/jsfeat_detect.js"></script>
+      <script src="/public/lib/clmtrackr/left_eye_filter.js"></script>
+      <script src="/public/lib/clmtrackr/right_eye_filter.js"></script>
+      <script src="/public/lib/clmtrackr/nose_filter.js"></script>
+      <script src="/public/lib/clmtrackr/models/model_pca_20_svm.js"></script>
+      <script src="/public/lib/clmtrackr/clm.js"></script>
+      <script src="/public/lib/clmtrackr/svmfilter_webgl.js"></script>
+      <script src="/public/lib/clmtrackr/svmfilter_fft.js"></script>
+      <script src="/public/lib/clmtrackr/mossefilter.js"></script>
+      <script src="/public/lib/clmtrackr/Stats.js"></script>
     <% } %>
 
     <% if (isPresenter) { %>
-      <script src="public/javascripts/config-presenter.js"></script>
+      <script src="/public/javascripts/config-presenter.js"></script>
     <% } else { %>
-      <script src="public/javascripts/config-audience.js"></script>
+      <script src="/public/javascripts/config-audience.js"></script>
     <% } %>
     <!-- hifive model -->
-    <script src="public/javascripts/model/QuestionDataModel.js"></script>
+    <script src="/public/javascripts/model/QuestionDataModel.js"></script>
     <!-- hifive logic -->
-    <script src="public/javascripts/logic/QuestionListLogic.js"></script>
-    <script src="public/javascripts/logic/ScriptLogic.js"></script>
-    <script src="public/javascripts/logic/TimeLogic.js"></script>
+    <script src="/public/javascripts/logic/QuestionListLogic.js"></script>
+    <script src="/public/javascripts/logic/ScriptLogic.js"></script>
+    <script src="/public/javascripts/logic/TimeLogic.js"></script>
     <!-- hifive controller -->
-    <script src="public/javascripts/controller/QuestionListController.js"></script>
-    <script src="public/javascripts/controller/SlideController.js"></script>
-    <script src="public/javascripts/controller/ScriptController.js"></script>
-    <script src="public/javascripts/controller/TooltipController.js"></script>
-    <script src="public/javascripts/controller/FeedbackController.js"></script>
-    <script src="public/javascripts/controller/TimeController.js"></script>
-    <script src="public/javascripts/controller/AlertController.js"></script>
-    <script src="public/javascripts/controller/PageController.js"></script>
+    <script src="/public/javascripts/controller/QuestionListController.js"></script>
+    <script src="/public/javascripts/controller/SlideController.js"></script>
+    <script src="/public/javascripts/controller/ScriptController.js"></script>
+    <script src="/public/javascripts/controller/TooltipController.js"></script>
+    <script src="/public/javascripts/controller/FeedbackController.js"></script>
+    <script src="/public/javascripts/controller/TimeController.js"></script>
+    <script src="/public/javascripts/controller/AlertController.js"></script>
+    <script src="/public/javascripts/controller/PageController.js"></script>
     <script>
       var parentController = null;
       $(function() {
@@ -78,7 +78,7 @@
       });
     </script>
 
-    <link type="text/css" rel="stylesheet" href="public/stylesheets/main.css">
+    <link type="text/css" rel="stylesheet" href="/public/stylesheets/main.css">
   </head>
   <body>
     <div id="question-container">

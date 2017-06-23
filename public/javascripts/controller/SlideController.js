@@ -25,7 +25,7 @@ var slideController = {
     _remoteSlideState: {indexh: 0, indexv: 0, paused: false, overview: false},
     _isInSync: true,
 
-    __templates: ['public/views/slide.ejs'],
+    __templates: ['/public/views/slide.ejs'],
     _currentState : {indexh: 0, indexv: 0, paused: false, overview: false},
     _isNetworking : false,
     __init: function(context) {
@@ -39,14 +39,14 @@ var slideController = {
             history: false,
             embedded: true,
             dependencies: [{
-                src: 'public/lib/reveal/plugin/markdown/marked.js'
+                src: '/public/lib/reveal/plugin/markdown/marked.js'
             }, {
-                src: 'public/lib/reveal/plugin/markdown/markdown.js'
+                src: '/public/lib/reveal/plugin/markdown/markdown.js'
             }, {
-                src: 'public/lib/reveal/plugin/notes/notes.js',
+                src: '/public/lib/reveal/plugin/notes/notes.js',
                 async: true
             }, {
-                src: 'public/lib/reveal/plugin/highlight/highlight.js',
+                src: '/public/lib/reveal/plugin/highlight/highlight.js',
                 async: true,
                 callback: function() {
                     hljs.initHighlightingOnLoad();
@@ -70,59 +70,15 @@ var slideController = {
         if (config.isSlideshow) {
             //No Event listener for Reveal.js
         } else if (config.isPresenter) {
-            const closure = () => {
-                if (parentController.timeController.get_status() !== 'STARTED') {
-                    this._currentState = this.getState();
-                    this._postInfo(this._currentState);
-                    return;
-                }
-                if (this._equalState(this.getState(), this._currentState)) {
-                    return;
-                }
-                if (this._isNetworking) {
-                    this.setState(this._currentState);
-                    return;
-                }
-                let nowState = this.getState();
-                this.setState(this._currentState);
-                this._isNetworking = true;
-                h5.ajax({
-                    type: 'GET',
-                    dataType: 'JSON',
-                    url: config.url + '/alert',
-                }).then((json) => {
-                    let questionID = json.questionID;
-                    let tooltip = json.tooltip;
-                    let leftTime = json.leftTime;
-                    if (tooltip === null && questionID === null) {
-                        this._postInfo(nowState);
-                        this._currentState = nowState;
-                        this.setState(nowState);
-                        this._isNetworking = false;
-                        return;
-                    } else if (leftTime < config.questionTimeLimit) {
-                        this.setState(nowState);
-                        this._isNetworking = false;
-                    } else {
-                        this._isNetworking = false;
-                    }
-                }).fail(()=> {
-                    this._postInfo(nowState);
-                    this._currentState = nowState;
-                    this.setState(nowState);
-                    this._isNetworking = false;
-                })
-            };
+            let closure = () => {
+                this._presenterSlideChanged();
+            }
             this.curReveal.addEventListener('slidechanged', closure);
             this.curReveal.addEventListener('fragmentshown', closure);
             this.curReveal.addEventListener('fragmenthidden', closure);
-            /*
-            curReveal.addEventListener('paused', this._postInfo);
-            curReveal.addEventListener('resumed', this._postInfo);
-            */
         } else {
-            const closure = () => {
-                this._desync();
+            let closure = () => {
+                this._audienceSlideChanged();
             }
             this.curReveal.addEventListener('slidechanged', closure);
             this.curReveal.addEventListener('fragmentshown', closure);
@@ -130,6 +86,56 @@ var slideController = {
             this.curReveal.addEventListener('overviewhidden', closure);
             this.curReveal.addEventListener('overviewshown', closure);
         }
+    },
+
+    _presenterSlideChanged: function() {
+        if (parentController.timeController.get_status() !== 'STARTED') {
+            this._currentState = this.getState();
+            this._postInfo(this._currentState);
+            return;
+        }
+        if (this._equalState(this.getState(), this._currentState)) {
+            return;
+        }
+        if (this._isNetworking) {
+            this.setState(this._currentState);
+            return;
+        }
+        let nowState = this.getState();
+        this.setState(this._currentState);
+        this._isNetworking = true;
+        h5.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: config.url + '/alert',
+        }).then((json) => {
+            let questionID = json.questionID;
+            let tooltip = json.tooltip;
+            let leftTime = json.leftTime;
+            if (tooltip === null && questionID === null) {
+                this._postInfo(nowState);
+                this._currentState = nowState;
+                this.setState(nowState);
+                this._isNetworking = false;
+                return;
+            } else if (leftTime < config.questionTimeLimit) {
+                this._postInfo(nowState);
+                this._currentState = nowState;
+                this.setState(nowState);
+                this._isNetworking = false;
+            } else {
+                this._isNetworking = false;
+            }
+        }).fail(()=> {
+            this._postInfo(nowState);
+            this._currentState = nowState;
+            this.setState(nowState);
+            this._isNetworking = false;
+        })
+    },
+
+    _audienceSlideChanged: function() {
+        this._desync();
     },
 
     _equalState: function(state1, state2) {
@@ -625,3 +631,5 @@ var slideController = {
     },
 }
 h5.core.expose(slideController);
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = slideController;

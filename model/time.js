@@ -11,7 +11,8 @@ var time = {
 }
 
 function getTime() {
-    return Math.floor(timescale(time.et.getRawValue(),'ns','s'));
+    //return Math.floor(timescale(time.et.getRawValue(),'ns','s'));
+    return time.passedTime;
 }
 
 function setTimeState(data) {
@@ -45,10 +46,10 @@ function setTimeState(data) {
 
 function getTimeState() {
     console.log(time.state);
-    if (time.state !== 'END')
+    /*if (time.state !== 'END')
         time.passedTime = getTime();
     else
-        time.passedTime = 0;
+        time.passedTime = 0;*/
     return time;
 }
 time.getTime = getTime;
