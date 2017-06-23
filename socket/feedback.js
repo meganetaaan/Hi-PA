@@ -1,11 +1,12 @@
 var io = require('./io').io();
+var config = require('../config');
 
 var feedback = {};
 feedback.speed = {fast : 0, slow : 0};
 feedback.sound = {loud : 0, small : 0};
 feedback.threshold = {
-    speed : 1000,
-    sound : 1000
+    speed : config.speed,
+    sound : config.sound
 }
 feedback.reset = () => {
     feedback.speed = {fast : 0, slow : 0};

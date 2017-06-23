@@ -56,7 +56,7 @@ app.use('/public', express.static('public'));
 
 app.get('/presenter/:id', (req, res) => {
     console.log('presenter connected');
-    if (req.params.id === '$up3r$3cr3tk3ythatwiIIb3g3n3rat3d') {
+    if (req.params.id === /*'$up3r$3cr3tk3ythatwiIIb3g3n3rat3d'*/'aa') {
         res.render('index', {
             isPresenter: true,
         });

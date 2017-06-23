@@ -38,18 +38,9 @@ slide.presenter.on('connection', function(socket) {
     // slideの操作
     socket.on('slidestatechanged', function(data) {
         slideCtrl.updateState('slide_01', data.slideData.state);
-        if (data.slideData.state.indexh === 1) {
-            var q = Question({slideNumber : 3, nickname : 'Sewon Min', password : 'trybruteforcing', question : 'What is Language Modeling', like : 100});
-            tooltip.term['tooltip'] = 100;
-            q.save((err, q) => {
-                question.io.emit('ADD_QUESTION', q);
-            });
-        }
-        if (data.slideData.state.indexh === 3) {
-            feedback.speed = {fast : 1001, slow : 0};
-        }
         slide.audience.emit('slidestatechanged', data);
         if (time.state === 'STARTED') {
+            console.log('sending alerts');
             alertsock.presenter.emit('Alert', {
                 realtimefeedback : feedback.send(),
                 duration : slides.duration,

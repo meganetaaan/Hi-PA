@@ -5,6 +5,7 @@ var slideCtrl = require('./slide');
 var slide = slideCtrl.getSlide('slide_01');
 var tooltip = require('../socket/tooltip');
 var rawtime = require('time');
+var config = require('../config');
 
 var alert = {};
 alert.doneQuestionIDs = [];
@@ -12,13 +13,14 @@ alert.doneTerms = [];
 alert.reset = () => {
     alert.doneQuestionsIDs = [];
     alert.doneTerms = [];
+    alert.lastTimeAlert = 0;
 }
 alert.lastTimeAlert = 0;
 alert.threshold = {
-    question : 100,
-    questionOnly : 100,
-    tooltip :100,
-    time : 60
+    question : config.question,
+    questionOnly : config.questionOnly,
+    tooltip :config.tooltip,
+    time : config.time
 }
 alert.slide = slide;
 
@@ -28,7 +30,8 @@ function getClientNo() {
 
 function getTimeAlert() {
     var slideNo = slide.state.indexh;
-    var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
+    var slideLeftTime = time.slideTime * (slideNo) - time.getTime();
+    console.log({time:time.slideTime, slideNo, gottime:time.getTime()});
     if (slideLeftTime <= 0 && rawtime.time() - alert.lastTimeAlert >= alert.threshold.time) {
         alert.lastTimeAlert = rawtime.time();
         return true;
@@ -42,7 +45,6 @@ function getQuestionAlert(callback){
     Question.find({slideNumber:slideNo}, function(er, res){
         var result;
         var questionFactor = res.filter(function (el, i, a){return !alert.doneQuestionIDs.includes(''+el._id);}).reduce(function (prevVal, elem){return prevVal + elem.like}, 0);
-        console.log(questionFactor);
         var slideLeftTime = time.slideTime * (slideNo + 1) - time.getTime();
         if (questionFactor >= alert.threshold.question) {//getClientNo()/3) {
             res.sort(function (a, b) {return b-a;});

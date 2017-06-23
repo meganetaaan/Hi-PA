@@ -24,6 +24,12 @@ time.presenter.on('connection', (socket) => {
         }
         Time.setTimeState(data);
     });
+    socket.on('tick', (data) => {
+        var hr = data.time[0];
+        var mn = data.time[1];
+        var sc = data.time[2];
+        Time.passedTime = hr * 3600 + mn * 60 + sc;
+    });
     socket.on('disconnect', function(socket) {
         Time.setTimeState({state:'PAUSED'});
     });

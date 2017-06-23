@@ -119,6 +119,8 @@ var slideController = {
                 this._isNetworking = false;
                 return;
             } else if (leftTime <= 20) {
+                this._postInfo(nowState);
+                this._currentState = nowState;
                 this.setState(nowState);
                 this._isNetworking = false;
             } else {

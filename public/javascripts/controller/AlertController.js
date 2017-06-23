@@ -23,8 +23,8 @@ var alertController = {
   // this function handles question and tooltip
   _handle_question_data: function(data) {
     var content;
-
-    function timeout(){
+    
+    var timeout = () => {
       if (data['leftTime'] < 20) {
         if (this._check_time('time')) {
           content = "Since we are out of time, let's go to the next slide";
