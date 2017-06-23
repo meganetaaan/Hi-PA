@@ -3,7 +3,7 @@ var router = express.Router();
 var Script = require('../model/Script');
 
 function _getScript(req, res) {
-    Script.find({}, function (err, results) {
+    Script.find({}).sort('time').exec(function (err, results) {
         res.status(200).json(results);
     });
 }
